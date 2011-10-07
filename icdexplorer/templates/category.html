@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% load icd %}
+
+{% block title %}Category {{ category.display }} - iCAT Analytics{% endblock title %}
+
+{% block content %}
+
+<h1>{{ category.display }}</h1>
+<p class="subtitle">{{ category.name }}<br />
+{{ changes|length }} change{{ changes|length|pluralize }},
+{{ annotations|length }} note{{ annotations|length|pluralize }}</p>
+
+<div class="rightcolumn">
+
+<div id="plotAuthors" style="margin-top: 0.5em; width:430px; height:230px"></div>
+
+<script type="text/javascript">
+    var authorsData = {{ authors|js }};
+	$.plot($('#plotAuthors'), authorsData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                        return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+        }
+    }});
+</script>
+
+</div>
+
+<p><a href="{{ network_url }}">Show in network</a></p>
+
+<div id="plotCount" style="margin-top: 0.5em; width:430px; height:180px"></div>
+<div id="plotLegend"></div>
+
+<script type="text/javascript">
+	$.plot($('#plotCount'), [{data: {{ timeline_changes|js }}, label: "Changes"},
+		                       	{data: {{ timeline_annotations|js }}, label: "Notes"}],
+	                       	{ 
+	                          xaxis: { mode: 'time' },
+	                          yaxis: { min: 0 },
+	                          //y2axis: { min: 0, max: 100, tickFormatter: function (v, axis) { return v.toFixed(axis.tickDecimals) +"%" }},
+	                          legend: { position: 'nw', container: $('#plotLegend'), noColumns: 3 },
+	                          //points: { show: true },
+	                          lines: {show: true}
+	                         });
+</script>
+
+
+{% if parents %}
+<h2>Parents</h2>
+<ul>
+{% for parent in parents %}
+    <li><a href="{{ parent.get_absolute_url }}">{{ parent.display }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if children %}
+<h2>Children</h2>
+<ul>
+{% for child in children %}
+    <li><a href="{{ child.get_absolute_url }}">{{ child.display }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+
+<h2>Features</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Feature</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    {% for name, value, display in category.metrics.get_metrics %}
+    <tr>
+        <td>{{ display }}</td>
+        <td class="number">{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if changes %}
+<h2>Changes</h2>
+<table class="changes">
+    <thead>
+        <tr><th>Timestamp</th><!--<th>Type/ID</th>--><th>Author</th><!--<th>Action</th>--><th>Context</th></tr>
+    </thead>
+    {% for change in changes %}
+        <tr class="{% cycle "odd" "even" %}">
+        <td style="width: 18%"><span title="Type: {{ change.type }} / ID: {{ change.name }}">{{ change.timestamp }}</span></td>
+        <!--<td>{{ change.type }}<br />{{ change.name }}</td>-->
+        <td style="min-width: 15%"><a href="{{ change.author.get_absolute_url }}">{{ change.author.name }}</a></td>
+        <!--<td class="text">{{ change.action }}</td>-->
+        <td><div class="scroll">{{ change.context|display_context }}</div></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% if annotations %}
+<h2>Notes</h2>
+<table class="annotations">
+    <thead>
+        <tr><th>Created</th><th>Author</th><th>Type</th><th>Subject &amp; Body</th></tr>
+    </thead>
+    {% for annotation in annotations %}
+        <tr class="{% cycle "odd" "even" %}">
+        <td style="width: 18%">{{ annotation.created }}</span></td>
+        <td style="min-width: 15%"><a href="{{ annotation.autho.get_absolute_url }}">{{ annotation.author.name }}</a></td>
+        <td><span title="ID: {{ annotation.name }}">{{ annotation.type }}</span></td>
+        <td class="text" style="max-width: 500px"><em>{{ annotation.subject }}</em><br />
+        {{ annotation.body|clean_html }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
+ 
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load icd %}
+
+{% block title %}Properties - iCAT Analytics{% endblock title %}
+
+{% block content %}
+<h1>Properties</h1>
+
+<h2>Number of changes by property</h2>
+{% valuestable properties "count" "Property" 200 %}
+
+<h2>Number of categories by display status</h2>
+{% valuestable display_status "count" "Display status" 200 %}
+
+{% endblock %}

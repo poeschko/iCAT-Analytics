@@ -1,0 +1,22 @@
+{% load icd %}
+
+<table>
+    <thead><tr>
+        <th>{{ caption }}</th>
+        <th>Value</th>
+    </tr></thead>
+    <tbody>
+    {% for item, value, bar_width, gap_above in items %}
+    {% if gap_above %}
+    <tr class="gap">
+        <td colspan="2">&hellip;</td>
+    </tr>
+    {% endif %}
+    <tr">
+        <td>{% if item.get_absolute_url %}<a href="{{ item.get_absolute_url }}">{{ item }}</a>{% else %}{{ item.name }}{% endif %}</td>
+        <td class="number">{{ value }}</td>
+        <td class="bar"><span style="width: {{ bar_width }}px">&nbsp;</span></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

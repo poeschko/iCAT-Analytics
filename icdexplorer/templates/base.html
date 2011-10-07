@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="author" content="Jan P&ouml;schko" />
+<meta name="contact" content="jan@poeschko.com" />
+
+<title>{% block title %}{% endblock %}</title>
+
+<!--<script src="/media/js/rgraph/RGraph.common.core.js" ></script>
+<script src="/media/js/rgraph/RGraph.common.annotate.js" ></script>
+<script src="/media/js/rgraph/RGraph.common.context.js" ></script>
+<script src="/media/js/rgraph/RGraph.common.tooltips.js" ></script>
+<script src="/media/js/rgraph/RGraph.common.zoom.js" ></script>
+<script src="/media/js/rgraph/RGraph.common.resizing.js" ></script>
+<script src="/media/js/rgraph/RGraph.pie.js" ></script>-->
+
+<!--[if lte IE 8]><script src="/media/js/excanvas/excanvas.js"></script><![endif]-->
+<!--<script src="/media/js/prototype.js" ></script>-->
+
+<script type="text/javascript" src="/media/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="/media/js/jquery/jquery.flot.js"></script>
+<script type="text/javascript" src="/media/js/jquery/jquery.flot.pie.js"></script>
+<script type="text/javascript" src="/media/js/jquery/jquery.flot.selection.js"></script>
+
+<!--<script src="/media/js/jit.js" ></script>
+<script src="/media/js/tagsgraph.js" ></script>-->
+<script src="/media/js/raphael/raphael.js" ></script>
+<script src="/media/js/nexp.js" ></script>
+<script src="/media/js/icd.js" ></script>
+
+<link rel="stylesheet" type="text/css" href="/media/css/styles.css" />
+<link rel="stylesheet" type="text/css" href="/media/css/graph.css" />
+<!--<link rel="stylesheet" type="text/css" href="/media/css/visualize.css" />
+<link rel="stylesheet" type="text/css" href="/media/css/visualize-my.css" />-->
+<link rel="shortcut icon" href="/media/favicon.ico" />
+
+{% block head %}
+{% endblock %}
+</head>
+<body>
+
+<div id="headerBackground">
+<div id="header">
+<a href="/" title="iCAT Analytics"><img src="/media/logo.gif" alt="iCAT Analytics" /></a>
+{% if request.user.is_authenticated %}
+<form id="search" method="get" action="{% url icd.views.search %}">
+<input id="searchField" type="text" name="search" value="{% firstof search "Search" %}" />
+</form>
+{% endif %}
+<div id="organizations">
+<a href="http://www.tugraz.at" title="TU Graz"><img src="/media/tugraz.gif" alt="TU Graz" /></a>
+</div>
+<!--[if lte IE 8]>
+<div id="headerIE">
+<a href="{% url icd.views.about %}#browser" title="No support for Internet Explorer"><img src="/media/no_ie.gif" width="35" height="45" alt="No support for Internet Explorer" /></a>
+</div>
+<![endif]-->
+<div id="headerRight">
+<small><a href="{% url icd.views.about %}">About</a></small>
+{% if request.user.is_authenticated %}
+<small>&nbsp;
+<a href="{% url django.contrib.auth.views.logout_then_login %}">Logout</a><br /></small>
+<a href="{% url icd.views.categories %}">Categories</a>
+&nbsp;
+<a href="{% url icd.views.authors %}">Authors</a>
+&nbsp;
+<a href="{% url icd.views.properties %}">Properties</a>
+{% endif %}
+</div>
+</div>
+{% block control %}
+{% endblock %}
+</div>
+
+{% block all %}
+<div id="clouds">
+</div>
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+{% endblock %}
+
+</body>
+</html>

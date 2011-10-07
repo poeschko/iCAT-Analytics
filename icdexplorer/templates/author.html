@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% load icd %}
+
+{% block title %}Author {{ author.name }} - iCAT Analytics{% endblock title %}
+
+{% block content %}
+
+<h1>{{ author.name }}</h1>
+<p class="subtitle">{{ author.changes_count }} change{{ author.changes_count|pluralize }},
+{{ author.annotations_count }} note{{ author.annotations_count|pluralize }}</p>
+
+<div class="rightcolumn">
+
+
+</div>
+
+{% if network_url %}
+<p><a href="{{ network_url }}">Show in network</a></p>
+{% endif %}
+
+<table class="description">
+    <tr>
+        <th>Groups</th>
+        <td>{{ author.groups_list|join:"<br />" }}</td>
+    </tr>
+</table>
+ 
+ {% if co_authors %}
+<h2>Co-authors</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Count</th>
+            <th>Normalized</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for co_author, count, normalized in co_authors %}
+    <tr>
+        <td><a href="{{ co_author.get_absolute_url }}">{{ co_author.name }}</a></td>
+        <td class="number">{{ count }}</td>
+        <td class="number">{{ normalized|floatformat:1 }}%</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if reverts %}
+<h2>Overriding changes</h2>
+<p class="subtitle">({{ author.overrides_count }})</p>
+<table>
+<thead><tr>
+    <th>Timestamp</th>
+    <th>Category</th>
+    <th>Context</th>
+    <th>Overrides</th>
+</tr></thead>
+{% for change in reverts %}
+ <tr id="revert_{{ change.name }}">
+     <td>{{ change.revert.timestamp }}</td>
+     <td><a href="{{ change.revert.apply_to.get_absolute_url }}">{{ change.revert.apply_to.category.display }}</a></td>
+     <td><div class="scroll" style="width: 300px">{{ change.revert.context }}</div></td>
+     <td><a href="{{ change.author.get_absolute_url }}#reverted_{{ change.name }}">{{ change.author }}</a></td>
+ </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% if reverted %}
+<h2>Overridden changes</h2>
+<p class="subtitle">({{ author.overridden_count }} = {{ author.overridden_rel|percent|floatformat }}% of all property changes)</p>
+<table>
+<thead><tr>
+    <th>Timestamp</th>
+    <th>Category</th>
+    <th>Context</th>
+    <th>Overridden by</th>
+</tr></thead>
+{% for change in reverted %}
+ <tr id="reverted_{{ change.name }}">
+     <td>{{ change.timestamp }}</td>
+     <td><a href="{{ change.apply_to.get_absolute_url }}">{{ change.apply_to.category.display }}</a></td>
+     <td><div class="scroll" style="width: 300px">{{ change.context }}</div></td>
+     <td><a href="{{ change.revert_by.get_absolute_url }}#revert_{{ change.name }}">{{ change.revert_by }}</a></td>
+ </tr>
+{% endfor %}
+</table>
+{% endif %}
+ 
+{% endblock content %}

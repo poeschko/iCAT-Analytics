@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+
+{% block title %}iCAT Analytics{% endblock title %}
+
+{% block head %}
+<style type="text/css">
+
+	body {
+		background: white;
+	}
+	
+	#graph {
+		overflow: hidden;
+		position: absolute;
+		left: 0;
+		top: 100px;
+		background-color: white;
+	}
+	
+	/*#navigation {
+		position: absolute;
+		right: 10px;
+		top: 85px;
+		z-index: 100;
+	}
+	#navigation span {
+		cursor: pointer;
+		display: block;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		vertical-align: middle;
+		background-color: red;
+		opacity: 0.8;
+		color: white;
+		font-family: sans-serif;
+		font-weight: bold;
+		font-size: 20px;
+		line-height: 20px;
+		margin-bottom: 2px;
+	}
+	#navigation span:hover {
+		opacity: 1;
+	}
+	#navPlus {
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		-moz-border-radius-topleft: 10px;
+		-moz-border-radius-topright: 10px;
+	}
+	#navMinus {
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+		-moz-border-radius-bottomleft: 10px;
+		-moz-border-radius-bottomright: 10px;
+	}*/
+	
+	#loading {
+		position: absolute;
+		left: 30px;
+		top: 110px;
+	}
+	#progress {
+		position: absolute;
+		left: 30px;
+		top: 110px;
+	}
+	
+</style>
+{% endblock head %}
+
+{% block control %}
+<div id="control">
+    Network:
+    <select id="networkSelect">
+        <option value="categories">Categories</option>
+        <option value="authors">Authors</option>
+        <option value="properties">Properties</option>
+    </select><br />
+    <span id="categoriesControl">
+        Author:
+        <select id="author">
+            {% for author_name, author_id in authors %}
+            <option value="{{ author_id }}">{{ author_name }}</option>
+            {% endfor %}
+        </select>
+        &nbsp;
+        Layout:
+        <select id="layout">
+            {% for layout_name, layout_id in layouts %}
+            <option value="{{ layout_id }}">{{ layout_name }}</option>
+            {% endfor %}
+        </select>
+        <span id="featureControl">
+        &nbsp;
+        Feature:
+        <select id="feature">
+            {% for feature_name, feature_id in features %}
+            <option value="{{ feature_id }}">{{ feature_name }}</option>
+            {% endfor %}
+        </select>
+        </span>
+        <span id="authorFeatureControl">
+        &nbsp;
+        Feature:
+        <select id="authorFeature">
+            {% for feature_name, feature_id in author_features %}
+            <option value="{{ feature_id }}">{{ feature_name }}</option>
+            {% endfor %}
+        </select>
+        </span>
+        <!--<input type="checkbox" id="accumulated" />
+        <label for="accumulated">Accumulated</label>-->
+    </span>
+    
+    <span id="authorsControl">
+        Show:
+        <select id="show">
+            <option value="collaboration">Mutually touched categories</option>
+            <option value="overrides">Overrides</option>
+        </select>
+    </span>
+    
+    
+    <span id="propertiesControl">
+        Show:
+        <select id="showProperties">
+            <option value="follow_ups">Follow-ups after change</option>
+            <option value="follow_ups_3">Follow-ups within 3 hours</option>
+        </select>
+    </span>
+</div>
+{% endblock control %}
+
+{% block all %}
+
+<div id="graph"></div>
+
+<!--<div id="navigation">
+<span id="navPlus">+</span>
+<span id="navCenter">o</span>
+<span id="navMinus">&minus;</span>
+</div>-->
+
+<div id="loading" style="display: none">
+<img src="/media/loading.gif" width="16" height="16" alt="Loading" />
+</div>
+<div id="progress" style="display: none">
+</div>
+
+<script type="text/javascript">
+    
+    function zoomToUser(zoom) {
+    	return Math.log(zoom) / Math.LN2;
+    }
+    
+    function userToZoom(value) {
+    	return Math.pow(2.0, value);
+    }
+
+	$(document).ready(function() {
+		$("#loading").ajaxStart(function() {
+			$(this).show();
+		});
+		$("#loading").ajaxStop(function() {
+			$(this).hide();
+		});
+		/*var graph = createTagsGraph('graph');
+		function zoomIn() {
+			graph.zoomIn();
+		}
+		function zoomOut() {
+			graph.zoomOut();
+		}
+        function center() {
+            //graph.setCenter(0.5, 0.5);
+            graph.setCenter(0.445108, 0.493385);
+        }
+		$('#navPlus').click(zoomIn);
+		$('#navMinus').click(zoomOut);
+        $('#navCenter').click(center);
+        
+        function paramsChange() {
+            var layout = $('#layout').val();
+            var weight = $('#weight').val();
+        	graph.setParams(layout, weight);
+        }*/
+        
+        function onResize() {
+    		var width = $(window).width();
+    		var height = $(window).height() - 100;
+            //alert(width);
+    		$('#graph').css('width', width + 'px');
+    		$('#graph').css('height', height + 'px');
+            if (network)
+                network.resize(width, height);
+        };
+        
+        function refreshControls() {
+            $('#categoriesControl').hide();
+            $('#authorsControl').hide();
+            $('#propertiesControl').hide();
+            switch ($('#networkSelect').val()) {
+            case "authors":
+                $('#authorsControl').show();
+                break;
+            case "categories":
+                $('#categoriesControl').show();
+                break;
+            case "properties":
+                $('#propertiesControl').show();
+                break;
+            }
+            if ($('#author').val() == "") {
+                $('#authorFeatureControl').hide();
+                $('#featureControl').show();
+            } else {
+                $('#featureControl').hide();
+                $('#authorFeatureControl').show();
+            }
+        }
+        
+        onResize();
+        $(window).resize(onResize);
+        
+        var hash = location.hash.substr(1);
+        var zoom = 1;
+        var x = 0;
+        var y = 0;
+        var graph = "categories";
+        var author = "";
+        var layout = "twopi";
+        var feature = "changes";
+        var authorFeature = "changes";
+        var accumulated = "0";
+        var show = "collaboration";
+        var showProperties = "follow_ups";
+    	if (hash) {
+    		var paramsArray = hash.split('&');
+    		var params = {};
+    		for (param in paramsArray) {
+    			var keyValue = paramsArray[param].split('=');
+    			params[keyValue[0]] = keyValue[1];
+    		}
+    		zoom = userToZoom(parseInt(params.z));
+    		x = parseFloat(params.x);
+            y = parseFloat(params.y);
+            graph = params.g;
+    		author = params.u;
+    		layout = params.l;
+    		feature = params.f;
+            authorFeature = params.af;
+            accumulated = params.a == "1";
+            //alert(accumulated);
+            show = params.s;
+            showProperties = params.sp;
+            if (graph)
+                $('#networkSelect').val(graph);
+            if (author)
+                $('#author').val(author);
+            //alert(author);
+            if (layout)
+                $('#layout').val(layout);
+            if (feature)
+                $('#feature').val(feature);
+            if (authorFeature)
+                $('#authorFeature').val(authorFeature);
+            if (accumulated)
+                $('#accumulated').val(accumulated ? "on" : "");
+            if (show)
+                $('#show').val(show);
+            if (showProperties)
+                $('#showProperties').val(showProperties);
+    	}
+        refreshControls();
+        
+        //alert();
+        
+        function reprNumber(value) {
+    		var v = value.toFixed(8);
+    		return v.replace(/(\.[0-9]*?)0+$/, "$1");
+    	}
+        
+        function refreshHash() {
+            //alert($('#accumulated:checked').val() );
+    		var hash = jQuery.param({
+    			x: reprNumber(network.center.x),
+    			y: reprNumber(network.center.y),
+    			z: zoomToUser(network.zoom),
+                g: $('#networkSelect').val(),
+    			u: $('#author').val(),
+    			l: $('#layout').val(),
+                f: $('#feature').val(),
+                af: $('#authorFeature').val(),
+                s: $('#show').val(),
+                sp: $('#showProperties').val()
+    			//w: $('#weight').val(),
+    			//a: $('#accumulated:checked').val() == "on" ? 1 : 0
+    		});
+    		location.replace('#' + hash);
+        }
+        
+        function paramsChange() {
+            //layout = $('#layout').val();
+            //weight = $('#weight').val();
+            refreshControls();
+            refreshHash();
+        	network.refresh();
+        }
+        
+        /*function networkChange() {
+            paramsChange();
+        }
+        
+        function authorChange() {
+            refreshControls();
+            paramsChange();
+        }*/
+       
+        //alert($("#graph").width());
+        var network = new Network("graph", $("#graph").width(), $("#graph").height(), {
+            showNavigationControls: true,
+            mouseWheelZoom: true,
+            highlightHover: true,
+            highlightNeighbors: true,
+            totalWidth: 1000,
+            totalHeight: 1000,
+            center: [x, y],
+            zoom: zoom,
+            controlColor: "#CC7A05"
+        });
+        
+        network.bind("navigation", function() {
+            refreshHash();
+        });
+        
+        network.bind("view", function(xmin, xmax, ymin, ymax, nodes, edges, callback) {
+            var graph = $('#networkSelect').val();
+            //var accumulated = $('#accumulated:checked').val() == "on";
+            var author = $('#author').val();
+            var feature = author == '' ? $('#feature').val() : $('#authorFeature').val();
+            
+            params = {
+				'borderW': xmin,
+				'borderN': ymin,
+				'borderE': xmax,
+				'borderS': ymax,
+                'network': graph,
+                'author': author,
+				'layout': $('#layout').val(),
+                'feature': feature,
+                'show': $('#show').val(),
+                'showProperties': $('#showProperties').val(),
+				//'weight': $('#weight').val(),
+				//'accumulated': accumulated ? 1 : 0
+			};
+            
+            function getNodeSize(value, minValue, maxValue) {
+                //if (graph == 'authors')
+                //    return Math.log(value + 1);
+                /*if (accumulated)
+                    return 2 + Math.pow(count, 0.25);
+                else
+                    return 2 + Math.sqrt(count);*/
+                return 2 + 10 * Math.sqrt(1.0 * (value - minValue) / (maxValue - minValue));
+            }
+            
+            $.getJSON('/ajax/graph/', params, function(data, textStatus, xhr) {
+    			$.each(data.nodes, function(i, item) {
+    				var x = item[0];
+    				var y = item[1];
+    				var id = item[2];
+    				var count = item[3];
+    				var display = item[4];
+                    var shortDisplay = item[5];
+                    var countDisplay = parseInt(count) == count ? count : count.toFixed(3);
+                    display = display + " (" + countDisplay + ")";
+                    var shortDisplayCount = shortDisplay + " (" + countDisplay + ")";
+    				var url = item[6];
+                    var color = item[7];
+                    var colorHover = "";
+                    if (graph == 'categories') {
+                        switch (color) {
+                        case "blue":
+                            color = "#137FAE";
+                            colorHover = "#1DC5FF";
+                            break;
+                        case "red":
+                            color = "#B20912";
+                            colorHover = "#FF1027";
+                            break;
+                        case "yellow":
+                            color = "#FDC605";
+                            colorHover = "#FFF35F";
+                            break;
+                        default:
+                            color = "#999";
+                            colorHover = "#ccc";
+                        }
+                    } else if (graph == 'authors'){
+                        if (!color)
+                            color = "#999";
+                        colorHover = color;
+                    } else
+                        colorHover = color = "#999";
+                    nodes.push([id, x, y, {
+                        r: getNodeSize(count, data.minValue, data.maxValue),
+                        href: url,
+                        fill: color,
+                        stroke: "#333",
+                        strokeWidth: 0.5,
+                        caption: graph != "categories" ? shortDisplay : null
+                    }, {
+                        caption: display,
+                        fill: colorHover,
+                        fontColor: graph != "categories" ? "black" : "black"
+                    }, {
+                        fontColor: "black",
+                        caption: graph != "categories" ? shortDisplay : shortDisplayCount
+                    }, {
+                        fill: "#ccc"
+                    }]);
+                });
+                $.each(data.edges, function(i, item) {
+                    var from = item[0];
+                    if (graph == "categories")
+                        $.each(item[1], function(i, to) {
+                            edges.push([from, to, {
+                                stroke: "#666"
+                            }, {
+                                strokeWidth: 3
+                            }]);
+                        });
+                    else
+                        edges.push([from, item[1], {
+                            stroke: "#666",
+                            strokeWidth: 1 + 10 * Math.sqrt((item[2] - data.minEdge) / (data.maxEdge - data.minEdge))
+                        }, {
+                            stroke: "#333",
+                            strokeOpacity: 1
+                        }]);
+                })
+                callback();
+            });
+        });
+        
+        network.refresh();
+        
+        $('#networkSelect').change(paramsChange);
+        $('#author').change(paramsChange);
+        $('#layout').change(paramsChange);
+        $('#feature').change(paramsChange);
+        $('#authorFeature').change(paramsChange);
+        //$('#accumulated').change(paramsChange);
+        $('#show').change(paramsChange);
+        $('#showProperties').change(paramsChange);
+        
+        //paramsChange();
+	});
+
+</script>
+
+{% endblock all %}

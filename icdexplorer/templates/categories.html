@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load icd %}
+
+{% block title %}Categories - iCAT Analytics{% endblock title %}
+
+{% block content %}
+<h1>Categories</h1>
+
+<!--Features:-->
+<ul>
+{% for name, display, categories in features %}
+    <li><a href="#{{ name }}">{{ display }}</a></li>
+{% endfor %}
+</ul>
+
+{% for name, display, categories in features %}
+<h2 id="{{ name }}">{{ display }}</h2>
+
+{% with name|prepend:"metrics." as attr_name %}
+{% valuestable categories attr_name "Category" 200 10 %}
+{% endwith %}
+
+{% endfor %}
+
+{% endblock %}

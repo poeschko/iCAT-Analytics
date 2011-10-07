@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load icd %}
+
+{% block title %}Authors - iCAT Analytics{% endblock title %}
+
+{% block content %}
+<h1>Authors</h1>
+
+<!--Features:-->
+<ul>
+{% for name, display, authors in features %}
+    <li><a href="#{{ name }}">{{ display }}</a></li>
+{% endfor %}
+</ul>
+<a href="#groups">Groups</a>
+
+{% for name, display, authors in features %}
+<h2 id="{{ name }}">{{ display }}</h2>
+
+{% valuestable authors name "Author" 200 10 %}
+{% endfor %}
+
+<h2 id="groups">Groups</h2>
+
+<table>
+    <head><tr>
+        <th>Group</th>
+        <th>Changes</th>
+        <th>Notes</th>
+        <th>Gini coefficient of activity distribution</th>
+    </tr></thead>
+    <tbody>
+{% for group in groups %}
+    <tr>
+        <td>{{ group }}<br />
+        {% for author in group.authors_list %}
+            <a href="{{ author.get_absolute_url }}"><span class="{% if author.inactive %}inactive{% endif %}{% if author.majority %}majority{% endif %}">{{ author.name }}</span></a> &nbsp;
+        {% endfor %}</td>
+        <td class="number">{{ group.changes }}</td>
+        <td class="number">{{ group.annotations }}</td>
+        <td class="number">{{ group.gini }}</td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

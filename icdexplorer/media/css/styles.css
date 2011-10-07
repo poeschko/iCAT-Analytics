@@ -1,0 +1,414 @@
+/*
+ICDexplorer
+
+(c) 2011 Jan Poeschko
+jan@poeschko.com
+*/
+
+#headerBackground {
+	width: 100%;
+	position: fixed;
+	background: url(/media/header.gif) #666 top repeat-x;
+	z-index: 1000;
+}
+
+#header {
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	/*background: url(/media/header.gif) top center no-repeat;*/
+	height: 45px;
+	padding-left: 16px;
+}
+
+#header img {
+	vertical-align: top;
+	border: none;
+}
+
+#search {
+	margin-left: 16px;
+	margin-top: 12px;
+	margin-bottom: 0;
+	display: inline-block;
+}
+
+#search input {
+	font-size: 0.9em;
+	width: 100px;
+	margin: 0;
+}
+
+#searchField {
+	background-color: #666;
+	color: #999;
+	border: none;
+	padding: 4px 8px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+#searchField.filled {
+	background-color: white;
+	color: black;
+}
+#searchField:hover {
+	background-color: #999;
+}
+#searchField.filled:hover {
+	background-color: white;
+}
+
+#organizations {
+    display: inline;
+    padding: 0;
+    margin-top: 0;
+    margin-left: 4em;
+}
+
+#headerRight {
+	float: right;
+	text-align: right;
+	padding-top: 0;
+}
+
+#headerRight a {
+	color: white;
+}
+
+#headerRight small {
+    font-size: 0.85em;
+}
+
+#headerRight small a {
+    color: #999;
+}
+
+#headerIE {
+	float: right;
+	text-align: right;
+	width: 60px;
+}
+
+#control {
+    color: #ccc;
+    /*background-color: black;*/
+    top: 45px;
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	/*background: url(/media/header.gif) top center no-repeat;*/
+	height: 50px;
+	padding-left: 16px;
+    padding-top: 5px;
+}
+
+#clouds {
+	position: fixed;
+	width: 100%;
+	height: 300px;
+	background: /*url(/media/clouds.gif) top repeat-x*/ /*#D8EAF2*/ #eee;
+	z-index: -1;
+	margin: 0;
+}
+
+#content {
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	
+	position: relative;
+	top: 65px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	padding: 16px;
+	padding-bottom: 48px;
+	min-height: 300px;
+	background: white;
+}
+
+body {
+	background: url(/media/white.gif) top center repeat-y /*#D8EAF2*/ #eee;
+	margin: 0;
+	padding: 0;
+	font-family: Helvetica Neue, sans-serif;
+	font-size: 0.95em;
+}
+
+a {
+	color: #0084B4;
+	text-decoration: none;
+}
+
+a img {
+  border: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+h1, h2 {
+	margin-top: 8px;
+	font-family: Helvetica Neue, sans-serif;
+	color: #333;
+	/*margin-bottom: 0;*/
+}
+
+p.error {
+    color: red;
+}
+
+p.subtitle {
+	margin-top: -1em;
+	color: #666;
+}
+
+td, th {
+    vertical-align: top;
+}
+
+td.number {
+    text-align: right;
+}
+
+/*tr.odd td {
+    background-color: #eee;
+}*/
+
+tr:nth-child(even) td {
+    background-color: white;
+}
+tr:nth-child(odd) td {
+    background-color: #eee;
+}
+
+tr.line-above td {
+    border-top: 1px solid #666;
+}
+
+tr.gap td {
+    text-align: center;
+    font-size: 1em;
+    color: #999;
+    background-color: #eee;
+    line-height: 0.1em;
+    height: 0.75em;
+}
+
+table tr td.bar {
+    background-color: transparent;
+}
+
+td.bar span {
+    display: inline-block;
+    background-color: #999;
+}
+
+table.description thead th {
+	text-align: left;
+	color: #666;
+}
+table.description th {
+	text-align: left;
+	vertical-align: top;
+	color: #666;
+	font-weight: normal;
+	padding-right: 1em;
+}
+table.description td {
+	vertical-align: top;
+}
+
+/*table.quantities td.name {
+	padding-right: 8px;
+}
+table.quantities td.value {
+	text-align: right;
+	color: #666;
+}
+table.quantities td.quantity div {
+	background-color: #8EC1DA;
+	height: 16px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	-moz-border-radius-topright: 8px;
+	-moz-border-radius-bottomright: 8px;
+}
+
+table.tweets {
+	border-collapse: collapse;
+}
+table.tweets td.text,
+table.tweets td.pie {
+	border-bottom: 1px solid #ccc;
+}
+table.tweets .tweetContainer {
+	width: 838px;
+	overflow: auto;
+}
+table.tweets td.user {
+	font-weight: bold;
+	color: #333;
+}
+table.tweets td.time {
+	text-align: right;
+	font-size: 0.85em;
+	color: #666;
+}
+table.tweets td.pie {
+	padding-left: 16px;
+}
+
+.explanationContainer {
+	width: 898px;
+	overflow: auto;
+}
+table.explanation {
+	margin-top: 4px;
+	margin-bottom: 8px;
+	font-size: 0.85em;
+	border-collapse: collapse;
+}
+table.explanation td,
+table.explanation th {
+	padding-left: 4px;
+	padding-right: 8px;
+}
+table.explanation thead th {
+	color: black;
+	border-bottom: 1px solid #333;
+}
+table.explanation tbody th {
+	font-weight: normal;
+	color: #333;
+	text-align: left;
+}
+table.explanation tbody td {
+	text-align: right;
+}
+table.explanation tr.total td,
+table.explanation tr.total th {
+	border-top: 1px solid #333;
+}
+table.explanation .string {
+	color: #000066;
+}
+table.explanation .leftline {
+	border-left: 1px solid #333;
+}
+
+table.statistics thead th {
+	color: #333;
+	font-weight: normal;
+	border-bottom: 1px solid #999;
+}
+table.statistics td {
+	text-align: right;
+}
+table.statistics td.section {
+	text-align: center;
+	background-color: #8EC1DA;
+	color: white;
+}
+table.statistics td.section a {
+	color: white;
+}
+table.statistics tbody th {
+	text-align: left;
+	font-weight: normal;
+}
+table.statistics tr.odd {
+	background: #eee;
+}
+table.statistics tr.avg {
+	background: white;
+	color: #666;
+}
+table.statistics tr.avg th {
+	text-align: right;
+}
+
+.statisticsLevelLink {
+	float: right;
+}*/
+
+table.changes,
+table.annotations {
+    width: 100%;
+}
+
+.loading {
+	text-align: center;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+	
+.class1 {
+	background-color: #EAE099;
+}
+.class2 {
+	background-color: #99EAC8;
+}
+.class3 {
+	background-color: #8EC1DA;
+}
+.class4 {
+	background-color: #E39489;
+}
+.class5 {
+	background-color: #999FEA;
+}
+
+
+td.text {
+    max-width: 300px;
+    overflow: hidden;
+}
+
+.html-code {
+    font-family: monospace;
+}
+
+
+.rightcolumn {
+	/*text-align: right;*/
+	float: right;
+	width: 450px;
+}
+.rightcolumn h2 {
+	margin-top: 0;
+	text-align: center;
+}
+
+.scroll {
+    overflow: auto;
+}
+
+.inactive {
+    font-style: italic;
+}
+
+.majority {
+    font-weight: bold;
+}
+
+/*.blue {
+    background-color: #1DC5FF;
+                            break;
+                        case "red":
+                            color = "#B20912";
+                            colorHover = "#FF1027";
+                            break;
+                        case "yellow":
+                            color = "#FDC605";*/
+
+@media print {
+	.statisticsLevelLink,
+	.navigation {
+		display: none;
+	}
+	
+	#headerBackground {
+		display: none;
+	}
+}
