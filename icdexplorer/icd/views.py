@@ -16,13 +16,15 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Min, Max
 from django.utils import simplejson
+from inspect import getmembers
 
 from models import Category, Change, Annotation, CATEGORY_NAME_PREFIX, DISPLAY_STATUS, CategoryMetrics, OntologyComponent, Author, AuthorCategoryMetrics
 from data import (#GRAPH, CATEGORIES, #GRAPH_POSITIONS, GRAPH_POSITIONS_TREE, WEIGHTS,
     MIN_CHANGES_DATE, MAX_CHANGES_DATE, FEATURES, AUTHOR_FEATURES,
     AUTHORS, GRAPH_AUTHORS, GRAPH_AUTHORS_DIRECTED, GRAPH_AUTHORS_POSITIONS,
     CHANGES_COUNT, ANNOTATIONS_COUNT, GROUPS,
-    PROPERTIES, GRAPH_PROPERTIES_POSITIONS, FOLLOW_UPS)
+    PROPERTIES, GRAPH_PROPERTIES_POSITIONS,
+    FOLLOW_UPS)
 from util import get_week, week_to_date, get_weekly, counts, group, calculate_gini
 
 from icdexplorer.storage.models import PickledData
@@ -41,7 +43,7 @@ def network(request):
     return render_to_response('network.html', {
         'layouts': settings.LAYOUTS,
         'authors': [('(All)', '')] + [(author.name, author.to_slug()) for id, author in sorted(AUTHORS.iteritems())],
-        #'weights': [(name, id) for id, name, f in settings.WEIGHTS],
+        'weights': [(name, id) for id, name, f in settings.WEIGHTS],
         'features': [(name, id) for id, name in FEATURES],
         'author_features': [(name, id) for id, name in AUTHOR_FEATURES],
     }, context_instance=RequestContext(request))
@@ -205,7 +207,7 @@ def category(request, name):
     try:
         changes = list(category.chao.changes.filter(Change.relevant_filter).order_by('-timestamp'))
         annotations = list(category.chao.annotations.filter(Annotation.relevant_filter).order_by('-created'))
-    except OntologyComponent.DoesNotExist:
+    except (OntologyComponent.DoesNotExist, AttributeError):
         changes = annotations = []
     
     timeline_changes = get_weekly(changes, lambda c: c.timestamp.date() if c.timestamp else None, to_ordinal=True,

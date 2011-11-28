@@ -53,6 +53,8 @@ from icd.util import *
 
 if settings.IS_NCI:
     ROOT_CATEGORY = 'http://www.w3.org/2002/07/owl#Thing'
+elif settings.IS_ICTM:
+    ROOT_CATEGORY = 'http://who.int/ictm#ICTMCategory'
 else:
     ROOT_CATEGORY = 'http://who.int/icd#ICDCategory'
 
@@ -433,8 +435,11 @@ def compute_extra_change_data():
     
     change_kinds = [(kind, compile(exprs)) for kind, exprs in Change.kinds.iteritems()]
     change_kinds = sorted(change_kinds, key=lambda (k, e): (-len(k), k))
-    changes = Change.objects.filter(_instance=settings.INSTANCE).order_by('_name')
+    changes = Change.objects.filter(_instance=settings.INSTANCE, composite=settings.INSTANCE, type="Composite_Change").order_by('_name')
+
     for index, change in enumerate(changes):
+        #if index < 357000:
+        #    continue
         if index % 1000 == 0:
             print "%d: %s" % (index, change._name)
         if change.action == 'Composite_Change':
@@ -543,6 +548,7 @@ def compute_author_reverts():
 def find_annotation_components():
     print "Find annotation components"
     annotations = Annotation.objects.filter(instance=settings.INSTANCE).select_related('annotates').order_by('name')
+    print str(len(annotations))
     for index, annotation in enumerate(annotations):
         #if index < 7700:
         #    continue
@@ -710,7 +716,7 @@ def calc_author_metrics(from_name=None, to_name=None):
     #PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     print "Done"
    
-"""     
+     
 def calc_weights():
     #categories = dict((category.name, category) for category in Category.objects.all().select_related('chao'))
     all_categories = Category.objects.filter(instance=settings.INSTANCE)
@@ -757,15 +763,15 @@ def calc_weights():
                 if childs_weight > 0:
                     weight[1][category.name] = childs_weight
                 # + weights[weight_id][0][category.name]
-            print "    Highest: %d" % max(weight[0].values())
+            #print "    Highest: %d" % max(weight[0].values())
     print "Save"
     PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     print "Done"
-"""
+
 
 #def calc_acc_weights():
     
-"""  
+
 def compact_weights():
     weights = PickledData.objects.get(settings.INSTANCE, 'weights')
     for author in weights:
@@ -776,7 +782,7 @@ def compact_weights():
     print "Save"
     PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     print "Done"
-"""
+
     
 def get_indirect_children(G, all_children, node):
     if node not in all_children:
@@ -886,7 +892,7 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
                 metrics.overrides = metrics.edit_sessions = metrics.authors_by_property = 0"""
             try:
                 metrics.depth = nx.shortest_path_length(G, source=str(category.name), target=str(ROOT_CATEGORY))
-            except nx.NetworkXNoPath:
+            except nx.exception.NetworkXError:
                 metrics.depth = 0
             if compute_centrality:
                 metrics.pagerank = pageranks[category.name]
@@ -1083,16 +1089,20 @@ def write_csv(filename, values, na="NA"):
     with open(filename, 'w') as file:
         file.write(content.encode('utf-8'))
     
-"""
+
 def createquadtree():
     categories = dict((category.name, category) for category in Category.objects.filter(instance=settings.INSTANCE).select_related('chao'))
     G = PickledData.objects.get(settings.INSTANCE, 'graph')
     weights = PickledData.objects.get(settings.INSTANCE, 'weights')
-    for layout, dot_prog in settings.LAYOUTS:
+    for layout, dot_prog, dummy in settings.LAYOUTS:
+        if layout == "Radial":
+            continue
         print layout
         positions = PickledData.objects.get(settings.INSTANCE, 'graph_positions_%s' % dot_prog)
         
         for author in sorted(weights.keys()):
+            if author < "2011-11-24_04h02mTomris Turmen":
+                continue
             print "Build tree for '%s'" % author
             qt = dict(((id, acc), QuadTree(-1, 1, -1, 1)) for id, name, f in settings.WEIGHTS for acc in (0, 1)) 
             for index, (name, pos) in enumerate(positions.iteritems()):
@@ -1101,8 +1111,10 @@ def createquadtree():
                 x, y = pos
                 category = categories[name]
                 #count = hashtags.get(tag, 0)
-                depth = nx.shortest_path_length(G, source=name, target=ROOT_CATEGORY)
-                
+                try:
+                    depth = nx.shortest_path_length(G, source=name, target=ROOT_CATEGORY)
+                except nx.exception.NetworkXError:
+                    continue
                 for weight_id, weight_name, weight_func in settings.WEIGHTS:
                     for accumulate in (0, 1):
                         #activity = G.node[name]['weight']
@@ -1122,7 +1134,7 @@ def createquadtree():
         
         #del qt
         del positions
-"""
+
       
 def corr2latex():
     tables = [r"""changes & 1.00 & 0.70 & 0.87 & 0.88 & 0.68 & 0.94 & 0.35 & 0.19 & -0.09 & 0.08 & 0.21 & 0.32 & 0.20 & 0.17 \\ 
@@ -1291,6 +1303,7 @@ def create_properties_network():
     print "Create properties network"
     follow_ups = PickledData.objects.get(settings.INSTANCE, 'follow_ups')
     G = nx.DiGraph()
+    #print follow_ups
     #for node in 
     for (u, v), count in follow_ups[None].iteritems():
         if u and v:
@@ -1305,6 +1318,7 @@ def create_properties_network():
     #del G['WHO']
     #print "Save"
     #PickledData.objects.set(settings.INSTANCE, 'author_graph', G)
+    #print G.nodes()
     print "Positions"
     pos = nx.spring_layout(G, scale=2)
     pos = dict((node, (p[0] - 1, p[1] - 1)) for node, p in pos.iteritems())
@@ -1541,52 +1555,60 @@ def preprocess_nci():
     #create_properties_network()
 
 def preprocess():
-    find_annotation_components()
-    compute_extra_change_data()
     
-    create_authors()
-    compute_follow_ups()
-    load_extra_authors_data()
-    create_properties()
+    #find_annotation_components()
+    #compute_extra_change_data()
     
-    createnetwork()
-    calc_metrics()
-    calc_author_metrics_split()
+    #create_authors()
+    #compute_follow_ups()
+    #load_extra_authors_data()
+    #create_properties()
+    
+    #createnetwork()
+    #calc_metrics()
+    #calc_author_metrics_split()
     #calc_weights()
     #compact_weights()
+    #graphpositions()
     
-    graphpositions()
-    adjust_positions()
+    #adjust_positions()
     #createquadtree()
-    store_positions()
+    #store_positions()
+    #compute_sessions()
+    #compute_extra_author_data()
+    #compute_author_reverts()
     
-    compute_follow_ups()
-    compute_sessions()
-    
-    compute_extra_author_data()
-    compute_author_reverts()
-    
-    calc_cooccurrences()
-    create_authors_network()
-    
-    create_properties_network()
-    
-    calc_hierarchy()
-    
+    #calc_cooccurrences()
+    #create_authors_network()
+    #create_properties_network()
+    #calc_hierarchy()
     #calc_timespan_metrics()
+    """
     #export_r_categories()
     #export_r_timeseries()
     #corr2latex()
     #calc_cooccurrences()
     #learn_changes()
-    
-    #print_sql_indexes()
-        
+    """
+    print_sql_indexes()
+    """
     #return
-    
+    """
 def main():
     #preprocess_incremental()
-    preprocess_nci()
+    #preprocess_nci()
+    preprocess()
+    
+    #foo = ['', 'http://who.int/icd#DS_Yellow', 'http://who.int/icd#DS_Blue', 'http://who.int/icd#DS_Red']
+    #from random import choice
+    
+    #c = Category.objects.get(instance_name="mainhttp://who.int/icd#XIII")
+    #categories = Category.objects.filter(instance="main")
+    #for category in categories:
+    #    category.display_status = choice(foo)
+    #    category.hierarchy_id = c.instance_name
+    #    category.save()
+    
     """argc = len(sys.argv)
     if argc not in (2, 3):
         print "Wrong usage. Please specify a function to call!"
