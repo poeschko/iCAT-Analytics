@@ -362,6 +362,8 @@
                     return 2 + Math.pow(count, 0.25);
                 else
                     return 2 + Math.sqrt(count);*/
+                if (maxValue == 0)
+                    return 2;
                 return 2 + 10 * Math.sqrt(1.0 * (value - minValue) / (maxValue - minValue));
             }
             
