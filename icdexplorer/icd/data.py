@@ -71,8 +71,5 @@ GRAPH_PROPERTIES_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'propert
 FOLLOW_UPS = PickledData.objects.get(settings.INSTANCE, 'follow_ups')
 
 print "Properties loaded"
-
-if not User.objects.count():
-    User.objects.create_user('Guest1', 'poeschko@stanford.edu', 'guest1')
     
 print "Data loaded"
