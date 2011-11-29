@@ -6,6 +6,8 @@ BASE_DIR = '/Users/Jan/Uni/Stanford/ICD-Python/icdexplorer/'
 
 DEBUG = True
 
+ENABLE_CACHE = IS_SERVER
+
 if IS_SERVER:
     INSTANCES = ['2011-04-21_04h02m', '2011-06-20_04h02m', '2011-07-28_04h02m', '2011-08-08_04h02m', '2011-08-28_04h02m', '2011-11-24_04h02m']
     INSTANCE = INSTANCES[-1]

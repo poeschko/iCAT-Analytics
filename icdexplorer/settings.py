@@ -6,12 +6,13 @@ Django settings for icdexplorer project.
 jan@poeschko.com
 """
 
-from settings_site import (IS_SERVER, BASE_DIR, DEBUG, INSTANCE, IS_NCI, IS_ICTM,
+from settings_site import (IS_SERVER, BASE_DIR, DEBUG, ENABLE_CACHE,
+    INSTANCE, IS_NCI, IS_ICTM,
     DB_NAME, DB_USER, DB_PASSWORD)
 
 #IS_SERVER = False
 
-ENABLE_CACHE = True #IS_SERVER
+#ENABLE_CACHE = True #IS_SERVER
 
 """if IS_SERVER:
     #BASE_DIR = '/apps/bmir.apps/socialanalysis/'

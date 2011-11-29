@@ -334,7 +334,7 @@
             refreshHash();
         });
         
-        network.bind("view", function(xmin, xmax, ymin, ymax, nodes, edges, callback) {
+        network.bind("view", function(xmin, xmax, ymin, ymax, nodeSelection, edgeSelection, selectionChanged, nodes, edges, callback) {
             var graph = $('#networkSelect').val();
             //var accumulated = $('#accumulated:checked').val() == "on";
             var author = $('#author').val();
@@ -404,21 +404,26 @@
                     } else
                         colorHover = color = "#999";
                     nodes.push([id, x, y, {
-                        r: getNodeSize(count, data.minValue, data.maxValue),
-                        href: url,
-                        fill: color,
-                        stroke: "#333",
-                        strokeWidth: 0.5,
-                        caption: graph != "categories" ? shortDisplay : null
-                    }, {
-                        caption: display,
-                        fill: colorHover,
-                        fontColor: graph != "categories" ? "black" : "black"
-                    }, {
-                        fontColor: "black",
-                        caption: graph != "categories" ? shortDisplay : shortDisplayCount
-                    }, {
-                        fill: "#ccc"
+                        normal: {
+                            r: getNodeSize(count, data.minValue, data.maxValue),
+                            href: url,
+                            fill: color,
+                            stroke: "#333",
+                            strokeWidth: 0.5,
+                            caption: graph != "categories" ? shortDisplay : null
+                        },
+                        highlight: {
+                            caption: display,
+                            fill: colorHover,
+                            fontColor: graph != "categories" ? "black" : "black"
+                        },
+                        secondaryHighlight: {
+                            fontColor: "black",
+                            caption: graph != "categories" ? shortDisplay : shortDisplayCount
+                        },
+                        unhighlight: {
+                            fill: "#ccc"
+                        }
                     }]);
                 });
                 $.each(data.edges, function(i, item) {
@@ -426,18 +431,20 @@
                     if (graph == "categories")
                         $.each(item[1], function(i, to) {
                             edges.push([from, to, {
-                                stroke: "#666"
-                            }, {
-                                strokeWidth: 3
+                                normal: {stroke: "#666"},
+                                highlight: {strokeWidth: 3}
                             }]);
                         });
                     else
                         edges.push([from, item[1], {
-                            stroke: "#666",
-                            strokeWidth: 1 + 10 * Math.sqrt((item[2] - data.minEdge) / (data.maxEdge - data.minEdge))
-                        }, {
-                            stroke: "#333",
-                            strokeOpacity: 1
+                            normal: {
+                                stroke: "#666",
+                                strokeWidth: 1 + 10 * Math.sqrt((item[2] - data.minEdge) / (data.maxEdge - data.minEdge))
+                            },
+                            highlight: {
+                                stroke: "#333",
+                                strokeOpacity: 1
+                            }
                         }]);
                 })
                 callback();
