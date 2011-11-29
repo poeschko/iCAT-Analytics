@@ -60,7 +60,8 @@ WEIGHTS = [
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Jan Poeschko', 'poeschko@stanford.edu'),
+    ('Jan Poeschko', 'jan@poeschko.com'),
+    ('Simon Walk', 'swalk86@gmail.com'),
 )
 
 MANAGERS = ADMINS
