@@ -23,24 +23,14 @@ class LinearizationSpec(models.Model):
     is_included = models.NullBooleanField() #(null=True)
     #class Meta:
     #    unique_together = (['instance', 'linearization', 'parent', 'child'])
+        
+CATEGORY_NAME_PREFIX = 'http://who.int/ictm#'
 
-if settings.IS_ICTM:
-    CATEGORY_NAME_PREFIX = 'http://who.int/ictm#'
-else:
-    CATEGORY_NAME_PREFIX = 'http://who.int/icd#'
-
-if settings.IS_ICTM:
-    DISPLAY_STATUS = {
-        'http://who.int/ictm#DS_Blue': 'blue',
-        'http://who.int/ictm#DS_Yellow': 'yellow',
-        'http://who.int/ictm#DS_Red': 'red',
-    }
-else:
-    DISPLAY_STATUS = {
-        'http://who.int/icd#DS_Blue': 'blue',
-        'http://who.int/icd#DS_Yellow': 'yellow',
-        'http://who.int/icd#DS_Red': 'red',
-    }
+DISPLAY_STATUS = {
+            'http://who.int/ictm#DS_Blue': 'blue',
+            'http://who.int/ictm#DS_Yellow': 'yellow',
+            'http://who.int/ictm#DS_Red': 'red',
+        }
 
 class Category(models.Model):
     instance_name = models.CharField(max_length=130, primary_key=True)
@@ -459,10 +449,7 @@ class Author(models.Model):
         return result
     
 class Group(models.Model):
-    if settings.IS_ICTM:
-        tag_prefix = 'http://who.int/ictm#TAG_'
-    else:
-        tag_prefix = 'http://who.int/icd#TAG_'
+    tag_prefix = 'http://who.int/ictm#TAG_'
     
     instance = models.CharField(max_length=30, db_index=True)
     name = models.CharField(max_length=100)

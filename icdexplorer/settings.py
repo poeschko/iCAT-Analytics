@@ -66,7 +66,7 @@ if IS_ICTM:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'socialanalysis' if IS_SERVER else 'ictm2',                      # Or path to database file if using sqlite3.
+            'NAME': 'socialanalysis' if IS_SERVER else 'ictm3',                      # Or path to database file if using sqlite3.
             'USER': 'root' if IS_SERVER else 'root',                      # Not used with sqlite3.
             'PASSWORD': '' if IS_SERVER else '8986',                  # Not used with sqlite3.
             'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.

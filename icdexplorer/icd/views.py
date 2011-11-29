@@ -205,9 +205,16 @@ def category(request, name):
     parents = category.parents.order_by('display')
     children = category.children.order_by('display')
     try:
-        changes = list(category.chao.changes.filter(Change.relevant_filter).order_by('-timestamp'))
-        annotations = list(category.chao.annotations.filter(Annotation.relevant_filter).order_by('-created'))
-    except (OntologyComponent.DoesNotExist, AttributeError):
+        changes = []
+        annotations = []
+        for chao in category.chao.all():
+            for change in chao.changes.filter(Change.relevant_filter).order_by('-timestamp'):
+                changes.append(change)
+            for annotation in chao.annotations.filter(Annotation.relevant_filter).order_by('-created'):
+                annotations.append(annotation)
+        #print changes
+        #print annotations
+    except OntologyComponent.DoesNotExist:
         changes = annotations = []
     
     timeline_changes = get_weekly(changes, lambda c: c.timestamp.date() if c.timestamp else None, to_ordinal=True,

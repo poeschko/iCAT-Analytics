@@ -1555,15 +1555,12 @@ def preprocess_nci():
     #create_properties_network()
 
 def preprocess():
-    
     #find_annotation_components()
     #compute_extra_change_data()
-    
     #create_authors()
     #compute_follow_ups()
     #load_extra_authors_data()
     #create_properties()
-    
     #createnetwork()
     #calc_metrics()
     #calc_author_metrics_split()
@@ -1575,23 +1572,19 @@ def preprocess():
     #createquadtree()
     #store_positions()
     #compute_sessions()
-    #compute_extra_author_data()
     #compute_author_reverts()
-    
     #calc_cooccurrences()
     #create_authors_network()
     #create_properties_network()
     #calc_hierarchy()
-    #calc_timespan_metrics()
+    #print_sql_indexes()
     """
+    #calc_timespan_metrics()
     #export_r_categories()
     #export_r_timeseries()
     #corr2latex()
     #calc_cooccurrences()
     #learn_changes()
-    """
-    print_sql_indexes()
-    """
     #return
     """
 def main():
