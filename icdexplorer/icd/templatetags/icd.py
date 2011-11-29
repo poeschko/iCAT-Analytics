@@ -75,9 +75,10 @@ def valuestable(items, attrs, caption="", max_bar_width=200, line_after=None):
     if any(isinstance(value, float) for value in values):
         #max_value = values[0]
         decimal_places = 2
-        while float(('%.' + str(decimal_places) + 'f') % max_value) == 0:
-            decimal_places += 1
-        decimal_places += 2
+        if max_value > 0:
+            while float(('%.' + str(decimal_places) + 'f') % max_value) == 0:
+                decimal_places += 1
+            decimal_places += 2
         values_format = [('%.' + str(decimal_places) + 'f') % value for value in values]
     else:
         values_format = values
