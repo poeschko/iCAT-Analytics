@@ -148,8 +148,10 @@ function Highlightable() {
 		setElementAttr(this.elementSensitive || this.element, "cursor", properties.cursor);
 		setElementAttr(this.elementSensitive || this.element, "href", properties.href);
 		if ((typeof this.currentProperties.caption == "undefined") || properties.caption != this.currentProperties.caption) {
-			if (this.captionElement)
+			if (this.captionElement) {
 				this.captionElement.remove();
+				this.captionElement = null;
+			}
 			if (properties.caption) {
 				var pos = this.getCaptionPos();
 				this.captionElement = this.network.paper.text(pos.x, pos.y, properties.caption);
