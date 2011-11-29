@@ -1515,8 +1515,8 @@ def preprocess_nci():
     #load_extra_authors_data()
     #create_properties()
     
-    createnetwork()"""
-    calc_metrics(compute_centrality=False)
+    createnetwork()
+    calc_metrics(compute_centrality=False)"""
     
     #calc_author_metrics_split()
     #calc_weights()

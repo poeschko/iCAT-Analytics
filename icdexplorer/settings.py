@@ -26,7 +26,7 @@ else:
         '2010-06-01_04h02m',
         '2011-04-21_04h02m', '2011-06-20_04h02m', '2011-07-28_04h02m', '2011-08-08_04h02m', '2011-08-28_04h02m',
         '2011-09-09_04h02m']
-    INSTANCE = INSTANCES[-1]
+    INSTANCE = INSTANCES[1]
 IS_NCI = INSTANCE.startswith('nci')
     
 INPUT_DIR = BASE_DIR + '../input/'
