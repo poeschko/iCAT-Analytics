@@ -14,20 +14,24 @@ if IS_SERVER:
     #BASE_DIR = '/apps/bmir.apps/socialanalysis/'
     BASE_DIR = '/srv/protege/www/vhosts/socialanalysis/icdexplorer/'
 else:
-    BASE_DIR = '/Users/Jan/Uni/Stanford/ICD-Python/icdexplorer/'
+    #BASE_DIR = '/Users/Jan/Uni/Stanford/ICD-Python/icdexplorer/'
+    BASE_DIR = '/home/simon/Desktop/WORKINGDIR/iCAT-Analytics/icdexplorer/'
+
 
 if IS_SERVER:
-    INSTANCES = ['2011-04-21_04h02m', '2011-06-20_04h02m', '2011-07-28_04h02m', '2011-08-08_04h02m', '2011-08-28_04h02m']
-    INSTANCE = INSTANCES[-2]
+    INSTANCES = ['2011-04-21_04h02m', '2011-06-20_04h02m', '2011-07-28_04h02m', '2011-08-08_04h02m', '2011-08-28_04h02m', '2011-11-24_04h02m']
+    INSTANCE = INSTANCES[-1]
     #INSTANCES = ['main']
     #INSTANCE = INSTANCES[0]
 else:
     INSTANCES = ['nci100400', 'nci110815',
         '2010-06-01_04h02m',
-        '2011-04-21_04h02m', '2011-06-20_04h02m', '2011-07-28_04h02m', '2011-08-08_04h02m', '2011-08-28_04h02m',
-        '2011-09-09_04h02m']
-    INSTANCE = INSTANCES[1]
+        '2011-09-09_04h02m', 'main', 'dynamic_graph', 'main2', '03-10-11', '10-11-11', '2011-11-20_04h02m',
+        'ictm2011-11-24_04h02m']
+    INSTANCE = INSTANCES[-1]
+ 
 IS_NCI = INSTANCE.startswith('nci')
+IS_ICTM = INSTANCE.startswith('ictm')
     
 INPUT_DIR = BASE_DIR + '../input/'
 
@@ -42,11 +46,11 @@ DEFAULT_LAYOUT = 'twopi'
     ('changes', 'Changes', lambda c, filter: c.chao.changes.filter(**filter).count() if c.chao else 0),
     ('annotations', 'Notes', lambda c, filter: c.chao.annotations.filter(**filter).count() if c.chao else 0),
 ]"""
-"""WEIGHTS = [
+WEIGHTS = [
     ('activity', 'Changes + Notes', lambda changes, annotations: changes + annotations),
     ('changes', 'Changes', lambda changes, annotations: changes),
     ('annotations', 'Notes', lambda changes, annotations: annotations),
-]"""
+]
 
 DEBUG = True #not IS_SERVER
 TEMPLATE_DEBUG = DEBUG
@@ -57,16 +61,29 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'socialanalysis' if IS_SERVER else 'icd',                      # Or path to database file if using sqlite3.
-        'USER': 'root' if IS_SERVER else 'icd',                      # Not used with sqlite3.
-        'PASSWORD': '' if IS_SERVER else 'aNohr8ui',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+# This is due to the need of a "new"/"empty" database for ICTM
+if IS_ICTM:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'socialanalysis' if IS_SERVER else 'ictm3',                      # Or path to database file if using sqlite3.
+            'USER': 'root' if IS_SERVER else 'root',                      # Not used with sqlite3.
+            'PASSWORD': '' if IS_SERVER else '8986',                  # Not used with sqlite3.
+            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': 'socialanalysis' if IS_SERVER else 'icd11',                      # Or path to database file if using sqlite3.
+            'USER': 'root' if IS_SERVER else 'root',                      # Not used with sqlite3.
+            'PASSWORD': '' if IS_SERVER else '8986',                  # Not used with sqlite3.
+            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        }
+    }
 
 if ENABLE_CACHE:
     CACHES = {
