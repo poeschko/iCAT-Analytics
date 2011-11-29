@@ -6,19 +6,22 @@ Django settings for icdexplorer project.
 jan@poeschko.com
 """
 
-IS_SERVER = False
+from settings_site import (IS_SERVER, BASE_DIR, DEBUG, INSTANCE, IS_NCI, IS_ICTM,
+    DB_NAME, DB_USER, DB_PASSWORD)
+
+#IS_SERVER = False
 
 ENABLE_CACHE = True #IS_SERVER
 
-if IS_SERVER:
+"""if IS_SERVER:
     #BASE_DIR = '/apps/bmir.apps/socialanalysis/'
     BASE_DIR = '/srv/protege/www/vhosts/socialanalysis/icdexplorer/'
 else:
     #BASE_DIR = '/Users/Jan/Uni/Stanford/ICD-Python/icdexplorer/'
     BASE_DIR = '/home/simon/Desktop/WORKINGDIR/iCAT-Analytics/icdexplorer/'
+"""
 
-
-if IS_SERVER:
+"""if IS_SERVER:
     INSTANCES = ['2011-04-21_04h02m', '2011-06-20_04h02m', '2011-07-28_04h02m', '2011-08-08_04h02m', '2011-08-28_04h02m', '2011-11-24_04h02m']
     INSTANCE = INSTANCES[-1]
     #INSTANCES = ['main']
@@ -31,7 +34,7 @@ else:
     INSTANCE = INSTANCES[-1]
  
 IS_NCI = INSTANCE.startswith('nci')
-IS_ICTM = INSTANCE.startswith('ictm')
+IS_ICTM = INSTANCE.startswith('ictm')"""
     
 INPUT_DIR = BASE_DIR + '../input/'
 
@@ -52,7 +55,7 @@ WEIGHTS = [
     ('annotations', 'Notes', lambda changes, annotations: annotations),
 ]
 
-DEBUG = True #not IS_SERVER
+#DEBUG = True #not IS_SERVER
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -61,29 +64,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-# This is due to the need of a "new"/"empty" database for ICTM
-if IS_ICTM:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'socialanalysis' if IS_SERVER else 'ictm3',                      # Or path to database file if using sqlite3.
-            'USER': 'root' if IS_SERVER else 'root',                      # Not used with sqlite3.
-            'PASSWORD': '' if IS_SERVER else '8986',                  # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': DB_NAME,                      # Or path to database file if using sqlite3.
+        'USER': DB_USER,                      # Not used with sqlite3.
+        'PASSWORD': DB_PASSWORD,                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'socialanalysis' if IS_SERVER else 'icd11',                      # Or path to database file if using sqlite3.
-            'USER': 'root' if IS_SERVER else 'root',                      # Not used with sqlite3.
-            'PASSWORD': '' if IS_SERVER else '8986',                  # Not used with sqlite3.
-            'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-        }
-    }
+}
 
 if ENABLE_CACHE:
     CACHES = {
