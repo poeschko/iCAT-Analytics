@@ -517,7 +517,7 @@ def ajax_graph(request):
         #category_edges = [[child.name, 1] for child in category.children.all()]
         neighbors = GRAPH.successors(category.name) #+ GRAPH.predecessors(category.name)
         category_edges = [name for name in neighbors if name in names]
-        categories_list.append([x, y, category.name, weight, category.display,
+        categories_list.append([x, y, category.name, weight, unicode(category),
             category.get_short_display(), category.get_absolute_url(), category.get_display_status()])
         edges.append([category.name, category_edges])
     """tags = [tag for tag in tags[-100:] if tag[1] in instance.HASHTAGS]

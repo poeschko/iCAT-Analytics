@@ -58,7 +58,9 @@ class Category(models.Model):
     
     def __unicode__(self):
         #return '%s (%s)' % (self.name, self.display)
-        return self.display
+        if self.display.strip():
+            return self.display
+        return u'<%s>' % self.name
     
     def get_key(self):
         id = self.name
@@ -71,7 +73,7 @@ class Category(models.Model):
         return reverse('icd.views.category', kwargs={'name': urllib.quote(id)})
     
     def get_short_display(self):
-        display = self.display.strip(" '")
+        display = unicode(self).strip(" '")
         parts = display.split(' ')
         if parts:
             return parts[0]
