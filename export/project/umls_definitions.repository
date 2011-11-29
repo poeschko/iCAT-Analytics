@@ -1,0 +1,1 @@
+database:com.mysql.jdbc.Driver,jdbc:mysql://localhost/protege,protege,protege,icd_cm,icd_sno,icd_int,icd_umbrella,icd_umls,icd_ind
