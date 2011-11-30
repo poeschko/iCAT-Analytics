@@ -60,11 +60,11 @@
     <th>Overrides</th>
 </tr></thead>
 {% for change in reverts %}
- <tr id="revert_{{ change.name }}">
-     <td>{{ change.revert.timestamp }}</td>
-     <td><a href="{{ change.revert.apply_to.get_absolute_url }}">{{ change.revert.apply_to.category.display }}</a></td>
-     <td><div class="scroll" style="width: 300px">{{ change.revert.context }}</div></td>
-     <td><a href="{{ change.author.get_absolute_url }}#reverted_{{ change.name }}">{{ change.author }}</a></td>
+ <tr id="override_{{ change.name }}">
+     <td>{{ change.override.timestamp }}</td>
+     <td><a href="{{ change.override.apply_to.category.get_absolute_url }}">{{ change.override.apply_to.category }}</a></td>
+     <td><div class="scroll" style="width: 300px">{{ change.override.context }}</div></td>
+     <td><a href="{{ change.author.get_absolute_url }}#overridden_{{ change.name }}">{{ change.author }}</a></td>
  </tr>
 {% endfor %}
 </table>
@@ -81,11 +81,11 @@
     <th>Overridden by</th>
 </tr></thead>
 {% for change in reverted %}
- <tr id="reverted_{{ change.name }}">
+ <tr id="overridden_{{ change.name }}">
      <td>{{ change.timestamp }}</td>
-     <td><a href="{{ change.apply_to.get_absolute_url }}">{{ change.apply_to.category.display }}</a></td>
+     <td><a href="{{ change.apply_to.category.get_absolute_url }}">{{ change.apply_to.category }}</a></td>
      <td><div class="scroll" style="width: 300px">{{ change.context }}</div></td>
-     <td><a href="{{ change.revert_by.get_absolute_url }}#revert_{{ change.name }}">{{ change.revert_by }}</a></td>
+     <td><a href="{{ change.revert_by.get_absolute_url }}#override_{{ change.name }}">{{ change.override_by }}</a></td>
  </tr>
 {% endfor %}
 </table>

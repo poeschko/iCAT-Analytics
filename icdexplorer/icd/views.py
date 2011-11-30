@@ -181,8 +181,8 @@ def author(request, name):
     else:
         network_url = reverse('icd.views.network') + '#g=authors&x=%f&y=%f&z=2' % (x, y)
     
-    reverts = author.reverts.filter(ends_session=True).order_by('-timestamp')
-    reverted = author.changes.filter(ends_session=True).filter(revert__isnull=False).order_by('-timestamp')
+    reverts = author.overrides.filter(ends_session=True).order_by('-timestamp')
+    reverted = author.changes.filter(ends_session=True).filter(override__isnull=False).order_by('-timestamp')
     
     return render_to_response('author.html', {
         'author': author,
