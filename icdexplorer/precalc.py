@@ -1517,7 +1517,9 @@ def preprocess_incremental():
     
     #calc_hierarchy()
     
-    graphpositions()
+    #graphpositions()
+    
+    compute_extra_author_data()
     
 def preprocess_nci():
     #find_annotation_components()
@@ -1588,9 +1590,9 @@ def preprocess():
     #return
     """
 def main():
-    #preprocess_incremental()
+    preprocess_incremental()
     #preprocess_nci()
-    preprocess()
+    #preprocess()
     
     #foo = ['', 'http://who.int/icd#DS_Yellow', 'http://who.int/icd#DS_Blue', 'http://who.int/icd#DS_Red']
     #from random import choice
