@@ -72,6 +72,41 @@
 </ul>
 {% endif %}
 
+{% if titles %}
+<h2>Titles</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Language Code</th>
+    </tr>
+  </thead>
+  {% for title in titles %}
+  <tr>
+    <td class="category_title">{{ title.title }}</td> 
+    <td class="language_code">{{ title.language_code }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% if definitions %}
+<h2>Definitions</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Definition</th>
+      <th>Language Code</th>
+    </tr>
+  </thead>
+  {% for definition in definitions %}
+  <tr>
+    <td><div class="category_definition">{{ definition.definition }}</div></td> 
+    <td class="language_code">{{ definition.language_code }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
 
 <h2>Features</h2>
 

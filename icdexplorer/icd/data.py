@@ -45,7 +45,12 @@ GRAPH_AUTHORS_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'author_gra
 
 print "Author Graphs loaded"
 
-FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
+#FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
+# TEMP FIX:
+FEATURES = []
+for name, value, description in CategoryMetrics.objects.all()[0].get_metrics():
+    if not description.startswith('Accumulated'):
+        FEATURES.append([name, description])
 AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
 MULTILANGUAGE = ["titles", "title_languages", "definitions", "definition_languages"]
 

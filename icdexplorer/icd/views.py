@@ -226,6 +226,9 @@ def category(request, name):
     authors = [{'label': name[len(settings.INSTANCE):], 'data': count} for name, count in sorted(authors.iteritems(),
         key=lambda (n, c): c, reverse=True)]
     
+    titles = category.category_title.all()
+    definitions = category.category_definition.all()
+    
     #x, y = GRAPH_POSITIONS[settings.DEFAULT_LAYOUT][category.name]
     x, y = category.get_pos(settings.DEFAULT_LAYOUT)
     network_url = reverse('icd.views.network') + '#x=%f&y=%f&z=2' % (x, y)
@@ -240,6 +243,8 @@ def category(request, name):
         'timeline_changes': timeline_changes,
         'timeline_annotations': timeline_annotations,
         'authors': authors,
+        'titles': titles,
+        'definitions': definitions,
     }, context_instance=RequestContext(request))
     
 def ajax_graph_properties(request):

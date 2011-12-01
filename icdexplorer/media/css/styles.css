@@ -412,3 +412,13 @@ td.text {
 		display: none;
 	}
 }
+
+.category_title{
+  width: 20em;
+}
+.category_definition {
+  width: 30em;
+}
+.language_code {
+  text-align:center;
+}

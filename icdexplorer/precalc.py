@@ -1504,7 +1504,6 @@ def calc_hierarchy():
             category.hierarchy = None
         category.save()
     print "Done"
-
     
 def compute_language_metrics():
     categories = Category.objects.filter(instance=settings.INSTANCE).order_by('name') #.select_related('chao')
@@ -1512,12 +1511,12 @@ def compute_language_metrics():
         if index % 1000 == 0:
             print "%d: %s" % (index, category.name)
         metrics = category.metrics
-        metrics.titles = category.category_title.all().exclude(title='').count()
-        metrics.title_languages = category.category_title.all().exclude(language_code='').count()
-        metrics.definitions = category.category_definition.all().exclude(definition='').count()
-        metrics.definition_languages = category.category_definition.all().exclude(language_code='').count()
-        if metrics.titles != metrics.title_languages or metrics.definitions != metrics.definition_languages:
-            print category.name
+        metrics.titles = category.category_title.all().values('title').exclude(title='').distinct().count()
+        metrics.title_languages = category.category_title.all().values('language_code').distinct().exclude(language_code='').count()
+        metrics.definitions = category.category_definition.all().values('definition').distinct().exclude(definition='').count()
+        metrics.definition_languages = category.category_definition.all().values('language_code').distinct().exclude(language_code='').count()
+        #if metrics.titles != metrics.title_languages or metrics.definitions != metrics.definition_languages:
+        #    print category.name
         metrics.save()
 
 def preprocess_incremental():
@@ -1587,7 +1586,7 @@ def preprocess():
     #create_authors_network()
     #create_properties_network()
     #calc_hierarchy()
-    #print_sql_indexes()
+    print_sql_indexes()
     #compute_language_metrics()
     """
     #calc_timespan_metrics()

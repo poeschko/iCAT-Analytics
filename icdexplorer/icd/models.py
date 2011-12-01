@@ -92,7 +92,7 @@ class Category(models.Model):
         return (getattr(self, 'x_' + layout), getattr(self, 'y_' + layout))
 
     def get_multilingual_status(self, feature):
-        colors = ["", "yellow", "orange", "red", "blue"]
+        colors = ["", "yellow", "orange", "red", "blue", "darkblue"]
         number = {
             'titles': self.metrics.titles,
             'title_languages': self.metrics.title_languages,
@@ -100,7 +100,7 @@ class Category(models.Model):
             'definition_languages': self.metrics.definition_languages
         }[feature]
         
-        return colors[number] if number < len(colors) else colors[-1]
+        return colors[number] if number+1 < len(colors) else colors[-1]
 
     class Meta:
         unique_together = [('instance', 'name')]
@@ -260,6 +260,11 @@ class CategoryMetrics(ChAOMetrics):
     acc_overrides = models.IntegerField(help_text="Accumulated Overrides by different authors", default=0)
     acc_edit_sessions = models.IntegerField(help_text="Accumulated Edit sessions", default=0)
     acc_authors_by_property = models.IntegerField(help_text="Accumulated Distinct authors by property", default=0)
+    
+    titles = models.IntegerField(help_text="Number of different titles", default=0)
+    title_languages = models.IntegerField(help_text="Number of different title languages", default=0)
+    definitions = models.IntegerField(help_text="Number of different definitions", default=0)
+    definition_languages = models.IntegerField(help_text="Number of different definition languages", default=0)
     
     def __unicode__(self):
         return self.category.name
