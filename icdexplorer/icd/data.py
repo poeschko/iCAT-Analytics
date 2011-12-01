@@ -47,6 +47,7 @@ print "Author Graphs loaded"
 
 FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
 AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
+MULTILANGUAGE = ["titles", "title_languages", "definitions", "definition_languages"]
 
 print "Features loaded"
 

@@ -90,7 +90,18 @@ class Category(models.Model):
         
     def get_pos(self, layout):
         return (getattr(self, 'x_' + layout), getattr(self, 'y_' + layout))
-    
+
+    def get_multilingual_status(self, feature):
+        colors = ["", "yellow", "orange", "red", "blue"]
+        number = {
+            'titles': self.metrics.titles,
+            'title_languages': self.metrics.title_languages,
+            'definitions': self.metrics.definitions,
+            'definition_languages': self.metrics.definition_languages
+        }[feature]
+        
+        return colors[number] if number < len(colors) else colors[-1]
+
     class Meta:
         unique_together = [('instance', 'name')]
     
@@ -99,7 +110,29 @@ class Category(models.Model):
         
         x, y = GRAPH_POSITIONS[layout][self.name]
         return reverse('icd.views.network') + '#x=%f&y=%f&z=6' % (x, y)"""
-        
+
+class CategoryTitles(models.Model):
+    category = models.ForeignKey('Category', related_name='category_title')
+    title = models.CharField(max_length=250, db_index=True)
+    language_code = models.CharField(max_length=250, db_index=True)
+    
+    def __unicode__(self):
+        #return '%s (%s)' % (self.name, self.display)
+        if self.title.strip():
+            return self.title
+        return u'<%s>' % self.name
+
+class CategoryDefinitions(models.Model):
+    category = models.ForeignKey('Category', related_name='category_definition')
+    definition = models.TextField()
+    language_code = models.CharField(max_length=250, db_index=True)
+    
+    def __unicode__(self):
+        #return '%s (%s)' % (self.name, self.display)
+        if self.definition.strip():
+            return self.definition
+        return u'<%s>' % self.name
+
 class Timespan(models.Model):
     instance = models.CharField(max_length=30, db_index=True)
     start = models.DateTimeField()

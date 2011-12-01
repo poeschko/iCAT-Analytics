@@ -24,7 +24,7 @@ from data import (#GRAPH, CATEGORIES, #GRAPH_POSITIONS, GRAPH_POSITIONS_TREE, WE
     AUTHORS, GRAPH_AUTHORS, GRAPH_AUTHORS_DIRECTED, GRAPH_AUTHORS_POSITIONS,
     CHANGES_COUNT, ANNOTATIONS_COUNT, GROUPS,
     PROPERTIES, GRAPH_PROPERTIES_POSITIONS,
-    FOLLOW_UPS)
+    FOLLOW_UPS, MULTILANGUAGE)
 from util import get_week, week_to_date, get_weekly, counts, group, calculate_gini
 
 from icdexplorer.storage.models import PickledData
@@ -517,8 +517,14 @@ def ajax_graph(request):
         #category_edges = [[child.name, 1] for child in category.children.all()]
         neighbors = GRAPH.successors(category.name) #+ GRAPH.predecessors(category.name)
         category_edges = [name for name in neighbors if name in names]
-        categories_list.append([x, y, category.name, weight, unicode(category),
-            category.get_short_display(), category.get_absolute_url(), category.get_display_status()])
+        
+        if feature in MULTILANGUAGE:
+            categories_list.append([x, y, category.name, weight, unicode(category),
+                category.get_short_display(), category.get_absolute_url(), category.get_multilingual_status(feature)])
+        else:
+            categories_list.append([x, y, category.name, weight, unicode(category),
+                category.get_short_display(), category.get_absolute_url(), category.get_display_status()])
+
         edges.append([category.name, category_edges])
     """tags = [tag for tag in tags[-100:] if tag[1] in instance.HASHTAGS]
     edges = []

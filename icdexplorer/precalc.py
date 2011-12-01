@@ -465,19 +465,21 @@ def compute_extra_author_data():
     print "Compute extra author data"
     authors = Author.objects.filter(instance=settings.INSTANCE).order_by('name')
     for author in authors:
-        print author.name
+        print author.name.encode("utf8")
         author.sessions_count = author.changes.filter(ends_session=True).count()
         author.overrides_count = author.overrides.filter(ends_session=True).count()
         author.overridden_count = author.changes.filter(ends_session=True, override__isnull=False).count()
         author.overridden_rel = author.overridden_count * 1.0 / author.sessions_count if author.sessions_count > 0 else 0
         author.save()
     print "Done"
-    
+
 def compute_follow_ups():
     print "Compute follow-ups"
     follow_ups = {None: {}, 3: {}}
     changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('_name')
     for index, change in enumerate(changes):
+        #if index < 101999:
+        #    continue
         if index % 1000 == 0:
             print "%d: %s" % (index, change._name)
         if change.property:
@@ -633,15 +635,15 @@ def calc_author_metrics(from_name=None, to_name=None):
     all_metrics_instances = AuthorCategoryMetrics.objects.filter(instance=settings.INSTANCE)
     all_metrics_instances = dict(((metrics.author.pk, metrics.category.pk), metrics) for metrics in all_metrics_instances)
     for author in authors:
-        #if author.name < 'Jayanthi Stjernsward':
-        #    continue
+        if author.name < 'Megan Cumerlato':
+            continue
         # There must be some memory leak in here, so we have to split up calls to calc_author_metrics
         # into several ranges of authors
         if from_name is not None and author.name < from_name:
             continue
         if to_name is not None and author.name >= to_name:
             continue
-        print author.name
+        print author.name.encode("utf8")
         """weights[author] = {}
         for weight_id, weight_name, weight_func in settings.WEIGHTS:
             print "  " + weight_name
@@ -726,8 +728,8 @@ def calc_weights():
     authors = list(author.instance_name for author in authors)
     G = PickledData.objects.get(settings.INSTANCE, 'graph')
     weights = {}
-    for author in authors + [None]:
-        print author
+    for author in authors:
+        print author.encode("utf-8")
         weights[author] = {}
         for weight_id, weight_name, weight_func in settings.WEIGHTS:
             print "  " + weight_name
@@ -768,14 +770,10 @@ def calc_weights():
     PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     print "Done"
 
-
-#def calc_acc_weights():
-    
-
 def compact_weights():
     weights = PickledData.objects.get(settings.INSTANCE, 'weights')
     for author in weights:
-        print author
+        print author.encode("utf8")
         for id in weights[author]:
             for acc in (0, 1):
                 weights[author][id][acc] = dict((c, w) for c, w in weights[author][id][acc].iteritems() if w > 0)
@@ -808,7 +806,7 @@ def calculate_accumulated(metrics, all_metrics, G):
                 #weight[1][category.name] = childs_weight
             setattr(metrics, key, childs_sum)
     
-def calc_metrics(accumulate_only=False, compute_centrality=True):
+def calc_metrics(accumulate_only=False, compute_centrality=False):
     #DISPLAY_STATUS_RE = re.compile(r'.*set to: (.*?)\(.*')
     
     print "Construct graph"
@@ -825,6 +823,7 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
     categories = list(categories)
     #categories = list(categories)
     #hits = nx.hits(G)
+    
     if compute_centrality:
         print "Betweenness centrality"
         centrality = nx.betweenness_centrality(G)
@@ -1099,11 +1098,10 @@ def createquadtree():
             continue
         print layout
         positions = PickledData.objects.get(settings.INSTANCE, 'graph_positions_%s' % dot_prog)
-        
         for author in sorted(weights.keys()):
-            if author < "2011-11-24_04h02mTomris Turmen":
-                continue
-            print "Build tree for '%s'" % author
+            #if author <= "icd2011-08-30_04h02mMegan Cumerlato":
+            #    continue
+            print "Build tree for '%s'" % author.encode("utf8")
             qt = dict(((id, acc), QuadTree(-1, 1, -1, 1)) for id, name, f in settings.WEIGHTS for acc in (0, 1)) 
             for index, (name, pos) in enumerate(positions.iteritems()):
                 if index % 1000 == 0:
@@ -1506,7 +1504,22 @@ def calc_hierarchy():
             category.hierarchy = None
         category.save()
     print "Done"
-        
+
+    
+def compute_language_metrics():
+    categories = Category.objects.filter(instance=settings.INSTANCE).order_by('name') #.select_related('chao')
+    for index, category in enumerate(categories):
+        if index % 1000 == 0:
+            print "%d: %s" % (index, category.name)
+        metrics = category.metrics
+        metrics.titles = category.category_title.all().exclude(title='').count()
+        metrics.title_languages = category.category_title.all().exclude(language_code='').count()
+        metrics.definitions = category.category_definition.all().exclude(definition='').count()
+        metrics.definition_languages = category.category_definition.all().exclude(language_code='').count()
+        if metrics.titles != metrics.title_languages or metrics.definitions != metrics.definition_languages:
+            print category.name
+        metrics.save()
+
 def preprocess_incremental():
     #calc_edit_distances()
     #calc_extra_properties_data()
@@ -1533,30 +1546,25 @@ def preprocess_nci():
     
     createnetwork()
     calc_metrics(compute_centrality=False)"""
-    
     #calc_author_metrics_split()
     #calc_weights()
     #compact_weights()
-    
     #graphpositions()
     #adjust_positions()
     #createquadtree()
     #store_positions()
-    
     #compute_follow_ups()
     #compute_sessions()
-    
     #compute_extra_author_data()
     #compute_author_reverts()
     
     calc_cooccurrences()
     create_authors_network()
-    
     calc_hierarchy()
-    
     #create_properties_network()
-
+    
 def preprocess():
+    print settings.INSTANCE
     #find_annotation_components()
     #compute_extra_change_data()
     #create_authors()
@@ -1566,10 +1574,10 @@ def preprocess():
     #createnetwork()
     #calc_metrics()
     #calc_author_metrics_split()
+    #compute_extra_author_data()
     #calc_weights()
     #compact_weights()
     #graphpositions()
-    
     #adjust_positions()
     #createquadtree()
     #store_positions()
@@ -1579,7 +1587,8 @@ def preprocess():
     #create_authors_network()
     #create_properties_network()
     #calc_hierarchy()
-    #print_sql_indexes()
+    print_sql_indexes()
+    #compute_language_metrics()
     """
     #calc_timespan_metrics()
     #export_r_categories()
@@ -1590,19 +1599,9 @@ def preprocess():
     #return
     """
 def main():
-    preprocess_incremental()
+    #preprocess_incremental()
     #preprocess_nci()
-    #preprocess()
-    
-    #foo = ['', 'http://who.int/icd#DS_Yellow', 'http://who.int/icd#DS_Blue', 'http://who.int/icd#DS_Red']
-    #from random import choice
-    
-    #c = Category.objects.get(instance_name="mainhttp://who.int/icd#XIII")
-    #categories = Category.objects.filter(instance="main")
-    #for category in categories:
-    #    category.display_status = choice(foo)
-    #    category.hierarchy_id = c.instance_name
-    #    category.save()
+    preprocess()
     
     """argc = len(sys.argv)
     if argc not in (2, 3):
