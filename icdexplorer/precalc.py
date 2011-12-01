@@ -1587,7 +1587,7 @@ def preprocess():
     #create_authors_network()
     #create_properties_network()
     #calc_hierarchy()
-    print_sql_indexes()
+    #print_sql_indexes()
     #compute_language_metrics()
     """
     #calc_timespan_metrics()
