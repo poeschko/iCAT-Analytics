@@ -254,6 +254,13 @@ class AccumulatedCategoryMetrics(Metrics):
     acc_changes = models.IntegerField(default=0, help_text="Accumulated Number of changes")
     acc_annotations = models.IntegerField(default=0, help_text="Accumulated Number of notes")
     acc_activity = models.IntegerField(default=0, help_text="Accumulated Changes + notes")
+
+    def get_filter_metrics(self):
+        result = []
+        for field in self._meta.fields:
+            if field.name.startswith("acc_"):
+                result.append(field.name)
+        return result
     
     def __unicode__(self):
         return self.category.name
@@ -266,6 +273,13 @@ class MultilanguageCategoryMetrics(Metrics):
     mlm_title_languages = models.IntegerField(help_text="Number of different title languages", default=0)
     mlm_definitions = models.IntegerField(help_text="Number of different definitions", default=0)
     mlm_definition_languages = models.IntegerField(help_text="Number of different definition languages", default=0)
+    
+    def get_filter_metrics(self):
+        result = []
+        for field in self._meta.fields:
+            if field.name.startswith("mlm_"):
+                result.append(field.name)
+        return result
     
     def __unicode__(self):
         return self.category.name

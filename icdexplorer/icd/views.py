@@ -24,7 +24,7 @@ from data import (#GRAPH, CATEGORIES, #GRAPH_POSITIONS, GRAPH_POSITIONS_TREE, WE
     AUTHORS, GRAPH_AUTHORS, GRAPH_AUTHORS_DIRECTED, GRAPH_AUTHORS_POSITIONS,
     CHANGES_COUNT, ANNOTATIONS_COUNT, GROUPS,
     PROPERTIES, GRAPH_PROPERTIES_POSITIONS,
-    FOLLOW_UPS, MULTILANGUAGE, ACCUMULATED, ACCUMULATED_FEATURES, MULTILANGUAGE_FEATURES)
+    FOLLOW_UPS, MULTILANGUAGE_FILTER, ACCUMULATED_FILTER)
 from util import get_week, week_to_date, get_weekly, counts, group, calculate_gini
 from icdexplorer.storage.models import PickledData
 
@@ -105,9 +105,72 @@ def properties(request):
             #'__unicode__': name,
         })
     
+    titles = []
+    changes = cursor.execute("""select mlm_titles, count(*) as c
+        from icd_multilanguagecategorymetrics
+        where instance=%s
+        group by mlm_titles
+        order by mlm_titles desc""", [settings.INSTANCE])
+    for row in cursor.fetchall():
+        mlm_titles, count = row
+        titles.append({
+            'id': mlm_titles,
+            'name': mlm_titles,
+            'count': count,
+            #'__unicode__': name,
+        })
+        
+    title_languages = []
+    changes = cursor.execute("""select mlm_title_languages, count(*) as c
+        from icd_multilanguagecategorymetrics
+        where instance=%s
+        group by mlm_title_languages
+        order by mlm_title_languages desc""", [settings.INSTANCE])
+    for row in cursor.fetchall():
+        mlm_title_languages, count = row
+        title_languages.append({
+            'id': mlm_title_languages,
+            'name': mlm_title_languages,
+            'count': count,
+            #'__unicode__': name,
+        })    
+    definitions = []
+    changes = cursor.execute("""select mlm_definitions, count(*) as c
+        from icd_multilanguagecategorymetrics
+        where instance=%s
+        group by mlm_definitions
+        order by mlm_definitions desc""", [settings.INSTANCE])
+    for row in cursor.fetchall():
+        mlm_definitions, count = row
+        definitions.append({
+            'id': mlm_definitions,
+            'name': mlm_definitions,
+            'count': count,
+            #'__unicode__': name,
+        })
+    
+    definition_languages = []
+    changes = cursor.execute("""select mlm_definition_languages, count(*) as c
+        from icd_multilanguagecategorymetrics
+        where instance=%s
+        group by mlm_definition_languages
+        order by mlm_definition_languages desc""", [settings.INSTANCE])
+    for row in cursor.fetchall():
+        mlm_definition_languages, count = row
+        definition_languages.append({
+            'id': mlm_definition_languages,
+            'name': mlm_definition_languages,
+            'count': count,
+            #'__unicode__': name,
+        })
+    
     return render_to_response('properties.html', {
         'properties': properties,
         'display_status': display_status,
+        'titles': titles,
+        'definitions': definitions,
+        'title_languages': title_languages,
+        'definition_languages': definition_languages,
     }, context_instance=RequestContext(request))
 
 @login_required
@@ -347,7 +410,6 @@ def ajax_graph(request):
     #accumulated = int(request.GET.get('accumulated'))
     #print "acc: '%s'" % accumulated
     #accumulated = 1 if accumulated and accumulated != "off" else 0
-    print feature
     """if tag:
         tag = instance.HASHTAGS.get(tag)
         if tag is None:
@@ -426,10 +488,9 @@ def ajax_graph(request):
                 border_n + (y + 1) * (border_s - border_n) / STEP
             )
             if author is None:
-                if feature in ACCUMULATED:
+                if feature in ACCUMULATED_FILTER:
                     table = 'icd_accumulatedcategorymetrics'
-                    print "check"
-                elif feature in MULTILANGUAGE:
+                elif feature in MULTILANGUAGE_FILTER:
                     table = 'icd_multilanguagecategorymetrics'
                 else:
                     table = 'icd_categorymetrics'
@@ -440,7 +501,7 @@ def ajax_graph(request):
                 author_sql = ' AND author_id = %s '
                 author_params = [author.pk]
             
-            if feature in MULTILANGUAGE:
+            if feature in MULTILANGUAGE_FILTER:
                 sql.append("""SELECT category_id FROM %s USE INDEX (index_pos_%s_%s)
                     WHERE instance=%%s AND (x_%s BETWEEN %%s AND %%s) AND (y_%s BETWEEN %%s AND %%s)
                     AND %s >= 0
@@ -489,9 +550,9 @@ def ajax_graph(request):
     #print "categories..."
     #print categories
     if author is None:
-        if feature in ACCUMULATED:
+        if feature in ACCUMULATED_FILTER:
             min_max = AccumulatedCategoryMetrics.objects
-        elif feature in MULTILANGUAGE:
+        elif feature in MULTILANGUAGE_FILTER:
             min_max = MultilanguageCategoryMetrics.objects
         else:
             min_max = CategoryMetrics.objects
@@ -536,9 +597,9 @@ def ajax_graph(request):
         #x, y = category.get_pos(layout_id)
         x, y = category.get_pos(layout_id)
         if author is None:
-            if feature in ACCUMULATED:
+            if feature in ACCUMULATED_FILTER:
                 metrics = category.accumulated_metrics
-            elif feature in MULTILANGUAGE:
+            elif feature in MULTILANGUAGE_FILTER:
                 metrics = category.multilanguage_metrics
             else:
                 metrics = category.metrics
@@ -551,7 +612,7 @@ def ajax_graph(request):
         neighbors = GRAPH.successors(category.name) #+ GRAPH.predecessors(category.name)
         category_edges = [name for name in neighbors if name in names]
         
-        if feature in MULTILANGUAGE:
+        if feature in MULTILANGUAGE_FILTER:
             categories_list.append([x, y, category.name, weight, unicode(category),
                 category.get_short_display(), category.get_absolute_url(), category.get_multilingual_status(feature)])
         else:

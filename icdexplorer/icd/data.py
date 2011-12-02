@@ -53,8 +53,8 @@ FEATURES += ACCUMULATED_FEATURES + MULTILANGUAGE_FEATURES
 # TEMP FIX:
 #FEATURES = []
 AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
-MULTILANGUAGE = ["mlm_titles", "mlm_title_languages", "mlm_definitions", "mlm_definition_languages"]
-ACCUMULATED = ["acc_changes", "acc_annotations", "acc_activity", "acc_overrides", "acc_edit_sessions", "acc_authors_by_property", "acc_authors", "acc_authors_changes", "acc_authors_annotations"]
+MULTILANGUAGE_FILTER = MultilanguageCategoryMetrics.objects.all()[0].get_filter_metrics()
+ACCUMULATED_FILTER = AccumulatedCategoryMetrics.objects.all()[0].get_filter_metrics()
 print "Features loaded"
 
 MINMAX_CHANGES_DATE = Change.objects.filter(_instance=settings.INSTANCE).aggregate(min=Min('timestamp'), max=Max('timestamp'))

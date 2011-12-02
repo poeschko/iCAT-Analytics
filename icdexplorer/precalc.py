@@ -1669,7 +1669,7 @@ def preprocess():
 def main():
     #preprocess_incremental()
     #preprocess_nci()
-    preprocess()
+    #preprocess()
     
     """argc = len(sys.argv)
     if argc not in (2, 3):
