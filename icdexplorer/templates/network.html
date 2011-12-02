@@ -65,7 +65,11 @@
 		left: 30px;
 		top: 110px;
 	}
-	
+	#heatmap_slider {
+      float:left;
+      clear:right;
+      width:300px;
+    }
 </style>
 {% endblock head %}
 
@@ -76,7 +80,13 @@
         <option value="categories">Categories</option>
         <option value="authors">Authors</option>
         <option value="properties">Properties</option>
-    </select><br />
+    </select>
+    <!--
+    <input type="checkbox" name="heatmap" value="heatmap" id="heatmap"> Activate heatmap
+    <div id="heatmap_slider">
+    </div>
+    -->
+    <br />
     <span id="categoriesControl">
         Author:
         <select id="author">
@@ -150,6 +160,8 @@
 
 <script type="text/javascript">
     
+    
+    
     function zoomToUser(zoom) {
     	return Math.log(zoom) / Math.LN2;
     }
@@ -165,6 +177,21 @@
 		$("#loading").ajaxStop(function() {
 			$(this).hide();
 		});
+        
+        /*
+        $("#heatmap_slider").hide();
+        
+        $("#heatmap_slider").slider({ step: 5 });
+        
+        $("#heatmap").click(function () {
+          $("#heatmap:checked").each(function () {
+            $("#heatmap_slider").show();
+          });
+          $("#heatmap:not(:checked)").each(function () {
+            $("#heatmap_slider").hide();
+          });
+        });*/
+
 		/*var graph = createTagsGraph('graph');
 		function zoomIn() {
 			graph.zoomIn();

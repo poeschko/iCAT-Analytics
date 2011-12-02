@@ -18,15 +18,14 @@ from django.db.models import Min, Max
 from django.utils import simplejson
 from inspect import getmembers
 
-from models import Category, Change, Annotation, CATEGORY_NAME_PREFIX, DISPLAY_STATUS, CategoryMetrics, OntologyComponent, Author, AuthorCategoryMetrics
+from models import Category, Change, Annotation, CATEGORY_NAME_PREFIX, DISPLAY_STATUS, CategoryMetrics, OntologyComponent, Author, AuthorCategoryMetrics, AccumulatedCategoryMetrics, MultilanguageCategoryMetrics
 from data import (#GRAPH, CATEGORIES, #GRAPH_POSITIONS, GRAPH_POSITIONS_TREE, WEIGHTS,
     MIN_CHANGES_DATE, MAX_CHANGES_DATE, FEATURES, AUTHOR_FEATURES,
     AUTHORS, GRAPH_AUTHORS, GRAPH_AUTHORS_DIRECTED, GRAPH_AUTHORS_POSITIONS,
     CHANGES_COUNT, ANNOTATIONS_COUNT, GROUPS,
     PROPERTIES, GRAPH_PROPERTIES_POSITIONS,
-    FOLLOW_UPS, MULTILANGUAGE)
+    FOLLOW_UPS, MULTILANGUAGE, ACCUMULATED, ACCUMULATED_FEATURES, MULTILANGUAGE_FEATURES)
 from util import get_week, week_to_date, get_weekly, counts, group, calculate_gini
-
 from icdexplorer.storage.models import PickledData
 
 """def start(request):
@@ -348,8 +347,7 @@ def ajax_graph(request):
     #accumulated = int(request.GET.get('accumulated'))
     #print "acc: '%s'" % accumulated
     #accumulated = 1 if accumulated and accumulated != "off" else 0
-    
-    
+    print feature
     """if tag:
         tag = instance.HASHTAGS.get(tag)
         if tag is None:
@@ -428,26 +426,45 @@ def ajax_graph(request):
                 border_n + (y + 1) * (border_s - border_n) / STEP
             )
             if author is None:
-                table = 'icd_categorymetrics'
+                if feature in ACCUMULATED:
+                    table = 'icd_accumulatedcategorymetrics'
+                    print "check"
+                elif feature in MULTILANGUAGE:
+                    table = 'icd_multilanguagecategorymetrics'
+                else:
+                    table = 'icd_categorymetrics'
                 author_sql = ''
                 author_params = []
             else:
                 table = 'icd_authorcategorymetrics'
                 author_sql = ' AND author_id = %s '
                 author_params = [author.pk]
-            sql.append("""SELECT category_id FROM %s USE INDEX (index_pos_%s_%s)
-                WHERE instance=%%s AND (x_%s BETWEEN %%s AND %%s) AND (y_%s BETWEEN %%s AND %%s)
-                AND %s > 0
-                %s
-                ORDER BY %s DESC
-                LIMIT 1
-            """ % (table, layout_id, feature, layout_id, layout_id, feature, author_sql, feature))
-            sql_params += [settings.INSTANCE, x_range[0], x_range[1], y_range[0], y_range[1]] + author_params
+            
+            if feature in MULTILANGUAGE:
+                sql.append("""SELECT category_id FROM %s USE INDEX (index_pos_%s_%s)
+                    WHERE instance=%%s AND (x_%s BETWEEN %%s AND %%s) AND (y_%s BETWEEN %%s AND %%s)
+                    AND %s >= 0
+                    %s
+                    ORDER BY %s DESC
+                    LIMIT 1
+                """ % (table, layout_id, feature, layout_id, layout_id, feature, author_sql, feature))
+                sql_params += [settings.INSTANCE, x_range[0], x_range[1], y_range[0], y_range[1]] + author_params
+            else:
+                sql.append("""SELECT category_id FROM %s USE INDEX (index_pos_%s_%s)
+                    WHERE instance=%%s AND (x_%s BETWEEN %%s AND %%s) AND (y_%s BETWEEN %%s AND %%s)
+                    AND %s > 0
+                    %s
+                    ORDER BY %s DESC
+                    LIMIT 1
+                """ % (table, layout_id, feature, layout_id, layout_id, feature, author_sql, feature))
+                sql_params += [settings.INSTANCE, x_range[0], x_range[1], y_range[0], y_range[1]] + author_params
+
             filter = {
                 'instance': settings.INSTANCE,
                 'x_' + str(layout_id) + '__range': x_range,
                 'y_' + str(layout_id) + '__range': y_range,
             }
+            
             """if author is None:
                 categories_sub = CategoryMetrics.objects.filter(**filter)
             else:
@@ -469,9 +486,15 @@ def ajax_graph(request):
     rows = cursor.fetchall()
     #print rows
     categories = [row[0][len(settings.INSTANCE):] for row in rows]
-    
+    #print "categories..."
+    #print categories
     if author is None:
-        min_max = CategoryMetrics.objects
+        if feature in ACCUMULATED:
+            min_max = AccumulatedCategoryMetrics.objects
+        elif feature in MULTILANGUAGE:
+            min_max = MultilanguageCategoryMetrics.objects
+        else:
+            min_max = CategoryMetrics.objects
     else:
         min_max = AuthorCategoryMetrics.objects.filter(author=author)
     min_max = min_max.filter(instance=settings.INSTANCE).aggregate(min=Min(feature), max=Max(feature))
@@ -496,7 +519,7 @@ def ajax_graph(request):
         add_names = new_add_names
     #print "NEW"
     #print names
-        
+    #print names
     #categories = [CATEGORIES[name] for count, name, x, y in categories]
     categories = [CATEGORIES[name] for name in names]
     
@@ -513,7 +536,12 @@ def ajax_graph(request):
         #x, y = category.get_pos(layout_id)
         x, y = category.get_pos(layout_id)
         if author is None:
-            metrics = category.metrics
+            if feature in ACCUMULATED:
+                metrics = category.accumulated_metrics
+            elif feature in MULTILANGUAGE:
+                metrics = category.multilanguage_metrics
+            else:
+                metrics = category.metrics
         else:
             metrics = category.author_metrics.get(author=author)
         weight = getattr(metrics, feature)

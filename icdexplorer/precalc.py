@@ -37,7 +37,6 @@ import os
 from collections import defaultdict
 
 import csv
-
 import gc
 
 from django.db.models import Q, Min, Max, Count
@@ -45,7 +44,7 @@ from django.conf import settings
 
 from icd.models import (Category, OntologyComponent, LinearizationSpec, AnnotatableThing,
     Change, Annotation, CategoryMetrics, User, Timespan, TimespanCategoryMetrics, Author,
-    AuthorCategoryMetrics,
+    AuthorCategoryMetrics, AccumulatedCategoryMetrics, MultilanguageCategoryMetrics,
     Property, Group)
 from storage.models import PickledData
 from quadtree import QuadTree
@@ -321,7 +320,10 @@ def store_positions():
     print "Store positions"
     categories = list(Category.objects.filter(instance=settings.INSTANCE).select_related('change_component'))
     category_metrics = list(CategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category').select_related('category'))
+    accumulated_category_metrics = list(AccumulatedCategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category').select_related('category'))
+    multilanguage_category_metrics = list(MultilanguageCategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category').select_related('category'))
     author_category_metrics = list(AuthorCategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category', 'author').select_related('category'))
+    
     pos = {}
     for layout, key, dot_prog in settings.LAYOUTS:
         print layout
@@ -329,7 +331,9 @@ def store_positions():
         
     for name, items, key_func in [("Category", categories, lambda item: item.name),
         ("CategoryMetrics", category_metrics, lambda item: item.category.name),
-        ("AuthorCategoryMetrics", author_category_metrics, lambda item: item.category.name)]:
+        ("AuthorCategoryMetrics", author_category_metrics, lambda item: item.category.name),
+        ("AccumulatedCategoryMetrics", accumulated_category_metrics, lambda item: item.category.name),
+        ("MultilanguageCategoryMetrics", multilanguage_category_metrics, lambda item: item.category.name)]:
         print name
         for index, category in enumerate(items):
             if index % 1000 == 0:
@@ -635,8 +639,8 @@ def calc_author_metrics(from_name=None, to_name=None):
     all_metrics_instances = AuthorCategoryMetrics.objects.filter(instance=settings.INSTANCE)
     all_metrics_instances = dict(((metrics.author.pk, metrics.category.pk), metrics) for metrics in all_metrics_instances)
     for author in authors:
-        if author.name < 'Megan Cumerlato':
-            continue
+        #if author.name < 'Megan Cumerlato':
+        #    continue
         # There must be some memory leak in here, so we have to split up calls to calc_author_metrics
         # into several ranges of authors
         if from_name is not None and author.name < from_name:
@@ -667,11 +671,14 @@ def calc_author_metrics(from_name=None, to_name=None):
                 metrics = AuthorCategoryMetrics(author=author, category=category, instance=settings.INSTANCE)
                 all_metrics_instances[(author.pk, category.pk)] = metrics
                 metrics.set_pos(category)
+                #print metrics.author.name.encode("utf8")
             #metrics.instance = settings.INSTANCE
             metrics.changes = annotated_changes.get(category.pk, 0)
             metrics.annotations = annotated_annotations.get(category.pk, 0)
             metrics.activity = metrics.changes + metrics.annotations
-            metrics.acc_changes = metrics.acc_annotations = metrics.acc_activity = 0
+            metrics.acc_changes = metrics.acc_annotations = metrics.acc_activity =  0
+            metrics.authors = metrics.authors_changes = metrics.authors_annotations = 0
+            
             if metrics.activity > 0:
                 metrics.save()
                 any_activity = True
@@ -806,7 +813,7 @@ def calculate_accumulated(metrics, all_metrics, G):
                 #weight[1][category.name] = childs_weight
             setattr(metrics, key, childs_sum)
     
-def calc_metrics(accumulate_only=False, compute_centrality=False):
+def calc_metrics(accumulate_only=False, compute_centrality=True):
     #DISPLAY_STATUS_RE = re.compile(r'.*set to: (.*?)\(.*')
     
     print "Construct graph"
@@ -823,7 +830,7 @@ def calc_metrics(accumulate_only=False, compute_centrality=False):
     categories = list(categories)
     #categories = list(categories)
     #hits = nx.hits(G)
-    
+
     if compute_centrality:
         print "Betweenness centrality"
         centrality = nx.betweenness_centrality(G)
@@ -931,9 +938,38 @@ def calc_metrics(accumulate_only=False, compute_centrality=False):
     for index, category in enumerate(categories):
         if index % 1000 == 0:
             print '%d: %s' % (index, category.name)
-        calculate_accumulated(category.metrics, all_metrics, G)
-        category.metrics.save()
+        try:
+            accumulated_metrics = category.accumulated_metrics
+        except AccumulatedCategoryMetrics.DoesNotExist:
+            accumulated_metrics = AccumulatedCategoryMetrics(category=category)
         
+        try:
+            metrics = category.metrics
+        except CategoryMetrics.DoesNotExist:
+            metrics = CategoryMetrics(category=category)
+            
+        accumulated_metrics.instance = settings.INSTANCE
+        metrics.instance = settings.INSTANCE
+        calculate_accumulated(metrics, all_metrics, G)
+        calculate_accumulated(accumulated_metrics, all_metrics, G)
+        accumulated_metrics.save()
+        metrics.save()
+    
+    
+    print "Multilanguage"
+    for index, category in enumerate(categories):
+        if index % 1000 == 0:
+            print "%d: %s" % (index, category.name)
+        try:
+            metrics = category.multilanguage_metrics
+        except MultilanguageCategoryMetrics.DoesNotExist:
+            metrics = MultilanguageCategoryMetrics(category=category)
+        metrics.instance = settings.INSTANCE
+        metrics.mlm_titles = category.category_title.all().values('title').exclude(title='').distinct().count()
+        metrics.mlm_title_languages = category.category_title.all().values('language_code').distinct().exclude(language_code='').count()
+        metrics.mlm_definitions = category.category_definition.all().values('definition').distinct().exclude(definition='').count()
+        metrics.mlm_definition_languages = category.category_definition.all().values('language_code').distinct().exclude(language_code='').count()
+        metrics.save()
     print "Done"
     
 def calc_timespan_metrics():
@@ -1395,7 +1431,10 @@ def print_sql_indexes():
     " Copy the printed results to icd/sql/categorymetrcs.sql and icd/sql/authorcategorymetrics.sql before running syncdb "
     
     features = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
+    multilanguage_features = [(name, description) for name, value, description in MultilanguageCategoryMetrics.objects.all()[0].get_metrics()]
+    accumulated_features = [(name, description) for name, value, description in AccumulatedCategoryMetrics.objects.all()[0].get_metrics()]
     author_features = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
+    
     print "/* generated by precalc.print_sql_indexes() */"
     print "ALTER TABLE icd_categorymetrics"
     """
@@ -1414,6 +1453,32 @@ def print_sql_indexes():
             })
     print ",\n".join(indexes) + ";"
     print ""
+    
+    print "/* generated by precalc.print_sql_indexes() */"
+    print "ALTER TABLE icd_accumulatedcategorymetrics"
+    indexes = []
+    for layout_name, layout, dot_prog in settings.LAYOUTS:
+        for feature, description in accumulated_features:
+            indexes.append("ADD INDEX index_pos_%(layout)s_%(feature)s (instance, x_%(layout)s, y_%(layout)s, %(feature)s, category_id)" % {
+                'layout': layout,
+                'feature': feature,
+            })
+    print ",\n".join(indexes) + ";"
+    print ""
+    
+    print "/* generated by precalc.print_sql_indexes() */"
+    print "ALTER TABLE icd_multilanguagecategorymetrics"
+    indexes = []
+    for layout_name, layout, dot_prog in settings.LAYOUTS:
+        for feature, description in multilanguage_features:
+            indexes.append("ADD INDEX index_pos_%(layout)s_%(feature)s (instance, x_%(layout)s, y_%(layout)s, %(feature)s, category_id)" % {
+                'layout': layout,
+                'feature': feature,
+            })
+    print ",\n".join(indexes) + ";"
+    print ""
+    
+    
     print "/* generated by precalc.print_sql_indexes() */"
     print "ALTER TABLE icd_authorcategorymetrics"
     #for feature, description in features:
@@ -1510,7 +1575,11 @@ def compute_language_metrics():
     for index, category in enumerate(categories):
         if index % 1000 == 0:
             print "%d: %s" % (index, category.name)
-        metrics = category.metrics
+        try:
+            metrics = category.mutlilanguage_metrics
+        except MultilanguageCategoryMetrics.DoesNotExist:
+            metrics = MultilanguageCategoryMetrics(category=category)
+        
         metrics.titles = category.category_title.all().values('title').exclude(title='').distinct().count()
         metrics.title_languages = category.category_title.all().values('language_code').distinct().exclude(language_code='').count()
         metrics.definitions = category.category_definition.all().values('definition').distinct().exclude(definition='').count()
@@ -1571,23 +1640,23 @@ def preprocess():
     #load_extra_authors_data()
     #create_properties()
     #createnetwork()
-    #calc_metrics()
-    #calc_author_metrics_split()
+    calc_metrics()
+    calc_author_metrics_split()
     #compute_extra_author_data()
-    #calc_weights()
-    #compact_weights()
-    #graphpositions()
-    #adjust_positions()
+    calc_weights()
+    compact_weights()
+    graphpositions()
+    adjust_positions()
     #createquadtree()
-    #store_positions()
+    store_positions()
     #compute_sessions()
-    #compute_author_reverts()
+    compute_author_reverts()
     #calc_cooccurrences()
     #create_authors_network()
     #create_properties_network()
     #calc_hierarchy()
     print_sql_indexes()
-    #compute_language_metrics()
+
     """
     #calc_timespan_metrics()
     #export_r_categories()

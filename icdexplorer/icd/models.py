@@ -94,10 +94,10 @@ class Category(models.Model):
     def get_multilingual_status(self, feature):
         colors = ["", "yellow", "orange", "red", "blue", "darkblue"]
         number = {
-            'titles': self.metrics.titles,
-            'title_languages': self.metrics.title_languages,
-            'definitions': self.metrics.definitions,
-            'definition_languages': self.metrics.definition_languages
+            'mlm_titles': self.multilanguage_metrics.mlm_titles,
+            'mlm_title_languages': self.multilanguage_metrics.mlm_title_languages,
+            'mlm_definitions': self.multilanguage_metrics.mlm_definitions,
+            'mlm_definition_languages': self.multilanguage_metrics.mlm_definition_languages
         }[feature]
         
         return colors[number] if number+1 < len(colors) else colors[-1]
@@ -148,15 +148,7 @@ class Metrics(models.Model):
     y_twopi = models.FloatField(null=True)
     x_sfdp = models.FloatField(null=True)
     y_sfdp = models.FloatField(null=True)
-    
-    changes = models.IntegerField(help_text="Number of changes")
-    annotations = models.IntegerField(help_text="Number of notes")
-    activity = models.IntegerField(help_text="Changes + notes")
-    
-    acc_changes = models.IntegerField(help_text="Accumulated Number of changes")
-    acc_annotations = models.IntegerField(help_text="Accumulated Number of notes")
-    acc_activity = models.IntegerField(help_text="Accumulated Changes + notes")
-    
+
     class Meta:
         abstract = True
         
@@ -189,17 +181,11 @@ class Metrics(models.Model):
                 setattr(self, attr, getattr(category, attr))
     
 class ChAOMetrics(Metrics):
-    authors = models.IntegerField(help_text="Distinct authors of changes and notes")
-    authors_changes = models.IntegerField(help_text="Distinct authors of changes")
-    authors_annotations = models.IntegerField(help_text="Distinct authors of notes")
-    authors_gini = models.FloatField(null=True, help_text="Authors Gini coefficient")
-    
-    acc_authors = models.IntegerField(help_text="Accumulated Distinct authors of changes and notes")
-    acc_authors_changes = models.IntegerField(help_text="Accumulated Distinct authors of changes")
-    acc_authors_annotations = models.IntegerField(help_text="Accumulated Distinct authors of notes")
-    
     #display_status = models.CharField(max_length=30, db_index=True, null=True, help_text="Display status")
-    
+    changes = models.IntegerField(help_text="Number of changes")
+    annotations = models.IntegerField(help_text="Number of notes")
+    activity = models.IntegerField(help_text="Changes + notes")
+
     class Meta:
         abstract = True
     
@@ -233,14 +219,10 @@ class TimespanCategoryMetrics(ChAOMetrics):
 class CategoryMetrics(ChAOMetrics):
     category = models.OneToOneField(Category, related_name='metrics')
     instance = models.CharField(max_length=30, db_index=True)
-    
-    #changes = models.IntegerField(db_index=True, help_text="Number of changes")
-    #annotations = models.IntegerField(db_index=True, help_text="Number of annotations")
-    #authors = models.IntegerField(db_index=True, help_text="Distinct authors of changes and annotations")
-    #authors_changes = models.IntegerField(db_index=True, help_text="Distinct authors of changes")
-    #authors_annotations = models.IntegerField(db_index=True, help_text="Distinct authors of annotations")
-    #authors_gini = models.FloatField(db_index=True, null=True, help_text="Authors Gini coefficient")
-    
+    authors = models.IntegerField(db_index=True, help_text="Distinct authors of changes and annotations")
+    authors_changes = models.IntegerField(db_index=True, help_text="Distinct authors of changes")
+    authors_annotations = models.IntegerField(db_index=True, help_text="Distinct authors of annotations")
+    authors_gini = models.FloatField(db_index=True, null=True, help_text="Authors Gini coefficient")
     parents = models.IntegerField(help_text="Number of parents")
     children = models.IntegerField(help_text="Number of children")
     depth = models.IntegerField(null=True, help_text="Depth in network")
@@ -252,27 +234,50 @@ class CategoryMetrics(ChAOMetrics):
     #hub = models.FloatField(null=True)
     closeness_centrality = models.FloatField(null=True, help_text="Closeness centrality")
     #eigenvector_centrality = models.FloatField(null=True)
-
     overrides = models.IntegerField(help_text="Overrides by different authors")
     edit_sessions = models.IntegerField(help_text="Edit sessions")
     authors_by_property = models.IntegerField(help_text="Distinct authors by property")
+    def __unicode__(self):
+        return self.category.name
 
+        
+        
+class AccumulatedCategoryMetrics(Metrics):
+    category = models.OneToOneField(Category, related_name='accumulated_metrics')
+    instance = models.CharField(max_length=30, db_index=True)
     acc_overrides = models.IntegerField(help_text="Accumulated Overrides by different authors", default=0)
     acc_edit_sessions = models.IntegerField(help_text="Accumulated Edit sessions", default=0)
     acc_authors_by_property = models.IntegerField(help_text="Accumulated Distinct authors by property", default=0)
-    
-    titles = models.IntegerField(help_text="Number of different titles", default=0)
-    title_languages = models.IntegerField(help_text="Number of different title languages", default=0)
-    definitions = models.IntegerField(help_text="Number of different definitions", default=0)
-    definition_languages = models.IntegerField(help_text="Number of different definition languages", default=0)
+    acc_authors = models.IntegerField(default=0, help_text="Accumulated Distinct authors of changes and notes")
+    acc_authors_changes = models.IntegerField(default=0, help_text="Accumulated Distinct authors of changes")
+    acc_authors_annotations = models.IntegerField(default=0, help_text="Accumulated Distinct authors of notes")
+    acc_changes = models.IntegerField(default=0, help_text="Accumulated Number of changes")
+    acc_annotations = models.IntegerField(default=0, help_text="Accumulated Number of notes")
+    acc_activity = models.IntegerField(default=0, help_text="Accumulated Changes + notes")
     
     def __unicode__(self):
         return self.category.name
+
+        
+class MultilanguageCategoryMetrics(Metrics):
+    category = models.OneToOneField(Category, related_name='multilanguage_metrics')
+    instance = models.CharField(max_length=30, db_index=True)
+    mlm_titles = models.IntegerField(help_text="Number of different titles", default=0)
+    mlm_title_languages = models.IntegerField(help_text="Number of different title languages", default=0)
+    mlm_definitions = models.IntegerField(help_text="Number of different definitions", default=0)
+    mlm_definition_languages = models.IntegerField(help_text="Number of different definition languages", default=0)
     
-class AuthorCategoryMetrics(Metrics):
+    def __unicode__(self):
+        return self.category.name
+        
+
+class AuthorCategoryMetrics(ChAOMetrics):
     category = models.ForeignKey(Category, related_name='author_metrics')
     instance = models.CharField(max_length=30, db_index=True)
     author = models.ForeignKey('Author', related_name='category_metrics')
+    acc_changes = models.IntegerField(default=0, help_text="Accumulated Number of changes")
+    acc_annotations = models.IntegerField(default=0, help_text="Accumulated Number of notes")
+    acc_activity = models.IntegerField(default=0, help_text="Accumulated Changes + notes")
     
     def __unicode__(self):
         return '%s: %s' % (self.author.name, self.category.name)
