@@ -45,16 +45,18 @@ GRAPH_AUTHORS_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'author_gra
 
 print "Author Graphs loaded"
 
-FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
+CATEGORY_FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
 ACCUMULATED_FEATURES = [(name, description) for name, value, description in AccumulatedCategoryMetrics.objects.all()[0].get_metrics()]
 MULTILANGUAGE_FEATURES = [(name, description) for name, value, description in MultilanguageCategoryMetrics.objects.all()[0].get_metrics()]
-FEATURES += ACCUMULATED_FEATURES + MULTILANGUAGE_FEATURES
+FEATURES = CATEGORY_FEATURES + ACCUMULATED_FEATURES + MULTILANGUAGE_FEATURES
 
 # TEMP FIX:
 #FEATURES = []
 AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
+AUTHOR_FILTER = Author.objects.all()[0].get_filter_metrics()
 MULTILANGUAGE_FILTER = MultilanguageCategoryMetrics.objects.all()[0].get_filter_metrics()
 ACCUMULATED_FILTER = AccumulatedCategoryMetrics.objects.all()[0].get_filter_metrics()
+CATEGORYMETRICS_FILTER = CategoryMetrics.objects.all()[0].get_filter_metrics()
 print "Features loaded"
 
 MINMAX_CHANGES_DATE = Change.objects.filter(_instance=settings.INSTANCE).aggregate(min=Min('timestamp'), max=Max('timestamp'))

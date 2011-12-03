@@ -9,6 +9,7 @@ jan@poeschko.com
 from __future__ import division
 
 from django.shortcuts import render_to_response, redirect
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 from django.conf import settings
@@ -23,8 +24,8 @@ from data import (#GRAPH, CATEGORIES, #GRAPH_POSITIONS, GRAPH_POSITIONS_TREE, WE
     MIN_CHANGES_DATE, MAX_CHANGES_DATE, FEATURES, AUTHOR_FEATURES,
     AUTHORS, GRAPH_AUTHORS, GRAPH_AUTHORS_DIRECTED, GRAPH_AUTHORS_POSITIONS,
     CHANGES_COUNT, ANNOTATIONS_COUNT, GROUPS,
-    PROPERTIES, GRAPH_PROPERTIES_POSITIONS,
-    FOLLOW_UPS, MULTILANGUAGE_FILTER, ACCUMULATED_FILTER)
+    PROPERTIES, GRAPH_PROPERTIES_POSITIONS, ACCUMULATED_FEATURES, MULTILANGUAGE_FEATURES,
+    FOLLOW_UPS, MULTILANGUAGE_FILTER, ACCUMULATED_FILTER, AUTHOR_FILTER, CATEGORY_FEATURES, CATEGORYMETRICS_FILTER)
 from util import get_week, week_to_date, get_weekly, counts, group, calculate_gini
 from icdexplorer.storage.models import PickledData
 
@@ -71,16 +72,89 @@ def about(request):
 def categories(request):
     features = []
     category_metrics = CategoryMetrics.objects.filter(instance=settings.INSTANCE)
-    for name, description in FEATURES:
-        #if name in ('annotations', 'authors_annotations'):
-        #    continue
+    for name, description in CATEGORY_FEATURES:
         categories = [metrics.category for metrics in category_metrics.order_by('-' + name)[:10]]
         categories += reversed([metrics.category for metrics in category_metrics.filter(**{name + '__isnull': False}).order_by(name)[:3]])
         features.append((name, description, categories))
+    
+    accumulated_features = []
+    category_metrics = AccumulatedCategoryMetrics.objects.filter(instance=settings.INSTANCE)
+    for name, description in ACCUMULATED_FEATURES:
+        print name
+        categories = [metrics.category for metrics in category_metrics.order_by('-' + name)[:10]]
+        categories += reversed([metrics.category for metrics in category_metrics.filter(**{name + '__isnull': False}).order_by(name)[:3]])
+        accumulated_features.append((name, description, categories))
+    
+    multilanguage_features = []
+    category_metrics = MultilanguageCategoryMetrics.objects.filter(instance=settings.INSTANCE)
+    for name, description in MULTILANGUAGE_FEATURES:
+        categories = [metrics.category for metrics in category_metrics.order_by('-' + name)[:10]]
+        categories += reversed([metrics.category for metrics in category_metrics.filter(**{name + '__isnull': False}).order_by(name)[:3]])
+        multilanguage_features.append((name, description, categories))
+    
     return render_to_response('categories.html', {
         'features': features,
+        'accumulated_features': accumulated_features,
+        'multilanguage_features': multilanguage_features,
     }, context_instance=RequestContext(request))
     
+@login_required
+def categorylisting(request, attribute, page_index=1):
+
+    if attribute in ACCUMULATED_FILTER:
+        metric_table = "accumulated_metrics."
+        categories = Category.objects.all().filter(instance=settings.INSTANCE).order_by("-accumulated_metrics__%s" % attribute)
+        detail = AccumulatedCategoryMetrics._meta.get_field(attribute).help_text
+    elif attribute in MULTILANGUAGE_FILTER:
+        metric_table = "multilanguage_metrics."
+        categories = Category.objects.all().filter(instance=settings.INSTANCE).order_by("-multilanguage_metrics__%s" % attribute)
+        detail = MultilanguageCategoryMetrics._meta.get_field(attribute).help_text
+    elif attribute in CATEGORYMETRICS_FILTER:
+        categories = Category.objects.all().filter(instance=settings.INSTANCE).order_by("-metrics__%s" % attribute)
+        metric_table = "metrics."
+        detail = CategoryMetrics._meta.get_field(attribute).help_text
+    else:
+        raise Http404
+
+    paginator = Paginator(categories, 100, 5)
+    try:
+        page = paginator.page(page_index)
+    except (EmptyPage, InvalidPage), e:
+        page = paginator.page(paginator.num_pages)
+    
+    return render_to_response('listing.html', {
+        'attribute': attribute,
+        'objects': page.object_list,
+        'page': page,
+        'model': 'Category',
+        'listing_type': 'category',
+        'description': detail,
+        'metric_table': metric_table,
+    }, context_instance=RequestContext(request))
+
+@login_required
+def authorlisting(request, attribute, page_index=1):
+    if not attribute in AUTHOR_FILTER:
+        raise Http404
+
+    authors = Author.objects.all().filter(instance=settings.INSTANCE).order_by("-%s" % attribute)
+    detail = Author._meta.get_field(attribute).help_text
+    metric_table = ""
+    paginator = Paginator(authors, 100, 5)
+    try:
+        page = paginator.page(page_index)
+    except (EmptyPage, InvalidPage), e:
+        page = paginator.page(paginator.num_pages)
+    return render_to_response('listing.html', {
+        'attribute': attribute,
+        'objects': page.object_list,
+        'page': page,
+        'model': 'Author',
+        'listing_type': 'author',
+        'description': detail,
+        'metric_table': metric_table,
+    }, context_instance=RequestContext(request))
+
 @login_required
 def properties(request):
     properties = PROPERTIES.values()
@@ -89,6 +163,21 @@ def properties(request):
     from django.db import connection
     
     cursor = connection.cursor()
+    
+    
+    language_codes = []
+    changes = cursor.execute("""select language_code, count(*) as c
+        from icd_categorytitles
+        where category_id LIKE %s
+        group by language_code
+        order by language_code asc""", [settings.INSTANCE+"%"])
+    for row in cursor.fetchall():
+        language_code, count = row
+        language_codes.append({
+            'id': language_code,
+            'name': language_code,
+            'count': count,
+        })
     
     display_status = []
     changes = cursor.execute("""select display_status, count(*) as c
@@ -171,6 +260,7 @@ def properties(request):
         'definitions': definitions,
         'title_languages': title_languages,
         'definition_languages': definition_languages,
+        'language_codes': language_codes,
     }, context_instance=RequestContext(request))
 
 @login_required

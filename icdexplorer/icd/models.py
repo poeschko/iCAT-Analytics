@@ -239,9 +239,13 @@ class CategoryMetrics(ChAOMetrics):
     authors_by_property = models.IntegerField(help_text="Distinct authors by property")
     def __unicode__(self):
         return self.category.name
+        
+    def get_filter_metrics(self):
+        result = []
+        for field in self._meta.fields:
+            result.append(field.name)
+        return result
 
-        
-        
 class AccumulatedCategoryMetrics(Metrics):
     category = models.OneToOneField(Category, related_name='accumulated_metrics')
     instance = models.CharField(max_length=30, db_index=True)
@@ -269,10 +273,10 @@ class AccumulatedCategoryMetrics(Metrics):
 class MultilanguageCategoryMetrics(Metrics):
     category = models.OneToOneField(Category, related_name='multilanguage_metrics')
     instance = models.CharField(max_length=30, db_index=True)
-    mlm_titles = models.IntegerField(help_text="Number of different titles", default=0)
-    mlm_title_languages = models.IntegerField(help_text="Number of different title languages", default=0)
-    mlm_definitions = models.IntegerField(help_text="Number of different definitions", default=0)
-    mlm_definition_languages = models.IntegerField(help_text="Number of different definition languages", default=0)
+    mlm_titles = models.IntegerField(help_text="Number of titles", default=0)
+    mlm_title_languages = models.IntegerField(help_text="Number of title languages", default=0)
+    mlm_definitions = models.IntegerField(help_text="Number of definitions", default=0)
+    mlm_definition_languages = models.IntegerField(help_text="Number of definition languages", default=0)
     
     def get_filter_metrics(self):
         result = []
@@ -506,6 +510,13 @@ class Author(models.Model):
         result = [item for item in result if not item[0].startswith('acc_')] + \
             [item for item in result if item[0].startswith('acc_')]
         return result
+    
+    def get_filter_metrics(self):
+        result = []
+        for field in self._meta.fields:
+            result.append(field.name)
+        return result
+    
     
 class Group(models.Model):
     tag_prefix = 'http://who.int/ictm#TAG_'

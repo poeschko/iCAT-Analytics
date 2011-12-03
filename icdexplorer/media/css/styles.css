@@ -422,3 +422,25 @@ td.text {
 .language_code {
   text-align:center;
 }
+
+#pagination_wrapper{
+  width: 100%;
+  margin: 10px 0 0 0;
+}
+
+#previous_page {
+  float:left;
+  width: 50%;
+  text-align:center
+}
+
+.show_listing {
+  padding: 8px 15px 8px 15px;
+  text-decoration:underline;
+}
+
+#next_page {
+  float:left;
+  width: 50%;
+  text-align:center;
+}

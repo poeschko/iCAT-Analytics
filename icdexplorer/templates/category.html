@@ -123,6 +123,20 @@
         <td class="number">{{ value }}</td>
     </tr>
     {% endfor %}
+    
+    {% for name, value, display in category.accumulated_metrics.get_metrics %}
+    <tr>
+        <td>{{ display }}</td>
+        <td class="number">{{ value }}</td>
+    </tr>
+    {% endfor %}
+    
+    {% for name, value, display in category.multilanguage_metrics.get_metrics %}
+    <tr>
+        <td>{{ display }}</td>
+        <td class="number">{{ value }}</td>
+    </tr>
+    {% endfor %}
 </table>
 
 {% if changes %}

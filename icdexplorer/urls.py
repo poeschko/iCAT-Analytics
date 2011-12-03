@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     # (r'^admin/', include(admin.site.urls)),
 )
 
-
 urlpatterns = patterns('icd.views',
     (r'^$', 'network'),
     (r'^search/$', 'search'),
@@ -36,8 +35,11 @@ urlpatterns = patterns('icd.views',
     (r'^categories/(?P<name>.+)/$', 'category'),
     (r'^authors/(?P<name>.*)/$', 'author'),
     (r'^properties/(?P<name>.*)/$', 'property'),
+    (r'^categorylisting/(?P<attribute>.*?)/$', 'categorylisting'),
+    (r'^categorylisting/(?P<attribute>.*?)/(?P<page_index>\d+)$', 'categorylisting'),
+    (r'^authorlisting/(?P<attribute>.*?)/(?P<page_index>\d+)/$', 'authorlisting'),
+    (r'^authorlisting/(?P<attribute>.*?)/$', 'authorlisting'),
     (r'^ajax/graph/$', 'ajax_graph'),
-    
 )
 
 urlpatterns += patterns('',

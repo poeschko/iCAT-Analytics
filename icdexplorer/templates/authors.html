@@ -19,8 +19,11 @@
 <h2 id="{{ name }}">{{ display }}</h2>
 
 {% valuestable authors name "Author" 200 10 %}
-{% endfor %}
 
+<div class="show_listing">
+    <a href="/authorlisting/{{ name }}/" target="_blank">Show all</a>
+</div>
+{% endfor %}
 <h2 id="groups">Groups</h2>
 
 <table>

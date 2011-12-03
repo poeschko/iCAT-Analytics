@@ -13,9 +13,13 @@ from lxml.html import clean
 register = template.Library()
 
 @register.filter
+def get_objects(object):
+    return object.object_list()
+
+@register.filter
 def js(object):
     return mark_safe(simplejson.dumps(object, ensure_ascii=False))
-
+    
 @register.filter
 def get_attr(object, attr):
     return getattr(object, attr)
