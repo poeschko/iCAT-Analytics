@@ -28,10 +28,6 @@ import math
 from collections import defaultdict
 import networkx as nx
 
-from PyML import VectorDataSet
-from PyML.classifiers.svm import SVR
-from PyML.classifiers.ridgeRegression import RidgeRegression
-
 import networkx as nx
 
 import orange, orngTree
@@ -44,6 +40,10 @@ def username(name):
     return ''.join(uppercase)
 
 def learn_changes_pyml():
+    from PyML import VectorDataSet
+    from PyML.classifiers.svm import SVR
+    from PyML.classifiers.ridgeRegression import RidgeRegression
+
     print "Get data"
     X = []
     L = []
