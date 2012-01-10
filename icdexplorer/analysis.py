@@ -332,7 +332,8 @@ def export_changes_accumulated():
         total_levenshtein += change.levenshtein_distance
         total_levenshtein_rel += change.levenshtein_distance_rel
         total_levenshtein_sim += change.levenshtein_similarity
-        total_lcs_rel += change.lcs_rel if change.old_value else 1
+        if change.lcs_rel is not None:
+            total_lcs_rel += change.lcs_rel # if change.old_value else 1
         for word in get_words(change.old_value):
             if word in vocabulary:
                 vocabulary[word] -= 1
@@ -368,7 +369,8 @@ def export_changes_accumulated():
         total_levenshtein += change.levenshtein_distance
         total_levenshtein_rel += change.levenshtein_distance_rel
         total_levenshtein_sim += change.levenshtein_similarity
-        total_lcs_rel += change.lcs_rel if change.old_value else 1
+        if change.lcs_rel is not None:
+            total_lcs_rel += change.lcs_rel
         for word in get_words(change.old_value):
             if word in vocabulary:
                 vocabulary[word] -= 1
@@ -405,7 +407,8 @@ def export_changes_accumulated():
         else:
             total_levenshtein_rel += change.levenshtein_distance_rel
             total_levenshtein_sim += change.levenshtein_similarity
-            total_lcs_rel += change.lcs_rel if change.old_value else 1
+            if change.lcs_rel is not None:
+                total_lcs_rel += change.lcs_rel
         output.append([index, index+1, get_week(change.timestamp), len(concepts),
             change.levenshtein_distance, change.levenshtein_distance_rel,
             total_levenshtein, total_levenshtein_rel, total_levenshtein_sim,
