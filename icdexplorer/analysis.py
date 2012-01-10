@@ -278,6 +278,7 @@ def export_changes_accumulated():
     print "Export time-accumulated changes to R format"
     
     changes = Change.objects.filter(instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
+    changes = changes.defer('old_value', 'new_value')
     print "Relevant changes total: %d" % changes.count()
     changes = changes.filter(levenshtein_distance__isnull=False).exclude(property="")
     print "Property and Levenshtein distance set: %d" % changes.count()
@@ -286,19 +287,23 @@ def export_changes_accumulated():
         'fully specified name',
         'note', 'signs and symptoms'])"""
     
-    non_textual_properties = ['sorting label', 'use', 'display status', 'type', 'inclusions', 'exclusions',
-        'primary tag']
-    empty_values = ['', '(empty)']
-    text_changes = changes.exclude(property__in=non_textual_properties)
+    if settings.IS_WIKI:
+        text_changes = changes = list(changes)
+    else:
+        non_textual_properties = ['sorting label', 'use', 'display status', 'type', 'inclusions', 'exclusions',
+            'primary tag']
+        empty_values = ['', '(empty)']
+        text_changes = changes.exclude(property__in=non_textual_properties)
     
     modify_changes = text_changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)
     
-    text_changes = list(text_changes)
-    print "Textual properties filtered: %d" % len(text_changes)
     modify_changes = list(modify_changes)
     print "Modifying changes: %d" % len(modify_changes)
     
-    changes = list(changes)
+    if not settings.IS_WIKI:
+        text_changes = list(text_changes)
+        print "Textual properties filtered: %d" % len(text_changes)
+        changes = list(changes)
     
     def get_words(text):
         return (word.lower() for word in word_re.findall(text))
@@ -1098,8 +1103,8 @@ def export():
     #export_tab_categories()
     #export_timespans(format='r')
     #export_r_timeseries()
-    #export_changes_accumulated()
-    export_authors_network()
+    export_changes_accumulated()
+    #export_authors_network()
     #export_r_categories()
     #calc_cooccurrences()
     #create_social_network()
