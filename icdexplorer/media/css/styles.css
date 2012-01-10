@@ -67,8 +67,10 @@ jan@poeschko.com
 
 #headerRight {
 	float: right;
+    display: inline;
 	text-align: right;
 	padding-top: 0;
+    height: 40px;
 }
 
 #headerRight a {
@@ -444,3 +446,94 @@ td.text {
   width: 50%;
   text-align:center;
 }
+
+.legend_color {
+  width: 20px;
+  height: 10px;
+  float:left;
+  clear:left;
+  padding: 7px 0 0 0;
+  margin: 0px 5px 5px 0px
+}
+
+.legend_wrapper {
+    height: 25px;
+    clear:both;
+}
+
+.legend_diameter{
+  width: 33px;
+  float:left;
+  clear:left;
+  margin: 0 5px 5px 0;
+}
+
+.feature_text{
+  width: 112px;
+  float:left;
+}
+
+.size_wrapper {
+  clear:both;
+  height:25px;
+  margin: 0px 0px 5px 0px;
+}
+
+.color_grey {
+  background-color: #999999;
+}
+
+.color_yellow {
+  background-color: #FDC605
+}
+
+.color_orange {
+  background-color: #D37530;
+}
+
+.color_red {
+  background-color: #B20912;
+}
+
+.color_blue {
+  background-color: #137FAE;
+}
+
+.color_darkblue {
+  background-color: #181E9A;
+}
+.h_color_darkestblue {
+  background-color: #040098;
+}
+.h_color_darkblue {
+  background-color: #00649D;
+}
+.h_color_violet {
+  background-color: #00C3B3;
+}
+.h_color_pink {
+  background-color: #FFE400;
+}
+.h_color_lightred {
+  background-color: #B74900;
+}
+.h_color_red {
+  background-color: #C10000;
+}
+.h_color_blackblue {
+  background-color: #02003F;
+}
+
+.icd_stats_wrapper {
+    width: 440px;
+    float:left;
+    border-right: 1px solid #000;
+}
+
+.ictm_stats_wrapper {
+    width: 440px;
+    float:left;
+    margin: 0px 0px 0px 10px;
+}
+
+

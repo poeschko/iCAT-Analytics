@@ -31,24 +31,37 @@ import cPickle as pickle
 import subprocess
 import types
 
+import random
 import math
 import pydot
 import os
 from collections import defaultdict
-
+from django.db import connection
+    
+from bulk_insertion import BulkInsertion
 import csv
 import gc
+import numpy
+import operator
+from collections import defaultdict
+
+import scipy.stats
 
 from django.db.models import Q, Min, Max, Count
 from django.conf import settings
+from settings_site import (INSTANCES)
+from operator import itemgetter
+import itertools
 
 from icd.models import (Category, OntologyComponent, LinearizationSpec, AnnotatableThing,
     Change, Annotation, CategoryMetrics, User, Timespan, TimespanCategoryMetrics, Author,
     AuthorCategoryMetrics, AccumulatedCategoryMetrics, MultilanguageCategoryMetrics,
-    Property, Group)
+    Property, Group, Session, SessionChange, BasicOntologyStatistics, CategoriesTagRecommendations,
+    UserTagRecommendations, UserDistanceRecommendations, UserUserTagRecommendations, UserCoBehaviourRecommendations)
 from storage.models import PickledData
 from quadtree import QuadTree
 from icd.util import *
+from bulk_insertion import *
 
 if settings.IS_NCI:
     ROOT_CATEGORY = 'http://www.w3.org/2002/07/owl#Thing'
@@ -61,7 +74,7 @@ else:
     'ttania': 'Tania Tudorache',
     'Molly Robinson': 'Molly Meri Robinson',
 }"""
-
+ 
 def createnetwork():
     print "Create network"
     G = nx.DiGraph()
@@ -323,6 +336,7 @@ def store_positions():
     accumulated_category_metrics = list(AccumulatedCategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category').select_related('category'))
     multilanguage_category_metrics = list(MultilanguageCategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category').select_related('category'))
     author_category_metrics = list(AuthorCategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category', 'author').select_related('category'))
+    timespan_category_metrics = list(TimespanCategoryMetrics.objects.filter(instance=settings.INSTANCE).order_by('category').select_related('category'))
     
     pos = {}
     for layout, key, dot_prog in settings.LAYOUTS:
@@ -333,7 +347,8 @@ def store_positions():
         ("CategoryMetrics", category_metrics, lambda item: item.category.name),
         ("AuthorCategoryMetrics", author_category_metrics, lambda item: item.category.name),
         ("AccumulatedCategoryMetrics", accumulated_category_metrics, lambda item: item.category.name),
-        ("MultilanguageCategoryMetrics", multilanguage_category_metrics, lambda item: item.category.name)]:
+        ("MultilanguageCategoryMetrics", multilanguage_category_metrics, lambda item: item.category.name),
+        ("TimespanCategoryMetrics", timespan_category_metrics, lambda item: item.category.name)]:
         print name
         for index, category in enumerate(items):
             if index % 1000 == 0:
@@ -623,7 +638,7 @@ def find_change_categories():
                     print component.name
         annotation.component = component
         annotation.save()"""
-        
+
 def calc_author_metrics(from_name=None, to_name=None):
     print "Calculate author metrics"
     #categories = dict((category.name, category) for category in Category.objects.all().select_related('chao'))
@@ -639,13 +654,15 @@ def calc_author_metrics(from_name=None, to_name=None):
     all_metrics_instances = AuthorCategoryMetrics.objects.filter(instance=settings.INSTANCE)
     all_metrics_instances = dict(((metrics.author.pk, metrics.category.pk), metrics) for metrics in all_metrics_instances)
     for author in authors:
-        #if author.name < 'Megan Cumerlato':
+        #if author.name < 'Wei Chang':
         #    continue
         # There must be some memory leak in here, so we have to split up calls to calc_author_metrics
         # into several ranges of authors
         if from_name is not None and author.name < from_name:
             continue
         if to_name is not None and author.name >= to_name:
+            continue
+        if author.name <= "Yvette Holder":
             continue
         print author.name.encode("utf8")
         """weights[author] = {}
@@ -812,10 +829,42 @@ def calculate_accumulated(metrics, all_metrics, G):
             #if childs_sum > 0:
                 #weight[1][category.name] = childs_weight
             setattr(metrics, key, childs_sum)
+
+def get_tag_changes(category, changes):
+    primary = secondary = involved = who = outside = 0
+    # prepare list of all tags assigned to category
+    involved_tags = []
+    involved_tags.extend(category.involved_tags.values_list('name', flat=True))
+    # Note: Could just include Internal_Medicine Tag if any with TAG_IM is included!
+    #       If Internal_Medicine is included, include all TAG_IM TAGs (?)
+    #       Verify with Csongor/Tania/Natasha if that is reasonable!
     
-def calc_metrics(accumulate_only=False, compute_centrality=True):
+    change_counter = len(changes)
+    for change in changes:
+        to_append = []
+        groups = list(change.author.groups.values_list('name', flat=True))
+        #Special case for Internal_Medicine :-/
+        if len([x for x in groups if x.startswith("http://who.int/icd#TAG_IM_")]) > 0: 
+            to_append.append("http://who.int/icd#TAG_Internal_Medicine")
+
+        if len([x for x in groups if x.startswith("http://who.int/icd#TAG_Internal_Medicine")]) > 0:
+            to_append.extend(Group.objects.filter(name__contains="http://who.int/icd#TAG_IM_").values_list("name", flat=True))
+
+        groups.extend(to_append)
+        if category.primary_tag in groups:
+            primary += 1
+        elif category.secondary_tag in groups:
+            secondary += 1
+        elif any(item in involved_tags for item in groups):
+            involved += 1
+        elif any(item.startswith("WHO") for item in groups):
+            who += 1
+        else:
+            outside += 1
+    return [primary, secondary, involved, who, outside]
+
+def calc_metrics(accumulate_only=False, compute_centrality=False):
     #DISPLAY_STATUS_RE = re.compile(r'.*set to: (.*?)\(.*')
-    
     print "Construct graph"
     G = PickledData.objects.get(settings.INSTANCE, 'graph')
     print "Nodes: %d" % len(G)
@@ -864,6 +913,15 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
             #if chao is not None:
             #    changes = chao.changes.filter(Change.relevant_filter).order_by('timestamp')
             #    annotations = chao.annotations.filter(Annotation.relevant_filter)
+            
+            tag_changes = get_tag_changes(category, changes)
+            metrics.primary_tag_changes = tag_changes[0]
+            metrics.secondary_tag_changes = tag_changes[1]
+            metrics.involved_tag_changes = tag_changes[2]
+            metrics.who_tag_changes = tag_changes[3]
+            metrics.outside_tag_changes = tag_changes[4]
+            metrics.save()
+            
             metrics.changes = len(changes)
             metrics.annotations = len(annotations)
             metrics.activity = metrics.changes + metrics.annotations
@@ -891,11 +949,13 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
             metrics.overrides = sum(len(prop) - 1 for prop in authors_by_property.itervalues())
             metrics.edit_sessions = sum(len(prop) for prop in authors_by_property.itervalues())
             metrics.authors_by_property = sum(len(set(prop)) for prop in authors_by_property.itervalues())
+            
             """else:
                 metrics.activity = metrics.changes = metrics.annotations = 0
                 metrics.authors_changes = metrics.authors_annotations = metrics.authors = 0
                 metrics.authors_gini = 0
                 metrics.overrides = metrics.edit_sessions = metrics.authors_by_property = 0"""
+            
             try:
                 metrics.depth = nx.shortest_path_length(G, source=str(category.name), target=str(ROOT_CATEGORY))
             except nx.exception.NetworkXError:
@@ -933,6 +993,8 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
         #    break
     #PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     
+    # TODO: Refactor - is ugly and slow
+    #       Make one loop over all categories to store all metrics!
     print "Accumulate"
     
     for index, category in enumerate(categories):
@@ -954,8 +1016,6 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
         calculate_accumulated(accumulated_metrics, all_metrics, G)
         accumulated_metrics.save()
         metrics.save()
-    
-    
     print "Multilanguage"
     for index, category in enumerate(categories):
         if index % 1000 == 0:
@@ -965,152 +1025,81 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
         except MultilanguageCategoryMetrics.DoesNotExist:
             metrics = MultilanguageCategoryMetrics(category=category)
         metrics.instance = settings.INSTANCE
-        metrics.mlm_titles = category.category_title.all().values('title').exclude(title='').distinct().count()
-        metrics.mlm_title_languages = category.category_title.all().values('language_code').distinct().exclude(language_code='').count()
-        metrics.mlm_definitions = category.category_definition.all().values('definition').distinct().exclude(definition='').count()
-        metrics.mlm_definition_languages = category.category_definition.all().values('language_code').distinct().exclude(language_code='').count()
+        metrics.mlm_titles = category.category_titles.all().values('title').exclude(title='').distinct().count()
+        metrics.mlm_title_languages = category.category_titles.all().values('language_code').distinct().exclude(language_code='').count()
+        metrics.mlm_definitions = category.category_definitions.all().values('definition').distinct().exclude(definition='').count()
+        metrics.mlm_definition_languages = category.category_definitions.all().values('language_code').distinct().exclude(language_code='').count()
         metrics.save()
     print "Done"
-    
+
 def calc_timespan_metrics():
     print "Calculate timespan metrics"
     MINMAX_CHANGES_DATE = Change.objects.filter(instance=settings.INSTANCE).aggregate(min=Min('timestamp'), max=Max('timestamp'))
     MIN_CHANGES_DATE = MINMAX_CHANGES_DATE['min'] #.date()
     MAX_CHANGES_DATE = MINMAX_CHANGES_DATE['max'] #.date() + timedelta(days=1)
+    
+    current_date = datetime.strptime(settings.INSTANCE, "icd%Y-%m-%d_%Hh%Mm") if settings.INSTANCE.startswith("icd") else datetime.strptime(settings.INSTANCE, "ictm%Y-%m-%d_%Hh%Mm") if settings.INSTANCE.startswith("ictm") else datetime.datetime.now()
+    #print current_date
+    #print MIN_CHANGES_DATE
+    #td = current_date - MIN_CHANGES_DATE
+    #days = float(td.days) + float(td.seconds)/60.0/60.0/24.0
+    #print days
+    
+    print "Load categories"
+    categories = Category.objects.filter(instance=settings.INSTANCE).order_by('name').select_related('chao')
+    categories = list(categories)
+    CATEGORIES = dict((category.name, category) for category in categories)
+    print "Load graph"
+    G = PickledData.objects.get(settings.INSTANCE, 'graph')
+    print "Graph loaded"
+    
+    for index, category in enumerate(categories):
+        if index % 1000 == 0:
+            print '%d: %s' % (index, category.name)
+        try:
+            metrics = category.timespan_metrics
+        except TimespanCategoryMetrics.DoesNotExist:
+            metrics = TimespanCategoryMetrics(category=category, instance=settings.INSTANCE)
 
-    """
-    #timespans_splits = [MAX_CHANGES_DATE-timedelta(days=2), MAX_CHANGES_DATE-timedelta(days=7), MAX_CHANGES_DATE-timedelta(days=28)]
-    timespans_splits = [MAX_CHANGES_DATE-timedelta(days=16*7), MAX_CHANGES_DATE-timedelta(days=4*7)]
-    #timespans_spans = []
-    timespans = []
-    for split in timespans_splits:
-        #timespans_spans.append((MIN_CHANGES_DATE, split))
-        #timespans_spans.append((split, MAX_CHANGES_DATE))
-        
-        following, created = Timespan.objects.get_or_create(start=split, stop=MAX_CHANGES_DATE)
-        timespans.append(following)
-        preceding, created = Timespan.objects.get_or_create(start=MIN_CHANGES_DATE, stop=split)
-        timespans.append(preceding)
-        preceding.following.add(following)
-        preceding.save()
-    """
-    
-    split = datetime(2011, 04, 21)
-    timespans = [
-        Timespan.objects.get_or_create(instance=settings.INSTANCES[1], start=split,
-            stop=datetime(2011, 07, 28))[0],   # gets rid of initial WHO changes
-        Timespan.objects.get_or_create(instance=settings.INSTANCES[0], start=MIN_CHANGES_DATE,
-            stop=split)[0]
-    ]
-    
-    #for timespan in timespans:
-    #    timespan.save()
-    
-    timespans[1].following.add(timespans[0])
-    
-    for timespan in timespans:
-        timespan.save()
-        
-    #timespans = []
-    #for start, stop in timespans_spans:
-    #    timespan, created = Timespan.objects.get_or_create(start=start, stop=stop)
-    #    timespans.append(timespan)
-    #G_undirected = G.to_undirected()
-    #categories = list(categories)
-    #hits = nx.hits(G)
-    #centrality = nx.betweenness_centrality(G)
-    #print "Betweenness undirected"
-    #centrality_undirected = nx.betweenness_centrality(G_undirected)
-    #print "Eigenvector centrality"
-    #eigenvector_centrality = nx.eigenvector_centrality_numpy(G_undirected)
-    #pageranks = nx.pagerank(G)
-    #print "Closeness centrality"
-    #closeness_centrality = nx.closeness_centrality(G_undirected)
-    #print "Clustering"
-    #clustering = nx.clustering(G_undirected)
-    #return
-    for timespan in timespans[:1]:
-        print (timespan.start, timespan.stop)
-        #timespan.save()
-        instance = timespan.instance
-        print "Load categories"
-        categories = Category.objects.filter(instance=instance).order_by('name').select_related('chao')
-        categories = list(categories)
-        CATEGORIES = dict((category.name, category) for category in categories)
-        print "Load graph"
-        G = PickledData.objects.get(instance, 'graph')
-        print "Graph loaded"
-        for index, category in enumerate(categories):
-            if index % 1000 == 0:
-                print '%d: %s' % (index, category.name)
-            try:
-                metrics = category.timespan_metrics.get(timespan=timespan)
-            except TimespanCategoryMetrics.DoesNotExist:
-                metrics = TimespanCategoryMetrics(category=category, timespan=timespan)
-            # TODO: change this for multiple chaos, as in calc_metrics
-            chao = category.chao
+        chaos = category.chao.all()
+        for chao in chaos:
             if chao is not None:
-                changes = chao.changes.filter(Change.relevant_filter, timestamp__range=(timespan.start, timespan.stop))
-                annotations = chao.annotations.filter(Annotation.relevant_filter, created__range=(timespan.start, timespan.stop))
+                changes = chao.changes.filter(Change.relevant_filter)
+                annotations = chao.annotations.filter(Annotation.relevant_filter, created__isnull=False)
                 changes, annotations = list(changes), list(annotations)
                 
-                metrics.changes = len(changes)
-                metrics.annotations = len(annotations)
-                authors_changes = set()
-                authors_annotations = set()
-                authors = {}
-                for change in changes:
-                    author = change.author_id
-                    authors_changes.add(author)
-                    authors[author] = authors.get(author, 0) + 1
-                for annotation in annotations:
-                    author = annotation.author_id
-                    authors_annotations.add(author)
-                    authors[author] = authors.get(author, 0) + 1
-                metrics.authors_changes = len(authors_changes)
-                metrics.authors_annotations = len(authors_annotations)
-                metrics.authors = len(authors)
-                metrics.authors_gini = calculate_gini(authors)
-                
-                metrics.days_after_last_change = min_null((days(timespan.stop - change.timestamp) for change in changes))
-                metrics.days_before_first_change = min_null((days(change.timestamp - timespan.start) for change in changes))
-                metrics.days_after_median_change = median(days(timespan.stop - change.timestamp) for change in changes)
-                metrics.days_after_last_annotation = min_null((days(timespan.stop - annotation.created) for annotation in annotations))
-                metrics.days_before_first_annotation = min_null((days(annotation.created - timespan.start) for annotation in annotations))
-                metrics.days_after_median_annotation = median(days(timespan.stop - annotation.created) for annotation in annotations)
-                
-                parents = [CATEGORIES[succ] for succ in G.successors(category.name)]
-                children = [CATEGORIES[pred] for pred in G.predecessors(category.name)]
-                metrics.changes_parents = sum(parent.chao.changes.filter(timestamp__range=(timespan.start, timespan.stop)).count()
-                    if parent.chao else 0 for parent in parents)
-                metrics.annotations_parents = sum(parent.chao.annotations.filter(created__range=(timespan.start, timespan.stop)).count()
-                    if parent.chao else 0 for parent in parents)
-                metrics.changes_children = sum(child.chao.changes.filter(timestamp__range=(timespan.start, timespan.stop)).count()
-                    if child.chao else 0 for child in children)
-                metrics.annotations_children = sum(child.chao.annotations.filter(created__range=(timespan.start, timespan.stop)).count()
-                    if child.chao else 0 for child in children)
+                # TODO: Other than days_after_last_change and days_after_last_annotation none work correctly!!!x
+                metrics.days_after_last_change = min_null((days(current_date - change.timestamp) for change in changes))
+                metrics.days_after_last_annotation = min_null((days(current_date - annotation.created) for annotation in annotations))
+                metrics.days_after_last_activity = min(metrics.days_after_last_change, metrics.days_after_last_annotation)
+                #metrics.days_before_first_change = min_null((days(change.timestamp - current_date) for change in changes))
+                #metrics.days_after_median_change = median(days(current_date - change.timestamp) for change in changes)
+                #try:
+                #    metrics.days_after_last_annotation = min_null((days(current_date - annotation.created) for annotation in annotations))
+                #    metrics.days_before_first_annotation = min_null((days(annotation.created - current_date) for annotation in annotations))
+                #    metrics.days_after_median_annotation = median(days(current_date - annotation.created) for annotation in annotations)
+                #except TypeError as e:
+                #    print e
+                #parents = [CATEGORIES[succ] for succ in G.successors(category.name)]
+                #children = [CATEGORIES[pred] for pred in G.predecessors(category.name)]
+                #metrics.changes_parents = sum(parent.chao.all().changes.filter(timestamp__range=(timespan.start, timespan.stop)).count()
+                #    if parent.chao else 0 for parent in parents)
+                #metrics.annotations_parents = sum(parent.chao.all().annotations.filter(created__range=(timespan.start, timespan.stop)).count()
+                #    if parent.chao else 0 for parent in parents)
+                #metrics.changes_children = sum(child.chao.all().changes.filter(timestamp__range=(timespan.start, timespan.stop)).count()
+                #    if child.chao else 0 for child in children)
+                #metrics.annotations_children = sum(child.chao.all().annotations.filter(created__range=(timespan.start, timespan.stop)).count()
+                #    if child.chao else 0 for child in children)
             else:
                 metrics.changes = metrics.annotations = 0
-                metrics.authors_changes = metrics.authors_annotations = metrics.authors = 0
-                metrics.authors_gini = 0
-                metrics.changes_parents = 0
-                metrics.annotations_parents = 0
-                metrics.changes_children = 0
-                metrics.annotations_children = 0
+                #metrics.authors_changes = metrics.authors_annotations = metrics.authors = 0
+                #metrics.authors_gini = 0
+                #metrics.changes_parents = 0
+                #metrics.annotations_parents = 0
+                #metrics.changes_children = 0
+                #metrics.annotations_children = 0
             metrics.save()
-    #PickledData.objects.set(settings.INSTANCE, 'weights', weights)
-    
-    """days_after_last_change = models.IntegerField(db_index=True, help_text="Days after last change")
-    days_before_first_change = models.IntegerField()
-    days_after_median_change = models.IntegerField()
-    days_after_last_annotation = models.IntegerField(db_index=True, help_text="Days after last annotation")
-    days_before_first_annotation = models.IntegerField()
-    days_after_median_annotation = models.IntegerField()
-    changes_parents = models.IntegerField()
-    annotations_parents = models.IntegerField()
-    changes_children = models.IntegerField()
-    annotations_children = models.IntegerField()"""
-    
+            
 def value_to_csv(value, na="NA"):
     if value is None:
         return na
@@ -1123,19 +1112,18 @@ def write_csv(filename, values, na="NA"):
     content = u'\n'.join(u'\t'.join(value_to_csv(value, na) for value in row) for row in values)
     with open(filename, 'w') as file:
         file.write(content.encode('utf-8'))
-    
 
 def createquadtree():
     categories = dict((category.name, category) for category in Category.objects.filter(instance=settings.INSTANCE).select_related('chao'))
     G = PickledData.objects.get(settings.INSTANCE, 'graph')
     weights = PickledData.objects.get(settings.INSTANCE, 'weights')
     for layout, dot_prog, dummy in settings.LAYOUTS:
-        if layout == "Radial":
-            continue
+        #if layout == "Radial":
+        #    continue
         print layout
         positions = PickledData.objects.get(settings.INSTANCE, 'graph_positions_%s' % dot_prog)
         for author in sorted(weights.keys()):
-            #if author <= "icd2011-08-30_04h02mMegan Cumerlato":
+            #if author < "icd2011-08-30_04h02mSam Notzon":
             #    continue
             print "Build tree for '%s'" % author.encode("utf8")
             qt = dict(((id, acc), QuadTree(-1, 1, -1, 1)) for id, name, f in settings.WEIGHTS for acc in (0, 1)) 
@@ -1426,7 +1414,8 @@ order by c desc""", [settings.INSTANCE])
         property.save()
     
     print "Done"
-    
+
+# TODO: Refactor - is ugly and slow
 def print_sql_indexes():
     " Copy the printed results to icd/sql/categorymetrcs.sql and icd/sql/authorcategorymetrics.sql before running syncdb "
     
@@ -1434,7 +1423,8 @@ def print_sql_indexes():
     multilanguage_features = [(name, description) for name, value, description in MultilanguageCategoryMetrics.objects.all()[0].get_metrics()]
     accumulated_features = [(name, description) for name, value, description in AccumulatedCategoryMetrics.objects.all()[0].get_metrics()]
     author_features = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
-    
+    timespan_features = [(name, description) for name, value, description in TimespanCategoryMetrics.objects.all()[0].get_metrics()]
+
     print "/* generated by precalc.print_sql_indexes() */"
     print "ALTER TABLE icd_categorymetrics"
     """
@@ -1489,6 +1479,25 @@ def print_sql_indexes():
     for layout_name, layout, dot_prog in settings.LAYOUTS:
         for feature, description in author_features:
             indexes.append("ADD INDEX index_pos_%(layout)s_%(feature)s (instance, author_id, x_%(layout)s, y_%(layout)s, %(feature)s, category_id)" % {
+                'layout': layout,
+                'feature': feature,
+            })
+    print ",\n".join(indexes) + ";"
+    print ""
+    
+    print "/* generated by precalc.print_sql_indexes() */"
+    print "ALTER TABLE icd_timespancategorymetrics"
+    
+    # MySQL cannot handle more than 64 indexes
+    for feature, description in timespan_features:
+        print "ADD INDEX index_%(feature)s (instance, %(feature)s, category_id)," % {
+            'feature': feature,
+        }
+    
+    indexes = []
+    for layout_name, layout, dot_prog in settings.LAYOUTS:
+        for feature, description in timespan_features:
+            indexes.append("ADD INDEX index_pos_%(layout)s_%(feature)s (instance, x_%(layout)s, y_%(layout)s, %(feature)s, category_id)" % {
                 'layout': layout,
                 'feature': feature,
             })
@@ -1580,38 +1589,442 @@ def compute_language_metrics():
         except MultilanguageCategoryMetrics.DoesNotExist:
             metrics = MultilanguageCategoryMetrics(category=category)
         
-        metrics.titles = category.category_title.all().values('title').exclude(title='').distinct().count()
-        metrics.title_languages = category.category_title.all().values('language_code').distinct().exclude(language_code='').count()
-        metrics.definitions = category.category_definition.all().values('definition').distinct().exclude(definition='').count()
-        metrics.definition_languages = category.category_definition.all().values('language_code').distinct().exclude(language_code='').count()
+        metrics.titles = category.category_titles.all().values('title').exclude(title='').distinct().count()
+        metrics.title_languages = category.category_titles.all().values('language_code').distinct().exclude(language_code='').count()
+        metrics.definitions = category.category_definitions.all().values('definition').distinct().exclude(definition='').count()
+        metrics.definition_languages = category.category_definitions.all().values('language_code').distinct().exclude(language_code='').count()
         #if metrics.titles != metrics.title_languages or metrics.definitions != metrics.definition_languages:
         #    print category.name
         metrics.save()
 
+def propagate_branch_info():
+    G = PickledData.objects.get(settings.INSTANCE, 'graph')
+    #graph_branches = G.predecessors('http://who.int/icd#ICDCategory')
+    category_branches = []
+    tmp_categories = Category.objects.filter(instance=settings.INSTANCE)
+    categories = {}
+    for cat in tmp_categories:
+        categories[cat.name] = cat
+    category_branches = Category.objects.filter(metrics__depth=1, instance=settings.INSTANCE)
+    for idx, branch in enumerate(category_branches):
+        print "[{0}/{1}]Propagating Branch {2}".format(idx+1, len(category_branches), branch.name)
+        if branch.name == "http://who.int/icd#ICDCategory":
+            continue
+        predecessors = G.predecessors(branch.name)
+        for node in predecessors:
+            recursive_propagation(branch, node, G, categories)
+
+def recursive_propagation(branch, node, G, categories):
+    categories[node].branches.add(branch)
+    predecessors = G.predecessors(node)
+    for idx3, predecessor in enumerate(predecessors):
+        recursive_propagation(branch, predecessor, G, categories)
+    categories[node].save()
+
+def tag_activity_per_category(color):
+    #TODO: Refactor to make code more readable :)
+    print "Calculating TAG Activity per category"
+    if color == "all":
+        categories = Category.objects.select_related("3").filter(instance=settings.INSTANCE)
+    else:
+        categories = Category.objects.select_related("3").filter(instance=settings.INSTANCE, display_status=color)
+    result = [0,0,0,0,0,0]
+    for idx, category in enumerate(categories):
+        if idx % 1000 == 0:
+            print "%d/%d: %s" % (idx+1, len(categories), category.name)
+        for chao in category.chao.all():
+            for change in chao.changes.all().filter(instance=settings.INSTANCE, type="Composite_Change", composite=settings.INSTANCE):
+                try:
+                    author = change.author
+                except Author.DoesNotExist:
+                    continue
+                if len(author.groups.filter(name__contains="WHO")):
+                    result[5] += 1
+                    result[3] += 1
+                    continue
+                for group in author.groups.all():
+                    if not group.name.startswith("http://"):
+                        continue
+                    result[5] += 1
+                    tag = group.name
+                    if tag == "http://who.int/icd#TAG_Internal_Medicine":
+                        tag = "http://who.int/icd#TAG_IM"
+                    if category.primary_tag.startswith(tag):
+                        result[0] += 1
+                    elif category.secondary_tag.startswith(tag):
+                        result[1] += 1
+                    else:
+                        category_tags = category.involved_tags.all()
+                        involved_tag_change_loop = 0
+                        for category_tag in category_tags:
+                            if category_tag.name.startswith(tag):
+                                involved_tag_change_loop += 1
+                                break
+                        result[2] += involved_tag_change_loop
+                        if involved_tag_change_loop == 0:
+                            result[4] += 1
+    return result
+
+def basic_stats():
+    
+    print "Basic Ontology Stats"
+    bos = BasicOntologyStatistics(instance=settings.INSTANCE)
+    
+    bos.author_count = Author.objects.filter(instance=settings.INSTANCE).count()
+    bos.tag_count = Group.objects.filter(instance=settings.INSTANCE, name__contains="http://who.int/icd#").count()
+    bos.change_count = Change.objects.filter(instance=settings.INSTANCE).count()
+    bos.annotation_count = Annotation.objects.filter(instance=settings.INSTANCE).count()
+    bos.category_count = Category.objects.filter(instance=settings.INSTANCE).count()
+    bos.average_changes_per_category = bos.change_count / bos.category_count
+    bos.average_annotations_per_category = bos.annotation_count / bos.category_count
+    print "Basic Category Stats"
+    bos.zero_change_categories_count = Category.objects.filter(instance=settings.INSTANCE, chao__changes__isnull=True).count()
+    bos.avrg_change_categories_count = Category.objects.filter(instance=settings.INSTANCE, chao__changes__lte=bos.average_changes_per_category, chao__changes__gte=1).count()
+    bos.gta_change_categories_count = Category.objects.filter(instance=settings.INSTANCE, chao__changes__gte=bos.average_changes_per_category).count()
+    bos.zero_annotation_categories_count = Category.objects.filter(instance=settings.INSTANCE, chao__annotations__isnull=True).count()
+    bos.avrg_annotation_categories_count = Category.objects.filter(instance=settings.INSTANCE, chao__annotations__lte=bos.average_annotations_per_category, chao__annotations__gte=1).count()
+    bos.gta_annotation_categories_count = Category.objects.filter(instance=settings.INSTANCE, chao__annotations__gte=bos.average_annotations_per_category).count()
+    #bos.average_changes_per_category = (bos.category_count - bos.zero_change_categories_count) / bos.change_count
+    #bos.average_annotations_per_category = (bos.category_count - bos.zero_annotation_categories_count) / bos.annotation_count
+    print "Colored Concept Stats"
+    bos.blue_category_count = Category.objects.filter(instance=settings.INSTANCE, display_status="http://who.int/icd#DS_Blue").count()
+    bos.yellow_category_count = Category.objects.filter(instance=settings.INSTANCE, display_status="http://who.int/icd#DS_Yellow").count()
+    bos.red_category_count = Category.objects.filter(instance=settings.INSTANCE, display_status="http://who.int/icd#DS_Red").count()
+    bos.grey_category_count = Category.objects.filter(instance=settings.INSTANCE, display_status="").count()
+    bos.blue_changes = Change.objects.filter(instance=settings.INSTANCE, apply_to__category__display_status="http://who.int/icd#DS_Blue").count()
+    bos.yellow_changes = Change.objects.filter(instance=settings.INSTANCE, apply_to__category__display_status="http://who.int/icd#DS_Yellow").count()
+    bos.red_changes = Change.objects.filter(instance=settings.INSTANCE, apply_to__category__display_status="http://who.int/icd#DS_Red").count()
+    bos.grey_changes = Change.objects.filter(instance=settings.INSTANCE, apply_to__category__display_status="").count()
+    
+    print "TAG Activity per Category"
+    colors = [["_blue", "http://who.int/icd#DS_Blue"], ["_yellow", "http://who.int/icd#DS_Yellow"], ["_red", "http://who.int/icd#DS_Red"], ["", "all"], ["_grey", ""]]
+    
+    for color in colors:
+        print color[1]
+        result = tag_activity_per_category(color[1])
+        setattr(bos, "primary_activity_per%s_category" % (color[0]), "%.2f" % (result[0]/result[5]*100))
+        setattr(bos, "secondary_activity_per%s_category" % (color[0]), "%.2f" % (result[1]/result[5]*100))
+        setattr(bos, "involved_activity_per%s_category" % (color[0]), "%.2f" % (result[2]/result[5]*100))
+        setattr(bos, "who_activity_per%s_category" % (color[0]), "%.2f" % (result[3]/result[5]*100))
+        setattr(bos, "outside_activity_per%s_category" % (color[0]), "%.2f" % (result[4]/result[5]*100))
+    
+    G = PickledData.objects.get(settings.INSTANCE, 'graph')
+    tbd_categories = Category.objects.filter(instance=settings.INSTANCE, display__icontains="Deleted")
+    tbd_children = []
+    for tbd_category in tbd_categories:
+        try:
+            tbd_children.extend(G.predecessors(tbd_category.name))
+        except nx.exception.NetworkXError:
+            continue
+    bos.tbd_concepts = len(set(tbd_children))
+    dtbm_categories = Category.objects.filter(instance=settings.INSTANCE, display__icontains="Needing a decision to be made")
+    dtbm_children = []
+    for dtbm_category in dtbm_categories:
+        try:
+            dtbm_children.extend(G.predecessors(dtbm_category.name))
+        except nx.exception.NetworkXError:
+            continue
+    bos.dtbm_concepts = len(set(dtbm_children))
+    tbr_categories = Category.objects.filter(instance=settings.INSTANCE, display__icontains="To be retired")
+    tbr_children = []
+    for tbr_category in tbr_categories:
+        try:
+            tbr_children.extend(G.predecessors(tbr_category.name))
+        except nx.exception.NetworkXError:
+            continue
+    bos.tbr_concepts = len(set(tbr_children))
+    bos.save()
+    print "Done"
+    
+def compute_extra_group_data():
+    # Computes additional group data, needed for TAG Views
+    groups = Group.objects.filter(instance=settings.INSTANCE)
+    for group in groups:
+        print group.name
+        primary_categories = list(Category.objects.filter(instance=settings.INSTANCE, primary_tag=group.name))
+        all_categories = list(Category.objects.filter(Q(instance=settings.INSTANCE), 
+                (Q(primary_tag=group.name) | Q(secondary_tag=group.name) | Q(involved_tags__name = group.name))))
+        group.category_count = len(all_categories)
+        group.blue_categories = group.yellow_categories = group.red_categories = group.grey_categories = 0
+        group.changes_in_primary = group.changes_in_secondary = group.changes_in_involved = 0
+        changes = []
+        for category in all_categories:
+            if category.display_status == "http://who.int/icd#DS_Blue":
+                group.blue_categories += 1
+            elif category.display_status == "http://who.int/icd#DS_Yellow":
+                group.yellow_categories += 1
+            elif category.display_status == "http://who.int/icd#DS_Red":
+                group.red_categories += 1
+            else:
+                group.grey_categories += 1
+            #involved_taglist = category.involved_tags.values_list('name', flat=True)
+            for chao in category.chao.all():
+                for change in chao.changes.all():
+                    changes.append(change)
+                    if category.primary_tag == group.name:
+                        group.changes_in_primary += 1
+                    elif category.secondary_tag == group.name:
+                        group.changes_in_secondary += 1
+                    else:
+                        group.changes_in_involved += 1
+        group.change_count = len(set(changes))
+        change_count = 1 if group.change_count < 1 else group.change_count
+        group.progress = group.blue_categories/group.category_count if group.category_count > 0 else 0
+        group.activity_in_primary = group.changes_in_primary/change_count
+        group.activity_in_secondary = group.changes_in_secondary/change_count
+        group.activity_in_involved = group.changes_in_involved/change_count
+        group.save()
+    print "Done"
+
+def compute_session_data():
+    # Generates basic Session Containers with start-, endtime and change count
+    authors = Author.objects.filter(instance=settings.INSTANCE).order_by('name')
+    for author in authors:
+        #if author.name < "Linda Best":
+        #    continue
+        changes = author.changes.filter(apply_to__category__name__isnull=False).order_by("timestamp")
+        print "%s: (%d)" % (author.name.encode("utf8"), len(changes))
+        sessions = []
+        current_session = []
+        # Preparing change sessions
+        for idx, change in enumerate(changes):
+            current_session.append(change)
+            if idx+1 >= len(changes):
+                sessions.append(current_session)
+                # end of list
+                continue
+            current_timestamp = change.timestamp
+            next_timestamp = changes[idx+1].timestamp
+            time_diff = next_timestamp - current_timestamp
+            diff = time_diff.days*24*60+time_diff.seconds/60
+            if diff > 30:
+                sessions.append(current_session)
+                current_session = []
+        # Have to access every single change, takes time to store!
+        # Not that much faster with manual query (stil has to update every single change)
+        for idx, change_list in enumerate(sessions):
+            print "    Session %d of %d (%d)" % (idx+1, len(sessions), len(change_list))
+            session = Session(instance=settings.INSTANCE, author=author, change_count = len(change_list), annotation_count = 0, start_date=change_list[0].timestamp, end_date=change_list[-1].timestamp)
+            session.save()
+            sc = SessionChange(instance=settings.INSTANCE, name=session.id, session=session)
+            sc.save()
+            for change in change_list:
+                change.session_component = sc
+                change.save()
+        sessions = None
+    print "Done"
+
+def compute_session_extra_data():
+    G = PickledData.objects.get(settings.INSTANCE, 'graph')
+    G = G.to_undirected()
+    sessions = Session.objects.filter(instance=settings.INSTANCE)
+    print "Total Sessions: "+str(len(sessions))
+    for i, session in enumerate(sessions):
+        print "[{1}/{2}]{0}".format(session.author.name, i+1, len(sessions))
+        td = session.end_date - session.start_date
+        session.duration = float(td.days*24*60+td.seconds/60)
+        session.total_distance = 0
+        session.total_depth = 0
+        session_changes = session.session_component.changes.all().order_by('timestamp')
+        branches = []
+        if len(session_changes) == 1:
+            session.total_depth = session_changes[0].apply_to.category.metrics.depth
+            session.branches = float(len(session_changes[0].apply_to.category.branches.all()))
+            session.save()
+            continue
+        for idx, change in enumerate(session_changes):
+            if idx + 1 < len(session_changes):
+                #Distance
+                session.total_distance += nx.shortest_path_length(G, source=change.apply_to.category.name, target=session_changes[idx+1].apply_to.category.name)
+            name = change.apply_to.category.name
+            session.total_depth += change.apply_to.category.metrics.depth
+            branches += change.apply_to.category.branches.all()
+            session.branches = float(len(set(branches)))
+        session.save()
+    
+def prepare_category_recommendation_dicts(all_categories):
+    category_tags = {}
+    tags = defaultdict(set)
+    for i, category in enumerate(all_categories):
+        category_tags[category] = category.get_tags()
+        for c_tag in category_tags[category]:
+            tags[c_tag].add(category)
+    return tags, category_tags
+    
+def prepare_author_recommendation_dicts(authors, category_tags, all_category_names):
+    author_tag_count = {}
+    author_category_score = {}
+    primary = set(Category.objects.exclude(primary_tag = '').values_list("primary_tag", flat=True).distinct())
+    secondary = set(Category.objects.exclude(secondary_tag = '').values_list("secondary_tag", flat=True).distinct())
+    involved = set(Category.objects.values_list("involved_tags__name", flat=True).distinct())
+    groups = set(Group.objects.values_list("name", flat=True))
+    groups = primary.union(secondary,involved,groups)
+    
+    for j, author in enumerate(authors):
+        category_scores = dict((x, 0) for x in all_category_names)
+        tag_count = dict((x, 0) for x in groups)
+        categories = author.change_categories.all()
+        for k, category in enumerate(categories):
+            c_tags = category_tags[category]
+            for tag_to_count in c_tags:
+                tag_count[tag_to_count] += 1
+            category_scores[category.name] += 1
+        author_tag_count[author] = tag_count
+        author_category_score[author] = category_scores
+    return author_tag_count, author_category_score
+    
+def calculate_user_recommendations(calculate_text_similarity=True, calculate_explicit_links=True, calculate_co_author_behaviour=True):
+    print "Calculating TAG Recommendations"
+    authors = Author.objects.filter(instance=settings.INSTANCE).order_by("name")
+    groups = Group.objects.filter(instance=settings.INSTANCE, name__contains="http://")
+    all_categories = Category.objects.filter(instance=settings.INSTANCE)
+    author_tags = {}
+    print "Preparing category <-> tags & tag <-> categories dictionaries"
+    tags, category_tags = prepare_category_recommendation_dicts(all_categories)
+    print "Preparing author <-> tags & author <-> category scores"
+    author_tag_count, author_category_score = prepare_author_recommendation_dicts(authors, category_tags, all_categories.values_list("name", flat="True"))
+    for i, author in enumerate(authors):
+        print "Calculating recommendations for %s" % (author.name.encode("utf8"))
+        # TODO: See if prestored might boost performance! Problem with category_scores! 
+        #       Need category.name for NetworkX
+        categories = author.change_categories.all()
+        #print "Calculating and storing TAG similarity"
+        author_taglist = set([x for x,y in author_tag_count[author].iteritems() if y > 0 and x.startswith("http:")])
+        
+        # NOTE: concentrate on 7 most used TAGs -> helps improve performance...?
+        categories_set = set(all_categories)-set(categories)
+        most_overlap = set()
+        range_limit = 7 if len(author_taglist) > 7 else len(author_taglist)
+        
+        #print "TextSimilarity Engine"
+        # SuggestBot Engine 1
+        if calculate_text_similarity:
+            for k in reversed(range(1, range_limit+1)):
+                #print k
+                for other_tags in itertools.combinations(author_taglist, k):
+                    #print other_tags
+                    other_categories = reduce(operator.and_, (tags[tag] for tag in other_tags), categories_set)
+                    for overlap_cat in other_categories:
+                        similarity = float("%.2f" % (len(author_taglist.intersection(category_tags[overlap_cat]))/len(author_taglist.union(category_tags[overlap_cat]))))
+                        most_overlap.add((overlap_cat, str(similarity)))
+            most_overlap = sorted(most_overlap, key=itemgetter(1), reverse=True)
+            for list in most_overlap[:100]:
+                recommendation = UserTagRecommendations(instance=settings.INSTANCE, user=author, recommend=list[0], tag_similarity=list[1])
+                recommendation.save()
+        
+        print "Link Engine"
+        # SuggestBot Engine 2
+        if calculate_explicit_links:
+            # Try with "random similar concept"
+            # G.reverse() => reverses the edges of the directed graph!
+            # To prevent looping over already checked nodes
+            already_checked_nodes = []
+            G = PickledData.objects.get(settings.INSTANCE, 'graph')
+            max_distance = 5
+            user_scores = {}
+            bl = set([x for x,y in author_category_score[author].iteritems() if y > 0])
+            for category in bl:
+                distance = 0
+                while distance < max_distance:
+                    if category not in already_checked_nodes:
+                        neighbors = G.neighbors(category)
+                        for node in neighbors:
+                            if node in user_scores:
+                                user_scores[node] += 1
+                            else:
+                                user_scores[node] = 1
+                        already_checked_nodes.append(category)
+                    distance += 1
+            sorted_explicit_scores = sorted(user_scores.iteritems(), key=lambda (k,v):(v,k), reverse=True)#[:30]
+            for k in sorted_explicit_scores:
+                cdr = UserDistanceRecommendations(instance=settings.INSTANCE, user=author, recommend_id=settings.INSTANCE+k[0], explicit_link_score=k[1])
+                cdr.save()
+        print "Co-Author behaviour"
+        if calculate_co_author_behaviour:
+            user_similarity = {}
+            user_similarity[author] = []
+            tag_counter = [x for k,x in author_tag_count[author].iteritems()]
+            for ca_index, ca_author in enumerate(authors):
+                user_similarity[author].append([ca_author, scipy.stats.pearsonr(tag_counter, [x for k,x in author_tag_count[ca_author].iteritems()])])
+                ts = 0 if math.isnan(user_similarity[author][ca_index][1][0]) else user_similarity[author][ca_index][1][0]
+                uutr = UserUserTagRecommendations(instance=settings.INSTANCE, recommend=ca_author, user=author, tag_similarity=ts)
+                uutr.save()
+            # recommend concepts C to u where C have been edited by highest 
+            #Get 5 most similar users that are not author itself
+            recommender_counter = 0
+            for s_author in author.author_recommendations.all().order_by("-tag_similarity"):
+                if s_author.tag_similarity > 0:
+                    for coedit_category in s_author.recommend.change_categories.all():
+                        if coedit_category not in categories and recommender_counter < 100:
+                            ucb = UserCoBehaviourRecommendations(instance=settings.INSTANCE, user=author, recommend=coedit_category, tag_similarity = s_author.tag_similarity)
+                            ucb.save()
+                            recommender_counter += 1
+                if recommender_counter >= 100:
+                    break
+    print "Done"
+    
+def calculate_category_recommendations():
+    print "Calculating TAG Recommendations"
+    categories = Category.objects.filter(instance=settings.INSTANCE)
+    groups = Group.objects.filter(instance=settings.INSTANCE)
+    category_tags = {}
+    tags = defaultdict(set)
+    number_of_recommendations = 10
+    tags, category_tags = prepare_category_recommendation_dicts(categories)
+    cats_set = set(category_tags)
+    for index, (cat, cat_tags) in enumerate(category_tags.iteritems()):
+        if index % 1000 == 0:
+            print "%d: %s" % (index, cat.name)
+        most_overlap = []
+        for k in reversed(range(1, len(cat_tags)+1)):
+            if len(most_overlap) >= number_of_recommendations:
+                break
+            for other_tags in itertools.combinations(cat_tags, k):
+                if len(most_overlap) >= number_of_recommendations:
+                    break
+                other_cats = reduce(operator.and_, (tags[tag] for tag in other_tags), cats_set)
+                for overlap_cat in other_cats:
+                    if overlap_cat == cat:
+                        continue
+                    most_overlap.append([overlap_cat, "%.2f" % (len(cat_tags & category_tags[overlap_cat])/len(cat_tags)*100.00)])
+                    if len(most_overlap) >= number_of_recommendations:
+                        break
+        most_overlap = sorted(most_overlap, key=itemgetter(1), reverse=True)
+        for list in most_overlap:
+            recommendation = CategoriesTagRecommendations(instance=settings.INSTANCE, category=cat, recommend=list[0], tag_similarity=list[1])
+            recommendation.save()
+    print "Done"
+    
+def adding_categories_to_authors():
+    # Boost Query Performance, as it skips needed "changes__apply_to__..." conditions on query
+    print "Adding Categories to Authors"
+    authors = Author.objects.filter(instance=settings.INSTANCE)
+    for author in authors:
+        print author.name.encode("utf8")
+        for category in Category.objects.filter(instance=settings.INSTANCE, chao__changes__author = author).distinct():
+            author.change_categories.add(category)
+        for category in Category.objects.filter(instance=settings.INSTANCE, chao__annotations__author = author).distinct():
+            author.change_categories.add(category)
+    print "Done"
+    
 def preprocess_incremental():
     #calc_edit_distances()
     #calc_extra_properties_data()
-    
     #computecalc_cooccurrences()
     #compute_author_reverts()
     #create_authors_network()
-    
     #calc_hierarchy()
-    
     #graphpositions()
-    
     compute_extra_author_data()
     
 def preprocess_nci():
     #find_annotation_components()
     """find_change_categories()
     compute_extra_change_data()
-    
     create_authors()
     #compute_follow_ups()
     #load_extra_authors_data()
     #create_properties()
-    
     createnetwork()
     calc_metrics(compute_centrality=False)"""
     #calc_author_metrics_split()
@@ -1641,24 +2054,43 @@ def preprocess():
     #create_properties()
     #createnetwork()
     calc_metrics()
-    calc_author_metrics_split()
+    #calc_author_metrics_split()
     #compute_extra_author_data()
-    calc_weights()
-    compact_weights()
-    graphpositions()
-    adjust_positions()
+    #calc_weights()
+    #compact_weights()
+    #graphpositions()
+    #adjust_positions()
     #createquadtree()
-    store_positions()
+    #store_positions()
     #compute_sessions()
-    compute_author_reverts()
+    #compute_author_reverts()
     #calc_cooccurrences()
     #create_authors_network()
     #create_properties_network()
     #calc_hierarchy()
-    print_sql_indexes()
-
-    """
+    #print_sql_indexes()
+    
+    #TODO:  Add (and make work) commented stuff from Jan
+    #       Add additional activity metrics for heatmap!
     #calc_timespan_metrics()
+    
+    #adding_categories_to_authors()
+    #basic_stats()
+    #compute_extra_group_data()
+    #adding_authors_to_categories()
+    #calculate_category_recommendations()
+    #calculate_user_recommendations()
+    
+    # Not needed for iCAT-Analytics Views 
+    # or other precalc methods
+    # Session Calculations are SLOW and
+    # were primarily used for failed clustering
+    #propagate_branch_info()
+    #compute_session_data()
+    #compute_session_extra_data()
+    
+    
+    """
     #export_r_categories()
     #export_r_timeseries()
     #corr2latex()
@@ -1669,8 +2101,9 @@ def preprocess():
 def main():
     #preprocess_incremental()
     #preprocess_nci()
-    #preprocess()
-    
+    preprocess()
+
+    print "done"
     """argc = len(sys.argv)
     if argc not in (2, 3):
         print "Wrong usage. Please specify a function to call!"

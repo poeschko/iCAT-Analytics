@@ -26,6 +26,7 @@ urlpatterns = patterns('',
 )
 
 urlpatterns = patterns('icd.views',
+    (r'dashboard/$', 'dashboard'),
     (r'^$', 'network'),
     (r'^search/$', 'search'),
     (r'^about/$', 'about'),

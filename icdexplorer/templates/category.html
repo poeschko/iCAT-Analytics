@@ -53,6 +53,61 @@
 	                         });
 </script>
 
+{% if changes %}
+<div style="clear:both;"></div>
+
+<div style="width: 430px; float:left;clear:both;">
+<h2>TAG changes</h2>
+<div id="plotCategoryTagChanges" style="margin-top: 0.5em; width:430px; height:230px"></div>
+<script type="text/javascript">
+    var categoryTagChangeData = {{ tag_activity|js }};
+	$.plot($('#plotCategoryTagChanges'), categoryTagChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+        }
+    }});
+</script>
+</div>
+<div style="clear:both;"></div>
+{% endif %}
+
+<!--
+<h2>TAGs</h2>
+<table>
+    <thead>
+    <tr>
+        <td>Type</td>
+        <td>Name</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Primary Tag</td>
+        <td>{{ category.primary_tag }}</td>
+    </tr>
+    <tr>
+        <td>Secondary Tag</td>
+        <td>{{ category.secondary_tag }}</td>
+    </tr>
+    
+    {% for tag in involved_tags %}
+    <tr>
+        <td>Involved Tag</td>
+        <td>{{ tag.name }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+-->
 
 {% if parents %}
 <h2>Parents</h2>
@@ -106,6 +161,17 @@
   </tr>
   {% endfor %}
 </table>
+{% endif %}
+
+<!-- Recommender -->
+{% if recommendations %}
+<h2>Similar categories</h2>
+
+<ul>
+{% for category in recommendations %}
+    <li><a href="{{ category.get_absolute_url }}">{{ category }}</a></li>
+{% endfor %}
+</ul>
 {% endif %}
 
 <h2>Features</h2>

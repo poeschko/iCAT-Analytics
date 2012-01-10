@@ -18,6 +18,9 @@
 {% for name, display, categories in multilanguage_features %}
     <li><a href="#{{ name }}">{{ display }}</a></li>
 {% endfor %}
+{% for name, display, categories in timespan_features %}
+    <li><a href="#{{ name }}">{{ display }}</a></li>
+{% endfor %}
 </ul>
 
 {% for name, display, categories in features %}

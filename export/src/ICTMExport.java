@@ -36,7 +36,7 @@ public class ICTMExport {
     public static String exportDir = "C:\\Users\\simon\\Desktop\\";
     public static void main(String[] args) {
     	exportContent();
-    	//exportChAO();
+    	exportChAO();
         System.out.println("Done");
     }
 

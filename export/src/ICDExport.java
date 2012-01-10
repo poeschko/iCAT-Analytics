@@ -166,10 +166,9 @@ public class ICDExport {
                 RDFProperty assignedPrimaryTagProperty = icdContentModel.getAssignedPrimaryTagProperty();
                 RDFProperty assignedSecondaryTagProperty = icdContentModel.getAssignedSecondaryTagProperty();
                 String assignedPrimaryTag = getString(assignedPrimaryTagProperty != null ? category.getPropertyValue(assignedPrimaryTagProperty) : null);
-                String assignedSecondaryTag = getString(assignedSecondaryTagProperty != null ? category.getPropertyValue(assignedSecondaryTagProperty) : null);
-
-                //String displayStatus = getString(category.getOwnSlotValue(displayStatusSlot));
                 
+                String assignedSecondaryTag = getString(assignedSecondaryTagProperty != null ? category.getPropertyValue(assignedSecondaryTagProperty) : null);
+                //String displayStatus = getString(category.getOwnSlotValue(displayStatusSlot));
                 String line = joinEscaped("\t", name, display, sortingLabel, definition,
                     displayStatus, assignedPrimaryTag, assignedSecondaryTag);
                 categories.write(line + "\n");

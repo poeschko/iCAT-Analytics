@@ -1,8 +1,7 @@
 USE icd11;
 
-set @instance = "icd2020-11-11_04h02m";
+set @instance = "icd2011-11-20_04h02m";
 SET character_set_database=utf8;
-/*set character_set_system = latin1;*/
 SET FOREIGN_KEY_CHECKS = 0;
 
 load data local infile 'C:\\Users\\simon\\Desktop\\Github\\iCAT-Analytics\\export\\src\\ICD-Exports\\20-11-11\\icd_annotation.txt' replace into table icd_annotation
