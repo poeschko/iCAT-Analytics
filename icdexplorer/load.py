@@ -90,7 +90,7 @@ def load_wiki():
     instance = settings.INSTANCE
     
     authors = {}    # cache for Author instances
-    skip_until = "Diarrhea" # set to page title or False
+    skip_until = False # set to page title until which to skip loading pages, or False
     if skip_until:
         print "Delete data for '%s'" % skip_until
         try:

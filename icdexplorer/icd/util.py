@@ -182,6 +182,9 @@ def levenshtein_noadd(a,b):
     return current[n]
 
 def longest_common_subsequence(a, b):
+    blocks = Levenshtein.matching_blocks(Levenshtein.editops(a, b), a, b)
+    return sum(length for index1, index2, length in blocks)
+    
     m, n = len(a), len(b)
     c = [[0 for j in range(n+1)] for i in range(m+1)]
     for i in range(1,m+1):

@@ -888,9 +888,11 @@ order by c desc"", [settings.INSTANCE])"""
 
     #for row in cursor.fetchall():
     changes = Change.objects.filter(instance=settings.INSTANCE).filter(Change.relevant_filter)
-    for change in debug_iter(changes):
-        author = authors.get(change.author_id, instance=settings.INSTANCE,
-            name=change.author_id[len(settings.INSTANCE):])
+    author_ids = changes.values_list('author_id', flat=True)
+    #for change in debug_iter(changes):
+    for author_id in debug_iter(author_ids):
+        author = authors.get(author_id, instance=settings.INSTANCE,
+            name=author_id[len(settings.INSTANCE):])
         author.changes_count += 1
         """name, count = row
         author, created = Author.objects.get_or_create(instance_name=name,
@@ -1257,7 +1259,7 @@ def preprocess_nci():
     #create_properties_network()
 
 def preprocess():
-    find_annotation_components()
+    """find_annotation_components()
     compute_extra_change_data()
     create_authors()
     if not settings.IS_WIKI:
@@ -1265,7 +1267,7 @@ def preprocess():
     
     load_extra_authors_data()
     create_properties()
-    createnetwork()
+    createnetwork()"""
     
     calc_edit_distances()
     
