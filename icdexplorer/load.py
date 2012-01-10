@@ -1,3 +1,11 @@
+"""
+Load Wikipedia XML dumps into iCAT Analytics
+
+Make sure the MySQL variable max_allowed_packet is big enough to handle
+all the data for a single revision, which is usually bigger than the
+default 1 MB.
+"""
+
 import sys
 import xml.etree.ElementTree as etree
 import os
@@ -38,24 +46,16 @@ class WikiRevision:
         self.text = text
         self.comment = comment
 
-def parse_wiki_dump(file):
-    #tree = etree.parse(file)
-    #for element in tree.getroot().iter('page'):
+def parse_wiki_dump(file, skip_unless_title=None):
     for event, element in etree.iterparse(file):
         if element.tag == 'page':
-            #title = etree.tostring(element.find('title'),
-            #                       method = 'text', encoding = 'UTF-8')
-            #id = etree.tostring(element.find('id'),
-            #                    method = 'text', encoding = 'UTF-8')
             title = element.findtext('title')
+            if skip_unless_title is not None and title != skip_unless_title:
+                continue
             id = element.findtext('id')
             current_page = WikiPage(title, id)
             revisions = []
             for revision in element.findall('revision'):
-                #r_id = etree.tostring(revision.find('id'),
-                #                      method = 'text', encoding = 'UTF-8')
-                #r_timestamp = etree.tostring(revision.find('timestamp'),
-                #                             method = 'text', encoding = 'UTF-8')
                 r_id = revision.findtext('id')
                 r_timestamp = revision.findtext('timestamp')
                 contributor = revision.find('contributor')
@@ -78,23 +78,42 @@ def parse_wiki_dump(file):
             element.clear()
 
 def load_wiki():
-    #for file in open("filenames.txt"):
     instance = settings.INSTANCE
     
-    print "Delete previous data"
-    for model in [Category, OntologyComponent, Author, Change]:
-        model.objects.filter(instance=instance).delete()
+    authors = {}    # cache for Author instances
+    skip_until = "Diarrhea" # set to page title or False
+    if skip_until:
+        print "Delete data for '%s'" % skip_until
+        try:
+            category = Category.objects.get(instance=instance, name=skip_until)
+            for chao in category.chao.all():
+                chao.changes.all().delete()
+                chao.delete()
+            category.delete()
+        except Category.DoesNotExist:
+            pass
+        skipping = True
+    else:
+        skipping = False    
+        print "Delete previous data"
+        for model in [Category, OntologyComponent, Author, Change]:
+            model.objects.filter(instance=instance).delete()
     
     print "Load new data"
-    authors = {}    # cache for Author instances
     for dirpath, dirnames, filenames in os.walk(settings.WIKI_INPUT_DIR):
         filenames.sort()
         for filename in filenames:
             if filename.endswith('.xml'):
                 print filename
-                page_generator = parse_wiki_dump(settings.WIKI_INPUT_DIR + filename)
+                page_generator = parse_wiki_dump(settings.WIKI_INPUT_DIR + filename,
+                    skip_unless_title=skip_until if skipping else None)
                 for page in page_generator:
                     print page.title
+                    if skipping:
+                        if page.title == skip_until:
+                            skipping = False
+                        if skipping:
+                            continue
                     category = Category.objects.create(instance=instance, name=page.title,
                         instance_name=instance + page.title,
                         sorting_label=page.id)
@@ -108,8 +127,9 @@ def load_wiki():
                         author_name = unicode(revision.contributor)
                         author = authors.get(author_name)
                         if author is None:
-                            author = authors[author_name] = Author.objects.create(instance=instance,
+                            author, created = Author.objects.get_or_create(instance=instance,
                                 name=author_name, instance_name=instance + author_name)
+                            authors[author_name] = author
                         change = Change.objects.create(instance=instance, name=revision.id,
                             instance_name=instance + revision.id,
                             _instance=instance, _name=revision.id,
@@ -122,10 +142,6 @@ def load_wiki():
                             additional_info=revision.comment or '',
                             )
                         old_value = revision.text
-                    #print page.title, "\n\n\n"
-                    #for revision in page.revisions:
-                    #    print revision.id
-                #print "\n\n\n"
 
 def main():
     load_wiki()
