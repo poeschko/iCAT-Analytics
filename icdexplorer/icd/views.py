@@ -471,11 +471,11 @@ def category(request, name):
     except OntologyComponent.DoesNotExist:
         changes = annotations = []
     
-    tag_activity = [{'label': '% Primary TAG Changes', 'data': category.metrics.primary_tag_changes}, 
-                    {'label': '% Secondary TAG Changes', 'data': category.metrics.secondary_tag_changes}, 
-                    {'label': '% Involved TAG Changes', 'data': category.metrics.involved_tag_changes}, 
-                    {'label': '% WHO Team TAG Changes', 'data': category.metrics.who_tag_changes},
-                    {'label': '% Outside TAG Changes', 'data': category.metrics.outside_tag_changes}]
+    tag_activity = [{'label': 'Primary TAG Changes', 'data': category.metrics.primary_tag_changes}, 
+                    {'label': 'Secondary TAG Changes', 'data': category.metrics.secondary_tag_changes}, 
+                    {'label': 'Involved TAG Changes', 'data': category.metrics.involved_tag_changes}, 
+                    {'label': 'WHO Team TAG Changes', 'data': category.metrics.who_tag_changes},
+                    {'label': 'Outside TAG Changes', 'data': category.metrics.outside_tag_changes}]
     
     
     timeline_changes = get_weekly(changes, lambda c: c.timestamp.date() if c.timestamp else None, to_ordinal=True,
