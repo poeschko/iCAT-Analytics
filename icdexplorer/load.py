@@ -83,6 +83,7 @@ def load_wiki():
     for model in [Category, OntologyComponent, Author, Change]:
         model.objects.filter(instance=instance).delete()
     
+    authors = {}    # cache for Author instances
     for dirpath, dirnames, filenames in os.walk(settings.WIKI_INPUT_DIR):
         filenames.sort()
         for filename in filenames:
@@ -101,9 +102,11 @@ def load_wiki():
                     old_value = ""
                     for revision in page.revisions:
                         print "  - %s" % revision.id
-                        author, created = Author.objects.get_or_create(instance=instance,
-                            name=unicode(revision.contributor),
-                            instance_name=instance + unicode(revision.contributor))
+                        author_name = unicode(revision.contributor)
+                        author = authors.get(author_name)
+                        if author is None:
+                            author = authors[author_name] = Author.objects.create(instance=instance,
+                                name=author_name, instance_name=instance + author_name)
                         change = Change.objects.create(instance=instance, name=revision.id,
                             instance_name=instance + revision.id,
                             _instance=instance, _name=revision.id,
