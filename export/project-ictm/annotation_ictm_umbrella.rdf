@@ -1,0 +1,2184 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE rdf:RDF [
+	 <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+	 <!ENTITY kb 'http://protege.stanford.edu/kb#'>
+	 <!ENTITY rdfs 'http://www.w3.org/2000/01/rdf-schema#'>
+]>
+<rdf:RDF xmlns:rdf="&rdf;"
+	 xmlns:kb="&kb;"
+	 xmlns:rdfs="&rdfs;">
+<kb:AnnotationStatus rdf:about="&kb;Active"
+	 kb:description="Active"
+	 rdfs:label="Active"/>
+<kb:ChangeStatus rdf:about="&kb;Approved"
+	 kb:description="Approved"
+	 rdfs:label="Approved"/>
+<kb:AnnotationStatus rdf:about="&kb;Inactive"
+	 kb:description="Inactive"
+	 rdfs:label="Inactive"/>
+<kb:ChangeStatus rdf:about="&kb;Proposed"
+	 kb:description="Proposed"
+	 rdfs:label="Proposed"/>
+<kb:ChangeStatus rdf:about="&kb;Rejected"
+	 kb:description="Rejected"
+	 rdfs:label="Rejected"/>
+<kb:Status rdf:about="&kb;Under_review"
+	 kb:description="Under review"
+	 rdfs:label="Under review"/>
+<kb:Individual_Created rdf:about="&kb;annotation_ictm_umbrella_Class0"
+	 kb:action="Individual_Created"
+	 kb:author=""
+	 kb:context="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1"
+	 kb:creationName="http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1"
+	 rdfs:label="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class2"/>
+</kb:Individual_Created>
+<kb:Ontology_Individual rdf:about="&kb;annotation_ictm_umbrella_Class1"
+	 kb:currentName="http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1"
+	 rdfs:label="http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class0"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10000"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10002"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10004"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class3"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30000"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30002"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30004"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40000"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40002"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40004"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class5"/>
+</kb:Ontology_Individual>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class11"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Individual_Created rdf:about="&kb;annotation_ictm_umbrella_Class10000"
+	 kb:action="Individual_Created"
+	 kb:author=""
+	 kb:context="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1"
+	 kb:creationName="http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1"
+	 rdfs:label="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10001"/>
+</kb:Individual_Created>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10001"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="287"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Individual_Added rdf:about="&kb;annotation_ictm_umbrella_Class10002"
+	 kb:action="Individual_Added"
+	 kb:author="">
+	<kb:context>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</kb:context>
+	<rdfs:label>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10003"/>
+</kb:Individual_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10003"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="288"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10004"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10005"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10005"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="289"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10006"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10007"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10007"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="290"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10008"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10009"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10009"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="291"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10010"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10011"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10011"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="292"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10012"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10013"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10013"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="293"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10014"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10015"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10015"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="294"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10016"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10017"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10017"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="295"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10018"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10019"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10019"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="296"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10020"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10021"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10021"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="297"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10022"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10023"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10023"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="298"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class10024"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class10025"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class10025"
+	 kb:date="02/01/2011 01:21:57 PST"
+	 kb:sequence="299"
+	 rdfs:label="02/01/2011 01:21:57 PST"/>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class11"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="4"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class12"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class13"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class13"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="5"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class14"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class15"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class15"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="6"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class16"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class17"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class17"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="7"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class18"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class19"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class19"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="8"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class2"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="0"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class21"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class20000"
+	 rdfs:label="annotation_ictm_umbrella_Class20000">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20001"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20003"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20005"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20007"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20009"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20011"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20013"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20015"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20017"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20019"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20021"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20023"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20025"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20027"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20029"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20031"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20033"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20035"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20037"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20039"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Ontology_Class>
+<kb:Name_Changed rdf:about="&kb;annotation_ictm_umbrella_Class20001"
+	 kb:action="Name_Changed"
+	 kb:author=""
+	 kb:context="Name change from 'Orphans' to 'Retired2'"
+	 kb:newName="http://who.int/ictm#Retired2"
+	 kb:oldName="http://who.int/ictm#Orphans"
+	 rdfs:label="Name change from 'Orphans' to 'Retired2'">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20002"/>
+</kb:Name_Changed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20002"
+	 kb:date="02/01/2011 01:35:05 PST"
+	 kb:sequence="0"
+	 rdfs:label="02/01/2011 01:35:05 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20003"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: icd:linearization for instance:   set to: (Old values:http://who.int/ictm#0_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#1_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#2_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#3_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#4_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#5_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#6_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#7_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#8_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#9_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#10_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#11_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#12_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#13_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#14_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd)</kb:context>
+	<rdfs:label>Property: icd:linearization for instance:   set to: (Old values:http://who.int/ictm#0_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#1_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#2_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#3_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#4_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#5_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#6_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#7_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#8_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#9_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#10_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#11_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#12_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#13_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd, http://who.int/ictm#14_288bad2b_6c23_44a2_9c3c_ca8c8e8c24cd)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20004"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20004"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="1"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20005"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: icd:biologicalSex for instance:   set to: (Old values:icd:BiologicalSexNotAppSCTerm)</kb:context>
+	<rdfs:label>Property: icd:biologicalSex for instance:   set to: (Old values:icd:BiologicalSexNotAppSCTerm)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20006"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20006"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="2"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20007"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance:   set to: (Old values: 'ICTM Categories')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance:   set to: (Old values: 'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20008"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20008"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="3"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Class_Deleted rdf:about="&kb;annotation_ictm_umbrella_Class20009"
+	 kb:action="Class_Deleted"
+	 kb:author=""
+	 kb:context="Class Delete: Retired2"
+	 kb:deletionName="http://who.int/ictm#Retired2"
+	 rdfs:label="Class Delete: Retired2">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20010"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Class_Deleted>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20010"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="4"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20011"
+	 kb:action="Subclass_Removed"
+	 kb:author="">
+	<kb:context>Subclass Removed: http://who.int/ictm#Retired2 (removed from:  'ICTM Categories')</kb:context>
+	<rdfs:label>Subclass Removed: http://who.int/ictm#Retired2 (removed from:  'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20012"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Subclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20012"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="5"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20013"
+	 kb:action="Individual_Removed"
+	 kb:author=""
+	 kb:context="Instance Removed: Retired2 (instance of: owl:Class)"
+	 rdfs:label="Instance Removed: Retired2 (instance of: owl:Class)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20014"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20014"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="6"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20015"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: TMBodySystemsSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: TMBodySystemsSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20016"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20016"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="7"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20017"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: icd:ClinicalDescriptionSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: icd:ClinicalDescriptionSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20018"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20018"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="8"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20019"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: icd:LinearizationSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: icd:LinearizationSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20020"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20020"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="9"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20021"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: icd:DiagnosticCriteriaSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: icd:DiagnosticCriteriaSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20022"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20022"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="10"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20023"
+	 kb:action="Individual_Removed"
+	 kb:author=""
+	 kb:context="Instance Removed: Retired2 (instance of: icd:TermSection)"
+	 rdfs:label="Instance Removed: Retired2 (instance of: icd:TermSection)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20024"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20024"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="11"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20025"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: icd:TreatmentSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: icd:TreatmentSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20026"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20026"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="12"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20027"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: icd:FunctionalImpactSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: icd:FunctionalImpactSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20028"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20028"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="13"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20029"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: icd:DefinitionSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: icd:DefinitionSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20030"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20030"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="14"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20031"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: icd:SpecificConditionSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: icd:SpecificConditionSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20032"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20032"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="15"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20033"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: TMCausalPropertiesSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: TMCausalPropertiesSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20034"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20034"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="16"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20035"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: TMManifestationPropertiesSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: TMManifestationPropertiesSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20036"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20036"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="17"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20037"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: TMDiagnosticCriteriaSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: TMDiagnosticCriteriaSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20038"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20038"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="18"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class20039"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Retired2 (instance of: TMDevelopmentCourseOrStagesSection)</kb:context>
+	<rdfs:label>Instance Removed: Retired2 (instance of: TMDevelopmentCourseOrStagesSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20040"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class20041"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20040"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="19"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_umbrella_Class20041"
+	 kb:action="Composite_Change"
+	 kb:author=""
+	 kb:context="Delete class   -- Apply to: http://who.int/ictm#Retired2"
+	 rdfs:label="Delete class   -- Apply to: http://who.int/ictm#Retired2">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20000"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20003"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20005"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20007"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20009"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20011"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20013"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20015"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20017"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20019"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20021"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20023"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20025"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20027"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20029"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20031"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20033"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20035"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20037"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class20039"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20042"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20042"
+	 kb:date="02/01/2011 01:35:24 PST"
+	 kb:sequence="20"
+	 rdfs:label="02/01/2011 01:35:24 PST"/>
+<kb:Superclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class20043"
+	 kb:action="Superclass_Added"
+	 kb:author=""
+	 kb:context="Superclass Added:  'ICTM Categories' (added to: Retired)"
+	 rdfs:label="Superclass Added:  'ICTM Categories' (added to: Retired)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20044"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20045"/>
+</kb:Superclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class20044"
+	 kb:currentName="http://who.int/ictm#ICTMCategory"
+	 rdfs:label="http://who.int/ictm#ICTMCategory">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20043"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20053"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20055"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20045"
+	 kb:date="02/01/2011 01:35:43 PST"
+	 kb:sequence="21"
+	 rdfs:label="02/01/2011 01:35:43 PST"/>
+<kb:Subclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class20046"
+	 kb:action="Subclass_Added"
+	 kb:author=""
+	 kb:context="Subclass Added: Retired (added to:  'ICTM Categories')"
+	 rdfs:label="Subclass Added: Retired (added to:  'ICTM Categories')">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20047"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20048"/>
+</kb:Subclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class20047"
+	 kb:currentName="http://who.int/ictm#Retired"
+	 rdfs:label="http://who.int/ictm#Retired">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20046"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20049"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20051"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20048"
+	 kb:date="02/01/2011 01:35:43 PST"
+	 kb:sequence="22"
+	 rdfs:label="02/01/2011 01:35:43 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20049"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: Retired set to: owl:Thing,  'ICTM Categories'(Old values:)</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: Retired set to: owl:Thing,  'ICTM Categories'(Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20047"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20050"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20050"
+	 kb:date="02/01/2011 01:35:43 PST"
+	 kb:sequence="23"
+	 rdfs:label="02/01/2011 01:35:43 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20051"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: Retired set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: Retired set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20047"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20052"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20052"
+	 kb:date="02/01/2011 01:35:43 PST"
+	 kb:sequence="24"
+	 rdfs:label="02/01/2011 01:35:43 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20053"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance:  'ICTM Categories' set to: owl:Thing, icd:DomainConcept(Old values:owl:Thing, icd:DomainConcept)</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance:  'ICTM Categories' set to: owl:Thing, icd:DomainConcept(Old values:owl:Thing, icd:DomainConcept)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20044"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20054"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20054"
+	 kb:date="02/01/2011 01:35:43 PST"
+	 kb:sequence="25"
+	 rdfs:label="02/01/2011 01:35:43 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class20055"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance:  'ICTM Categories' set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance:  'ICTM Categories' set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class20044"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class20056"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class20056"
+	 kb:date="02/01/2011 01:35:43 PST"
+	 kb:sequence="26"
+	 rdfs:label="02/01/2011 01:35:43 PST"/>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class21"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="9"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class22"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class23"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class23"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="10"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class24"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class25"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class25"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="11"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class26"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class27"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class27"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="12"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Individual_Added rdf:about="&kb;annotation_ictm_umbrella_Class3"
+	 kb:action="Individual_Added"
+	 kb:author="">
+	<kb:context>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</kb:context>
+	<rdfs:label>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class4"/>
+</kb:Individual_Added>
+<kb:Individual_Created rdf:about="&kb;annotation_ictm_umbrella_Class30000"
+	 kb:action="Individual_Created"
+	 kb:author=""
+	 kb:context="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1"
+	 kb:creationName="http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1"
+	 rdfs:label="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30001"/>
+</kb:Individual_Created>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30001"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="0"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Individual_Added rdf:about="&kb;annotation_ictm_umbrella_Class30002"
+	 kb:action="Individual_Added"
+	 kb:author="">
+	<kb:context>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</kb:context>
+	<rdfs:label>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30003"/>
+</kb:Individual_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30003"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="1"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30004"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30005"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30005"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="2"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30006"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30007"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30007"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="3"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30008"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30009"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30009"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="4"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30010"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30011"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30011"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="5"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30012"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30013"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30013"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="6"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30014"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30015"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30015"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="7"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30016"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30017"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30017"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="8"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30018"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30019"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30019"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="9"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30020"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30021"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30021"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="10"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30022"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30023"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30023"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="11"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class30024"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class30025"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class30025"
+	 kb:date="02/01/2011 02:41:57 PST"
+	 kb:sequence="12"
+	 rdfs:label="02/01/2011 02:41:57 PST"/>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class4"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="1"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Individual_Created rdf:about="&kb;annotation_ictm_umbrella_Class40000"
+	 kb:action="Individual_Created"
+	 kb:author=""
+	 kb:context="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1"
+	 kb:creationName="http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1"
+	 rdfs:label="Individual Create: OWL-ONTOLOGY-POINTER-CLASS_1">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40001"/>
+</kb:Individual_Created>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40001"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="0"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Individual_Added rdf:about="&kb;annotation_ictm_umbrella_Class40002"
+	 kb:action="Individual_Added"
+	 kb:author="">
+	<kb:context>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</kb:context>
+	<rdfs:label>Instance Added: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 (instance of: :OWL-ONTOLOGY-POINTER-CLASS)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40003"/>
+</kb:Individual_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40003"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="1"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40004"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40005"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40005"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="2"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40006"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40007"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40007"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="3"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40008"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#(Old values::http://who.int/ictm#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40009"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40009"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="4"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40010"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40011"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40011"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="5"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40012"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40013"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40013"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="6"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40014"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40015"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40015"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="7"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40016"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40017"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40017"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="8"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40018"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40019"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40019"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="9"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40020"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40021"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40021"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="10"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40022"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40023"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40023"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="11"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class40024"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#, rdf:http://www.w3.org/1999/02/22-rdf-syntax-ns#(Old values::http://who.int/ictm#, ictmumbrella:http://who.int/ictm-umbrella#, rdfs:http://www.w3.org/2000/01/rdf-schema#, swrl:http://www.w3.org/2003/11/swrl#, protege:http://protege.stanford.edu/plugins/owl/protege#, xsp:http://www.owl-ontologies.com/2005/08/07/xsp.owl#, swrlb:http://www.w3.org/2003/11/swrlb#, xsd:http://www.w3.org/2001/XMLSchema#, owl:http://www.w3.org/2002/07/owl#)</rdfs:label>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class40025"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class40025"
+	 kb:date="02/01/2011 13:04:56 PST"
+	 kb:sequence="12"
+	 rdfs:label="02/01/2011 13:04:56 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class5"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-POINTER-PROPERTY for instance: http://who.int/ictm#:OWL-ONTOLOGY-POINTER-CLASS_1 set to: Ontology(http://who.int/ictm-umbrella)(Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class6"/>
+</kb:Property_Value>
+<kb:Superclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50000"
+	 kb:action="Superclass_Added"
+	 kb:author="">
+	<kb:context>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'})</kb:context>
+	<rdfs:label>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50002"/>
+</kb:Superclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50001"
+	 kb:currentName="http://who.int/ictm#TM02"
+	 rdfs:label="http://who.int/ictm#TM02">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50000"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50010"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50012"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50025"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50034"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50036"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50048"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50057"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50059"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50071"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50080"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50082"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50002"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="13"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Subclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50003"
+	 kb:action="Subclass_Added"
+	 kb:author="">
+	<kb:context>Subclass Added: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} (added to: '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Subclass Added: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} (added to: '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50004"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50005"/>
+</kb:Subclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50004"
+	 kb:currentName="http://who.int/ictm#TM0201100"
+	 rdfs:label="http://who.int/ictm#TM0201100">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50003"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50006"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50008"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50017"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50019"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50021"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50023"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50005"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="14"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50006"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to:  , '02' 'Diseases of External Medicine'(Old values: )</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to:  , '02' 'Diseases of External Medicine'(Old values: )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50004"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50007"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50007"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="15"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50008"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50004"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50009"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50009"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="16"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50010"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50011"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50011"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="17"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50012"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50013"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50013"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="18"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Superclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50014"
+	 kb:action="Superclass_Removed"
+	 kb:author="">
+	<kb:context>Superclass Removed:   (removed from: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'})</kb:context>
+	<rdfs:label>Superclass Removed:   (removed from: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50016"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50019"/>
+</kb:Superclass_Removed>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50015"
+	 rdfs:label="annotation_ictm_umbrella_Class50015">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50014"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50038"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50061"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50084"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50108"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60000"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60002"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60004"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60006"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60008"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60010"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60012"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60014"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60016"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60018"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60020"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60022"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60024"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60026"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60028"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60030"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60032"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60034"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60036"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50016"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="19"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50017"
+	 kb:action="Subclass_Removed"
+	 kb:author="">
+	<kb:context>Subclass Removed: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} (removed from:  )</kb:context>
+	<rdfs:label>Subclass Removed: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} (removed from:  )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50004"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50018"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50019"/>
+</kb:Subclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50018"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="20"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_umbrella_Class50019"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Remove superclass   from '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} -- Apply to: http://who.int/ictm#TM0201100</kb:context>
+	<rdfs:label>Remove superclass   from '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} -- Apply to: http://who.int/ictm#TM0201100</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50004"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50014"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50017"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50020"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50020"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="21"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50021"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50004"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50022"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50022"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="22"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50023"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.01.100' {'Breast lump (hyperplasia of mammary gland)', ' 乳癖'} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50004"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50024"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50024"
+	 kb:date="02/01/2011 14:50:47 PST"
+	 kb:sequence="23"
+	 rdfs:label="02/01/2011 14:50:47 PST"/>
+<kb:Superclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50025"
+	 kb:action="Superclass_Added"
+	 kb:author="">
+	<kb:context>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.02.100' {'Interior hemorroid', ' 内（里）痔'})</kb:context>
+	<rdfs:label>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.02.100' {'Interior hemorroid', ' 内（里）痔'})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50026"/>
+</kb:Superclass_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50026"
+	 kb:date="02/01/2011 14:50:51 PST"
+	 kb:sequence="24"
+	 rdfs:label="02/01/2011 14:50:51 PST"/>
+<kb:Subclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50027"
+	 kb:action="Subclass_Added"
+	 kb:author="">
+	<kb:context>Subclass Added: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} (added to: '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Subclass Added: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} (added to: '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50028"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50029"/>
+</kb:Subclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50028"
+	 kb:currentName="http://who.int/ictm#TM0202100"
+	 rdfs:label="http://who.int/ictm#TM0202100">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50027"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50030"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50032"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50040"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50042"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50044"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50046"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50029"
+	 kb:date="02/01/2011 14:50:51 PST"
+	 kb:sequence="25"
+	 rdfs:label="02/01/2011 14:50:51 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50030"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to:  , '02' 'Diseases of External Medicine'(Old values: )</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to:  , '02' 'Diseases of External Medicine'(Old values: )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50028"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50031"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50031"
+	 kb:date="02/01/2011 14:50:51 PST"
+	 kb:sequence="26"
+	 rdfs:label="02/01/2011 14:50:51 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50032"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50028"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50033"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50033"
+	 kb:date="02/01/2011 14:50:51 PST"
+	 kb:sequence="27"
+	 rdfs:label="02/01/2011 14:50:51 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50034"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50035"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50035"
+	 kb:date="02/01/2011 14:50:51 PST"
+	 kb:sequence="28"
+	 rdfs:label="02/01/2011 14:50:51 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50036"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50037"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50037"
+	 kb:date="02/01/2011 14:50:51 PST"
+	 kb:sequence="29"
+	 rdfs:label="02/01/2011 14:50:51 PST"/>
+<kb:Superclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50038"
+	 kb:action="Superclass_Removed"
+	 kb:author="">
+	<kb:context>Superclass Removed:   (removed from: '02.02.100' {'Interior hemorroid', ' 内（里）痔'})</kb:context>
+	<rdfs:label>Superclass Removed:   (removed from: '02.02.100' {'Interior hemorroid', ' 内（里）痔'})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50039"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50042"/>
+</kb:Superclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50039"
+	 kb:date="02/01/2011 14:50:52 PST"
+	 kb:sequence="30"
+	 rdfs:label="02/01/2011 14:50:52 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50040"
+	 kb:action="Subclass_Removed"
+	 kb:author="">
+	<kb:context>Subclass Removed: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} (removed from:  )</kb:context>
+	<rdfs:label>Subclass Removed: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} (removed from:  )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50028"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50041"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50042"/>
+</kb:Subclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50041"
+	 kb:date="02/01/2011 14:50:52 PST"
+	 kb:sequence="31"
+	 rdfs:label="02/01/2011 14:50:52 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_umbrella_Class50042"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Remove superclass   from '02.02.100' {'Interior hemorroid', ' 内（里）痔'} -- Apply to: http://who.int/ictm#TM0202100</kb:context>
+	<rdfs:label>Remove superclass   from '02.02.100' {'Interior hemorroid', ' 内（里）痔'} -- Apply to: http://who.int/ictm#TM0202100</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50028"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50038"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50040"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50043"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50043"
+	 kb:date="02/01/2011 14:50:52 PST"
+	 kb:sequence="32"
+	 rdfs:label="02/01/2011 14:50:52 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50044"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50028"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50045"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50045"
+	 kb:date="02/01/2011 14:50:52 PST"
+	 kb:sequence="33"
+	 rdfs:label="02/01/2011 14:50:52 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50046"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.02.100' {'Interior hemorroid', ' 内（里）痔'} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50028"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50047"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50047"
+	 kb:date="02/01/2011 14:50:52 PST"
+	 kb:sequence="34"
+	 rdfs:label="02/01/2011 14:50:52 PST"/>
+<kb:Superclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50048"
+	 kb:action="Superclass_Added"
+	 kb:author="">
+	<kb:context>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.02.200' {'Fissured anus', 裂肛})</kb:context>
+	<rdfs:label>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.02.200' {'Fissured anus', 裂肛})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50049"/>
+</kb:Superclass_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50049"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="35"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Subclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50050"
+	 kb:action="Subclass_Added"
+	 kb:author="">
+	<kb:context>Subclass Added: '02.02.200' {'Fissured anus', 裂肛} (added to: '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Subclass Added: '02.02.200' {'Fissured anus', 裂肛} (added to: '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50051"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50052"/>
+</kb:Subclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50051"
+	 kb:currentName="http://who.int/ictm#TM0202200"
+	 rdfs:label="http://who.int/ictm#TM0202200">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50050"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50053"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50055"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50063"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50065"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50067"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50069"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50052"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="36"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50053"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.02.200' {'Fissured anus', 裂肛} set to:  , '02' 'Diseases of External Medicine'(Old values: )</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.02.200' {'Fissured anus', 裂肛} set to:  , '02' 'Diseases of External Medicine'(Old values: )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50051"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50054"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50054"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="37"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50055"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.02.200' {'Fissured anus', 裂肛} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.02.200' {'Fissured anus', 裂肛} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50051"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50056"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50056"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="38"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50057"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50058"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50058"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="39"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50059"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50060"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50060"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="40"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Superclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50061"
+	 kb:action="Superclass_Removed"
+	 kb:author="">
+	<kb:context>Superclass Removed:   (removed from: '02.02.200' {'Fissured anus', 裂肛})</kb:context>
+	<rdfs:label>Superclass Removed:   (removed from: '02.02.200' {'Fissured anus', 裂肛})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50062"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50065"/>
+</kb:Superclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50062"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="41"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50063"
+	 kb:action="Subclass_Removed"
+	 kb:author="">
+	<kb:context>Subclass Removed: '02.02.200' {'Fissured anus', 裂肛} (removed from:  )</kb:context>
+	<rdfs:label>Subclass Removed: '02.02.200' {'Fissured anus', 裂肛} (removed from:  )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50051"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50064"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50065"/>
+</kb:Subclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50064"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="42"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_umbrella_Class50065"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Remove superclass   from '02.02.200' {'Fissured anus', 裂肛} -- Apply to: http://who.int/ictm#TM0202200</kb:context>
+	<rdfs:label>Remove superclass   from '02.02.200' {'Fissured anus', 裂肛} -- Apply to: http://who.int/ictm#TM0202200</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50051"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50061"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50063"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50066"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50066"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="43"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50067"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.02.200' {'Fissured anus', 裂肛} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.02.200' {'Fissured anus', 裂肛} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50051"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50068"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50068"
+	 kb:date="02/01/2011 14:50:55 PST"
+	 kb:sequence="44"
+	 rdfs:label="02/01/2011 14:50:55 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50069"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.02.200' {'Fissured anus', 裂肛} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.02.200' {'Fissured anus', 裂肛} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50051"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50070"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50070"
+	 kb:date="02/01/2011 14:50:56 PST"
+	 kb:sequence="45"
+	 rdfs:label="02/01/2011 14:50:56 PST"/>
+<kb:Superclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50071"
+	 kb:action="Superclass_Added"
+	 kb:author="">
+	<kb:context>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄})</kb:context>
+	<rdfs:label>Superclass Added: '02' 'Diseases of External Medicine' (added to: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50072"/>
+</kb:Superclass_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50072"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="46"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Subclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50073"
+	 kb:action="Subclass_Added"
+	 kb:author="">
+	<kb:context>Subclass Added: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} (added to: '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Subclass Added: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} (added to: '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50074"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50075"/>
+</kb:Subclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50074"
+	 kb:currentName="http://who.int/ictm#TM0203100"
+	 rdfs:label="http://who.int/ictm#TM0203100">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50073"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50076"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50078"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50086"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50088"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50090"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50092"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50075"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="47"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50076"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to:  , '02' 'Diseases of External Medicine'(Old values: )</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to:  , '02' 'Diseases of External Medicine'(Old values: )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50074"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50077"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50077"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="48"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50078"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50074"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50079"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50079"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="49"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50080"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02' 'Diseases of External Medicine' set to:  'ICTM Categories'(Old values: 'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50081"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50081"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="50"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50082"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02' 'Diseases of External Medicine' set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50001"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50083"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50083"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="51"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Superclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50084"
+	 kb:action="Superclass_Removed"
+	 kb:author="">
+	<kb:context>Superclass Removed:   (removed from: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄})</kb:context>
+	<rdfs:label>Superclass Removed:   (removed from: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50085"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50088"/>
+</kb:Superclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50085"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="52"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50086"
+	 kb:action="Subclass_Removed"
+	 kb:author="">
+	<kb:context>Subclass Removed: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} (removed from:  )</kb:context>
+	<rdfs:label>Subclass Removed: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} (removed from:  )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50074"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50087"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50088"/>
+</kb:Subclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50087"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="53"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_umbrella_Class50088"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Remove superclass   from '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} -- Apply to: http://who.int/ictm#TM0203100</kb:context>
+	<rdfs:label>Remove superclass   from '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} -- Apply to: http://who.int/ictm#TM0203100</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50074"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50084"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50086"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50089"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50089"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="54"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50090"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to: '02' 'Diseases of External Medicine'(Old values: , '02' 'Diseases of External Medicine')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50074"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50091"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50091"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="55"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50092"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '02.03.100' {'Furunculosis complicated by septicernia', 疔疮走黄} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50074"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50093"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50093"
+	 kb:date="02/01/2011 14:50:59 PST"
+	 kb:sequence="56"
+	 rdfs:label="02/01/2011 14:50:59 PST"/>
+<kb:Superclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50094"
+	 kb:action="Superclass_Added"
+	 kb:author="">
+	<kb:context>Superclass Added: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'} (added to: '06.03.100' {'Impediment disease', 痺證, 비증})</kb:context>
+	<rdfs:label>Superclass Added: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'} (added to: '06.03.100' {'Impediment disease', 痺證, 비증})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50095"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50096"/>
+</kb:Superclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50095"
+	 kb:currentName="http://who.int/ictm#TM06"
+	 rdfs:label="http://who.int/ictm#TM06">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50094"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50104"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50106"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50096"
+	 kb:date="02/01/2011 14:51:05 PST"
+	 kb:sequence="57"
+	 rdfs:label="02/01/2011 14:51:05 PST"/>
+<kb:Subclass_Added rdf:about="&kb;annotation_ictm_umbrella_Class50097"
+	 kb:action="Subclass_Added"
+	 kb:author="">
+	<kb:context>Subclass Added: '06.03.100' {'Impediment disease', 痺證, 비증} (added to: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'})</kb:context>
+	<rdfs:label>Subclass Added: '06.03.100' {'Impediment disease', 痺證, 비증} (added to: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50098"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50099"/>
+</kb:Subclass_Added>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_umbrella_Class50098"
+	 kb:currentName="http://who.int/ictm#TM0603100"
+	 rdfs:label="http://who.int/ictm#TM0603100">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50097"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50100"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50102"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50110"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50112"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50114"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class50116"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50099"
+	 kb:date="02/01/2011 14:51:05 PST"
+	 kb:sequence="58"
+	 rdfs:label="02/01/2011 14:51:05 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50100"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to:  , '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'}(Old values: )</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to:  , '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'}(Old values: )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50098"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50101"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50101"
+	 kb:date="02/01/2011 14:51:05 PST"
+	 kb:sequence="59"
+	 rdfs:label="02/01/2011 14:51:05 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50102"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50098"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50103"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50103"
+	 kb:date="02/01/2011 14:51:05 PST"
+	 kb:sequence="60"
+	 rdfs:label="02/01/2011 14:51:05 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50104"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'} set to:  'ICTM Categories'(Old values: 'ICTM Categories')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'} set to:  'ICTM Categories'(Old values: 'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50095"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50105"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50105"
+	 kb:date="02/01/2011 14:51:05 PST"
+	 kb:sequence="61"
+	 rdfs:label="02/01/2011 14:51:05 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50106"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50095"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50107"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50107"
+	 kb:date="02/01/2011 14:51:05 PST"
+	 kb:sequence="62"
+	 rdfs:label="02/01/2011 14:51:05 PST"/>
+<kb:Superclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50108"
+	 kb:action="Superclass_Removed"
+	 kb:author="">
+	<kb:context>Superclass Removed:   (removed from: '06.03.100' {'Impediment disease', 痺證, 비증})</kb:context>
+	<rdfs:label>Superclass Removed:   (removed from: '06.03.100' {'Impediment disease', 痺證, 비증})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50109"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50112"/>
+</kb:Superclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50109"
+	 kb:date="02/01/2011 14:51:06 PST"
+	 kb:sequence="63"
+	 rdfs:label="02/01/2011 14:51:06 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class50110"
+	 kb:action="Subclass_Removed"
+	 kb:author="">
+	<kb:context>Subclass Removed: '06.03.100' {'Impediment disease', 痺證, 비증} (removed from:  )</kb:context>
+	<rdfs:label>Subclass Removed: '06.03.100' {'Impediment disease', 痺證, 비증} (removed from:  )</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50098"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50111"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class50112"/>
+</kb:Subclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50111"
+	 kb:date="02/01/2011 14:51:06 PST"
+	 kb:sequence="64"
+	 rdfs:label="02/01/2011 14:51:06 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_umbrella_Class50112"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Remove superclass   from '06.03.100' {'Impediment disease', 痺證, 비증} -- Apply to: http://who.int/ictm#TM0603100</kb:context>
+	<rdfs:label>Remove superclass   from '06.03.100' {'Impediment disease', 痺證, 비증} -- Apply to: http://who.int/ictm#TM0603100</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50098"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50108"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class50110"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50113"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50113"
+	 kb:date="02/01/2011 14:51:06 PST"
+	 kb:sequence="65"
+	 rdfs:label="02/01/2011 14:51:06 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50114"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'}(Old values: , '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'})</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to: '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'}(Old values: , '06' {'Diseases of the musculoskeletal system and connective tissue', '근골격계 및 결합조직의 질환'})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50098"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50115"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50115"
+	 kb:date="02/01/2011 14:51:06 PST"
+	 kb:sequence="66"
+	 rdfs:label="02/01/2011 14:51:06 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class50116"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to: (Old values:)</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: '06.03.100' {'Impediment disease', 痺證, 비증} set to: (Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50098"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class50117"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class50117"
+	 kb:date="02/01/2011 14:51:06 PST"
+	 kb:sequence="67"
+	 rdfs:label="02/01/2011 14:51:06 PST"/>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class6"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="2"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class60000"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: icd:linearization for instance:   set to: (Old values:http://who.int/ictm#0_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#1_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#2_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#3_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#4_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#5_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#6_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#7_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#8_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#9_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#10_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#11_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#12_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#13_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#14_f3f45533_726f_4089_8d05_2ff5b5c5e37e)</kb:context>
+	<rdfs:label>Property: icd:linearization for instance:   set to: (Old values:http://who.int/ictm#0_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#1_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#2_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#3_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#4_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#5_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#6_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#7_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#8_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#9_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#10_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#11_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#12_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#13_f3f45533_726f_4089_8d05_2ff5b5c5e37e, http://who.int/ictm#14_f3f45533_726f_4089_8d05_2ff5b5c5e37e)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60001"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60001"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="0"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class60002"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: icd:biologicalSex for instance:   set to: (Old values:icd:BiologicalSexNotAppSCTerm)</kb:context>
+	<rdfs:label>Property: icd:biologicalSex for instance:   set to: (Old values:icd:BiologicalSexNotAppSCTerm)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60003"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60003"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="1"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class60004"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance:   set to: (Old values: 'ICTM Categories')</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance:   set to: (Old values: 'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60005"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60005"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="2"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Class_Deleted rdf:about="&kb;annotation_ictm_umbrella_Class60006"
+	 kb:action="Class_Deleted"
+	 kb:author=""
+	 kb:context="Class Delete: Orphans"
+	 kb:deletionName="http://who.int/ictm#Orphans"
+	 rdfs:label="Class Delete: Orphans">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60007"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Class_Deleted>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60007"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="3"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60008"
+	 kb:action="Subclass_Removed"
+	 kb:author="">
+	<kb:context>Subclass Removed: http://who.int/ictm#Orphans (removed from:  'ICTM Categories')</kb:context>
+	<rdfs:label>Subclass Removed: http://who.int/ictm#Orphans (removed from:  'ICTM Categories')</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60009"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Subclass_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60009"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="4"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60010"
+	 kb:action="Individual_Removed"
+	 kb:author=""
+	 kb:context="Instance Removed: Orphans (instance of: owl:Class)"
+	 rdfs:label="Instance Removed: Orphans (instance of: owl:Class)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60011"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60011"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="5"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60012"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: TMBodySystemsSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: TMBodySystemsSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60013"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60013"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="6"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60014"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: icd:ClinicalDescriptionSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: icd:ClinicalDescriptionSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60015"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60015"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="7"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60016"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: icd:LinearizationSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: icd:LinearizationSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60017"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60017"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="8"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60018"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: icd:DiagnosticCriteriaSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: icd:DiagnosticCriteriaSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60019"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60019"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="9"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60020"
+	 kb:action="Individual_Removed"
+	 kb:author=""
+	 kb:context="Instance Removed: Orphans (instance of: icd:TermSection)"
+	 rdfs:label="Instance Removed: Orphans (instance of: icd:TermSection)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60021"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60021"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="10"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60022"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: icd:TreatmentSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: icd:TreatmentSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60023"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60023"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="11"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60024"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: icd:FunctionalImpactSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: icd:FunctionalImpactSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60025"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60025"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="12"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60026"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: icd:DefinitionSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: icd:DefinitionSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60027"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60027"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="13"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60028"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: icd:SpecificConditionSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: icd:SpecificConditionSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60029"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60029"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="14"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60030"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: TMCausalPropertiesSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: TMCausalPropertiesSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60031"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60031"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="15"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60032"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: TMManifestationPropertiesSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: TMManifestationPropertiesSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60033"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60033"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="16"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60034"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: TMDiagnosticCriteriaSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: TMDiagnosticCriteriaSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60035"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60035"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="17"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Individual_Removed rdf:about="&kb;annotation_ictm_umbrella_Class60036"
+	 kb:action="Individual_Removed"
+	 kb:author="">
+	<kb:context>Instance Removed: Orphans (instance of: TMDevelopmentCourseOrStagesSection)</kb:context>
+	<rdfs:label>Instance Removed: Orphans (instance of: TMDevelopmentCourseOrStagesSection)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60037"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_umbrella_Class60038"/>
+</kb:Individual_Removed>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60037"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="18"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_umbrella_Class60038"
+	 kb:action="Composite_Change"
+	 kb:author=""
+	 kb:context="Delete class   -- Apply to: http://who.int/ictm#Orphans"
+	 rdfs:label="Delete class   -- Apply to: http://who.int/ictm#Orphans">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class50015"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60000"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60002"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60004"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60006"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60008"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60010"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60012"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60014"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60016"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60018"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60020"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60022"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60024"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60026"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60028"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60030"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60032"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60034"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_umbrella_Class60036"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class60039"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class60039"
+	 kb:date="02/01/2011 14:51:44 PST"
+	 kb:sequence="19"
+	 rdfs:label="02/01/2011 14:51:44 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_umbrella_Class7"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</kb:context>
+	<rdfs:label>Property: protege:OWL-ONTOLOGY-PREFIXES for instance: Ontology(http://who.int/ictm-umbrella) set to: :http://who.int/ictm#(Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_umbrella_Class8"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_umbrella_Class9"/>
+</kb:Property_Value>
+<kb:Ontology_Individual rdf:about="&kb;annotation_ictm_umbrella_Class8"
+	 kb:currentName="http://who.int/ictm-umbrella"
+	 rdfs:label="http://who.int/ictm-umbrella">
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10006"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10008"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10010"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10012"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10014"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10016"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10018"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10020"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10022"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class10024"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class12"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class14"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class16"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class18"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class20"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class22"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class24"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class26"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30006"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30008"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30010"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30012"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30014"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30016"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30018"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30020"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30022"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class30024"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40006"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40008"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40010"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40012"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40014"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40016"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40018"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40020"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40022"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class40024"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_umbrella_Class7"/>
+</kb:Ontology_Individual>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_umbrella_Class9"
+	 kb:date="01/31/2011 23:59:14 PST"
+	 kb:sequence="3"
+	 rdfs:label="01/31/2011 23:59:14 PST"/>
+</rdf:RDF>

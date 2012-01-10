@@ -24,12 +24,12 @@ class LinearizationSpec(models.Model):
     #class Meta:
     #    unique_together = (['instance', 'linearization', 'parent', 'child'])
         
-CATEGORY_NAME_PREFIX = 'http://who.int/ictm#'
+CATEGORY_NAME_PREFIX = 'http://who.int/icd#'
 
 DISPLAY_STATUS = {
-            'http://who.int/ictm#DS_Blue': 'blue',
-            'http://who.int/ictm#DS_Yellow': 'yellow',
-            'http://who.int/ictm#DS_Red': 'red',
+            'http://who.int/icd#DS_Blue': 'blue',
+            'http://who.int/icd#DS_Yellow': 'yellow',
+            'http://who.int/icd#DS_Red': 'red',
         }
 
 class Category(models.Model):
@@ -40,13 +40,21 @@ class Category(models.Model):
     sorting_label = models.CharField(max_length=250)
     definition = models.TextField()
     children = models.ManyToManyField('self', related_name='parents', symmetrical=False)
+    branches = models.ManyToManyField('self', symmetrical=False)
     linearization_parents = models.ManyToManyField('self', related_name='linearization_children',
         symmetrical=False, through=LinearizationSpec)
+    
+    # Overhead if coming from category: 
+    #   Always going over chao then changes then categories
+    # Overhead if coming from author:
+    #   Always going over changes then apply_to then category
+    change_authors = models.ManyToManyField('Author', related_name="change_categories")
+    annotation_authors = models.ManyToManyField('Author', related_name="annotation_categories")
     
     display_status = models.CharField(max_length=250)
     primary_tag = models.CharField(max_length=250)
     secondary_tag = models.CharField(max_length=250)
-    
+
     x_twopi = models.FloatField(null=True)
     y_twopi = models.FloatField(null=True)
     x_sfdp = models.FloatField(null=True)
@@ -90,7 +98,47 @@ class Category(models.Model):
         
     def get_pos(self, layout):
         return (getattr(self, 'x_' + layout), getattr(self, 'y_' + layout))
+
+    def get_multilingual_status(self, feature):
+        colors = ["", "yellow", "orange", "red", "blue", "darkblue"]
+        number = {
+            'mlm_titles': self.multilanguage_metrics.mlm_titles,
+            'mlm_title_languages': self.multilanguage_metrics.mlm_title_languages,
+            'mlm_definitions': self.multilanguage_metrics.mlm_definitions,
+            'mlm_definition_languages': self.multilanguage_metrics.mlm_definition_languages
+        }[feature]
+        
+        return colors[number] if number+1 < len(colors) else colors[-1]
+
+    def get_tags(self):
+        r = []
+        if self.primary_tag != '':
+            r.append(self.primary_tag)
+        if self.secondary_tag != '':
+            r.append(self.secondary_tag)
+        r.extend(self.involved_tags.values_list("name", flat=True))
+        
+        #special case for Internal_Medicine
+        if len([x for x in r if x.startswith("http://who.int/icd#TAG_IM_")]) > 0: 
+            r.append("http://who.int/icd#TAG_Internal_Medicine")
+
+        if len([x for x in r if x.startswith("http://who.int/icd#TAG_Internal_Medicine")]) > 0:
+            r.extend(Group.objects.filter(name__contains="http://who.int/icd#TAG_IM_").values_list("name", flat=True))
+        
+        return set(r)
     
+    def get_heatmap_status(self, heatmap_feature):
+        colors = ["h_blackblue", "h_darkestblue", "h_darkblue", "h_blue", "h_yellow", "h_orange", "h_red"]
+        limits = [356, 180, 30, 14, 7, 3]
+        
+        for idx, limit in enumerate(limits):
+            if heatmap_feature < limit:
+                continue
+            else:
+                return colors[idx]
+        # return hottest
+        return colors[-1]
+        
     class Meta:
         unique_together = [('instance', 'name')]
     
@@ -99,31 +147,45 @@ class Category(models.Model):
         
         x, y = GRAPH_POSITIONS[layout][self.name]
         return reverse('icd.views.network') + '#x=%f&y=%f&z=6' % (x, y)"""
+
+class InvolvedTag(models.Model):
+    category = models.ForeignKey('Category', related_name='involved_tags')
+    instance = models.CharField(max_length=250, db_index=True)
+    name = models.CharField(max_length=250, db_index=True)
+    class Meta:
+        unique_together = [('instance', 'name', 'category')]
+
         
+class CategoryTitles(models.Model):
+    category = models.ForeignKey('Category', related_name='category_titles')
+    title = models.CharField(max_length=250, db_index=True)
+    language_code = models.CharField(max_length=250, db_index=True)
+    def __unicode__(self):
+        if self.title.strip():
+            return self.title
+
+class CategoryDefinitions(models.Model):
+    category = models.ForeignKey('Category', related_name='category_definitions')
+    definition = models.TextField()
+    language_code = models.CharField(max_length=250, db_index=True)
+    def __unicode__(self):
+        if self.definition.strip():
+            return self.definition
+
 class Timespan(models.Model):
     instance = models.CharField(max_length=30, db_index=True)
     start = models.DateTimeField()
     stop = models.DateTimeField()
-    
     following = models.ManyToManyField('self', symmetrical=False, related_name='preceding')
     
 class Metrics(models.Model):
     non_metrics = ['x_twopi', 'y_twopi', 'x_sfdp', 'y_sfdp']
-    
     # redundant copy from category
     x_twopi = models.FloatField(null=True)
     y_twopi = models.FloatField(null=True)
     x_sfdp = models.FloatField(null=True)
     y_sfdp = models.FloatField(null=True)
-    
-    changes = models.IntegerField(help_text="Number of changes")
-    annotations = models.IntegerField(help_text="Number of notes")
-    activity = models.IntegerField(help_text="Changes + notes")
-    
-    acc_changes = models.IntegerField(help_text="Accumulated Number of changes")
-    acc_annotations = models.IntegerField(help_text="Accumulated Number of notes")
-    acc_activity = models.IntegerField(help_text="Accumulated Changes + notes")
-    
+
     class Meta:
         abstract = True
         
@@ -155,31 +217,33 @@ class Metrics(models.Model):
             for attr in ('x_' + key, 'y_' + key):
                 setattr(self, attr, getattr(category, attr))
     
+    def get_filter_metrics(self):
+        result = []
+        for field in self._meta.fields:
+            result.append(field.name)
+        return result
+    
 class ChAOMetrics(Metrics):
-    authors = models.IntegerField(help_text="Distinct authors of changes and notes")
-    authors_changes = models.IntegerField(help_text="Distinct authors of changes")
-    authors_annotations = models.IntegerField(help_text="Distinct authors of notes")
-    authors_gini = models.FloatField(null=True, help_text="Authors Gini coefficient")
-    
-    acc_authors = models.IntegerField(help_text="Accumulated Distinct authors of changes and notes")
-    acc_authors_changes = models.IntegerField(help_text="Accumulated Distinct authors of changes")
-    acc_authors_annotations = models.IntegerField(help_text="Accumulated Distinct authors of notes")
-    
     #display_status = models.CharField(max_length=30, db_index=True, null=True, help_text="Display status")
-    
+    changes = models.IntegerField(help_text="Number of changes")
+    annotations = models.IntegerField(help_text="Number of notes")
+    activity = models.IntegerField(help_text="Changes + notes")
     class Meta:
         abstract = True
     
-class TimespanCategoryMetrics(ChAOMetrics):
-    timespan = models.ForeignKey(Timespan, related_name='metrics')
-    category = models.ForeignKey(Category, related_name='timespan_metrics')
+class TimespanCategoryMetrics(Metrics):
+    #timespan = models.ForeignKey(Timespan, related_name='metrics')
+    category = models.OneToOneField(Category, related_name='timespan_metrics')
+    instance = models.CharField(max_length=30, db_index=True)
     
-    days_after_last_change = models.FloatField(null=True, help_text="Days after last change")
-    days_before_first_change = models.FloatField(null=True, help_text="Days before first change")
-    days_after_median_change = models.FloatField(null=True, help_text="Days after median change")
-    days_after_last_annotation = models.FloatField(null=True, help_text="Days after last note")
-    days_before_first_annotation = models.FloatField(null=True, help_text="Days before first note")
-    days_after_median_annotation = models.FloatField(null=True, help_text="Days after median note")
+    days_after_last_change = models.FloatField(default=0, null=True, help_text="Days after last change")
+    #days_before_first_change = models.FloatField(default=0, null=True, help_text="Days before first change")
+    #days_after_median_change = models.FloatField(default=0, null=True, help_text="Days after median change")
+    days_after_last_annotation = models.FloatField(default=0, null=True, help_text="Days after last note")
+    #days_before_first_annotation = models.FloatField(default=0, null=True, help_text="Days before first note")
+    #days_after_median_annotation = models.FloatField(default=0, null=True, help_text="Days after median note")
+    days_after_last_activity = models.FloatField(default=0, null=True, help_text="Days after last activity")
+    """
     changes_parents = models.IntegerField(db_index=True)
     annotations_parents = models.IntegerField(db_index=True)
     changes_children = models.IntegerField(db_index=True)
@@ -196,18 +260,15 @@ class TimespanCategoryMetrics(ChAOMetrics):
             if name.startswith('days_before_'):
                 return 0
         return value
+    """
         
 class CategoryMetrics(ChAOMetrics):
     category = models.OneToOneField(Category, related_name='metrics')
     instance = models.CharField(max_length=30, db_index=True)
-    
-    #changes = models.IntegerField(db_index=True, help_text="Number of changes")
-    #annotations = models.IntegerField(db_index=True, help_text="Number of annotations")
-    #authors = models.IntegerField(db_index=True, help_text="Distinct authors of changes and annotations")
-    #authors_changes = models.IntegerField(db_index=True, help_text="Distinct authors of changes")
-    #authors_annotations = models.IntegerField(db_index=True, help_text="Distinct authors of annotations")
-    #authors_gini = models.FloatField(db_index=True, null=True, help_text="Authors Gini coefficient")
-    
+    authors = models.IntegerField(db_index=True, help_text="Distinct authors of changes and annotations")
+    authors_changes = models.IntegerField(db_index=True, help_text="Distinct authors of changes")
+    authors_annotations = models.IntegerField(db_index=True, help_text="Distinct authors of annotations")
+    authors_gini = models.FloatField(db_index=True, null=True, help_text="Authors Gini coefficient")
     parents = models.IntegerField(help_text="Number of parents")
     children = models.IntegerField(help_text="Number of children")
     depth = models.IntegerField(null=True, help_text="Depth in network")
@@ -219,22 +280,55 @@ class CategoryMetrics(ChAOMetrics):
     #hub = models.FloatField(null=True)
     closeness_centrality = models.FloatField(null=True, help_text="Closeness centrality")
     #eigenvector_centrality = models.FloatField(null=True)
-
     overrides = models.IntegerField(help_text="Overrides by different authors")
     edit_sessions = models.IntegerField(help_text="Edit sessions")
     authors_by_property = models.IntegerField(help_text="Distinct authors by property")
-
-    acc_overrides = models.IntegerField(help_text="Accumulated Overrides by different authors", default=0)
-    acc_edit_sessions = models.IntegerField(help_text="Accumulated Edit sessions", default=0)
-    acc_authors_by_property = models.IntegerField(help_text="Accumulated Distinct authors by property", default=0)
+    primary_tag_changes = models.IntegerField(null=True, help_text="Number of changes by primary TAG")
+    secondary_tag_changes = models.IntegerField(null=True, help_text="Number of changes by secondary TAG")
+    involved_tag_changes = models.IntegerField(null=True, help_text="Number of changes by involved TAG")
+    who_tag_changes = models.IntegerField(null=True, help_text="Number of changes by who TAG")
+    outside_tag_changes = models.IntegerField(null=True, help_text="Number of changes outside assigned TAGs")
     
     def __unicode__(self):
         return self.category.name
+
+
+class AccumulatedCategoryMetrics(Metrics):
+    category = models.OneToOneField(Category, related_name='accumulated_metrics')
+    instance = models.CharField(max_length=30, db_index=True)
+    acc_overrides = models.IntegerField(help_text="Accumulated Overrides by different authors", default=0)
+    acc_edit_sessions = models.IntegerField(help_text="Accumulated Edit sessions", default=0)
+    acc_authors_by_property = models.IntegerField(help_text="Accumulated Distinct authors by property", default=0)
+    acc_authors = models.IntegerField(default=0, help_text="Accumulated Distinct authors of changes and notes")
+    acc_authors_changes = models.IntegerField(default=0, help_text="Accumulated Distinct authors of changes")
+    acc_authors_annotations = models.IntegerField(default=0, help_text="Accumulated Distinct authors of notes")
+    acc_changes = models.IntegerField(default=0, help_text="Accumulated Number of changes")
+    acc_annotations = models.IntegerField(default=0, help_text="Accumulated Number of notes")
+    acc_activity = models.IntegerField(default=0, help_text="Accumulated Changes + notes")
+
+    def __unicode__(self):
+        return self.category.name
+
+        
+class MultilanguageCategoryMetrics(Metrics):
+    category = models.OneToOneField(Category, related_name='multilanguage_metrics')
+    instance = models.CharField(max_length=30, db_index=True)
+    mlm_titles = models.IntegerField(help_text="Number of titles", default=0)
+    mlm_title_languages = models.IntegerField(help_text="Number of title languages", default=0)
+    mlm_definitions = models.IntegerField(help_text="Number of definitions", default=0)
+    mlm_definition_languages = models.IntegerField(help_text="Number of definition languages", default=0)
     
-class AuthorCategoryMetrics(Metrics):
+    def __unicode__(self):
+        return self.category.name
+        
+
+class AuthorCategoryMetrics(ChAOMetrics):
     category = models.ForeignKey(Category, related_name='author_metrics')
     instance = models.CharField(max_length=30, db_index=True)
     author = models.ForeignKey('Author', related_name='category_metrics')
+    acc_changes = models.IntegerField(default=0, help_text="Accumulated Number of changes")
+    acc_annotations = models.IntegerField(default=0, help_text="Accumulated Number of notes")
+    acc_activity = models.IntegerField(default=0, help_text="Accumulated Changes + notes")
     
     def __unicode__(self):
         return '%s: %s' % (self.author.name, self.category.name)
@@ -303,6 +397,7 @@ class Change(AnnotatableThing):
     author = models.ForeignKey('Author', related_name='changes')
     timestamp = models.DateTimeField(db_index=True)
     apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
+    session_component = models.ForeignKey('SessionChange', related_name="changes", null=True)
     composite = models.ForeignKey('self', related_name='parts', null=True)
     #context = models.CharField(max_length=250)
     context = models.TextField()
@@ -452,18 +547,63 @@ class Author(models.Model):
             [item for item in result if item[0].startswith('acc_')]
         return result
     
+    def get_filter_metrics(self):
+        result = []
+        for field in self._meta.fields:
+            result.append(field.name)
+        return result
+
 class Group(models.Model):
-    tag_prefix = 'http://who.int/ictm#TAG_'
-    
+    tag_prefix = 'http://who.int/icd#TAG_'
     instance = models.CharField(max_length=30, db_index=True)
     name = models.CharField(max_length=100)
+    
+    progress = models.FloatField(null=True, help_text="Percentage of blue categories")
+    category_count = models.IntegerField(null=True, help_text="Number of categories")
+    change_count = models.IntegerField(null=True, help_text="")
+    blue_categories = models.IntegerField(null=True, help_text="")
+    yellow_categories = models.IntegerField(null=True, help_text="")
+    red_categories = models.IntegerField(null=True, help_text="")
+    grey_categories = models.IntegerField(null=True, help_text="")
+    
+    changes_in_primary = models.IntegerField(null=True, help_text="")
+    changes_in_secondary = models.IntegerField(null=True, help_text="")
+    changes_in_involved = models.IntegerField(null=True, help_text="")
+    
+    activity_in_primary = models.FloatField(null=True, help_text="")
+    activity_in_secondary = models.FloatField(null=True, help_text="")
+    activity_in_involved = models.FloatField(null=True, help_text="")
+    
+    #subgroups = models.ForeignKey('self', related_name='sub_groups', null=True)
     
     def __unicode__(self):
         name = self.name
         if name.startswith(Group.tag_prefix):
             name = name[len(Group.tag_prefix):]
         return name
+
+class SessionChange(models.Model):
+    instance = models.CharField(max_length=30, db_index=True)
+    name = models.CharField(max_length=100, db_index=True)
+    session = models.OneToOneField('Session', related_name='session_component')
     
+        
+class Session(models.Model):
+    #id = models.IntegerField(primary_key=True) 
+    instance = models.CharField(max_length=30, db_index=True)
+    author = models.ForeignKey('Author', related_name='sessions')
+    start_date = models.DateTimeField(null=True, db_index=True)
+    end_date = models.DateTimeField(db_index=True, null=True)
+    #changes = models.ManyToManyField('Change', related_name='changes')
+    #treshold = models.DateTimeField(db_index=True, null=True)
+    #annotations = models.ManyToManyField('Annotation', related_name='annotations')
+    change_count = models.IntegerField(null=True, db_index=True, default=0, help_text="Number of changes")
+    annotation_count = models.IntegerField(null=True, db_index=True, default=0, help_text="Number of annotations")
+    duration = models.FloatField(null=True, help_text="Duration of session in minutes")
+    branches = models.FloatField(null=True, help_text="Number of branches")
+    total_distance = models.IntegerField(null=True, help_text="Total distance between changes (chronologically)")
+    total_depth = models.IntegerField(null=True, help_text="Total distance between nodes and root")
+        
 class Property(models.Model):
     instance = models.CharField(max_length=30, db_index=True)
     name = models.CharField(max_length=100)
@@ -480,3 +620,101 @@ class Property(models.Model):
     def get_absolute_url(self):
         return ''
         return reverse('icd.views.property', kwargs={'name': urllib.quote(self.name.encode('utf-8'))})
+
+class BasicOntologyStatistics(models.Model):
+    # Static Values, once inserted into DB
+    # However needed for all instances
+    instance = models.CharField(max_length=30, db_index=True)
+    change_count = models.IntegerField(null=True, default=0, help_text="Number of changes")
+    annotation_count = models.IntegerField(null=True, default=0, help_text="Number of annotations")
+    author_count = models.IntegerField(null=True, default=0, help_text="Number of authors")
+    category_count = models.IntegerField(null=True, default=0, help_text="Number of categories")
+    tag_count = models.IntegerField(null=True, default=0, help_text="Number of TAGs")
+    
+    zero_change_categories_count = models.IntegerField(null=True, default=0, help_text="Number of categories with 0 changes")
+    avrg_change_categories_count = models.IntegerField(null=True, default=0, help_text="Number of categories with < 5 changes")
+    gta_change_categories_count = models.IntegerField(null=True, default=0, help_text="Number of categories with > 5 changes")
+    
+    zero_annotation_categories_count = models.IntegerField(null=True, default=0, help_text="Number of categories with 0 annotations")
+    avrg_annotation_categories_count = models.IntegerField(null=True, default=0, help_text="Number of categories with < 5 annotations")
+    gta_annotation_categories_count = models.IntegerField(null=True, default=0, help_text="Number of categories with > 5 annotations")
+    
+    average_changes_per_category = models.FloatField(null=True, default=0.0, help_text="Average changes per category")
+    average_annotations_per_category = models.FloatField(null=True, default=0.0, help_text="Average annotations per category")
+    blue_category_count = models.IntegerField(null=True, default=0, help_text="Number of categories with blue display status")
+    yellow_category_count = models.IntegerField(null=True, default=0, help_text="Number of categories with yellow display status")
+    red_category_count = models.IntegerField(null=True, default=0, help_text="Number of categories with red display status")
+    grey_category_count = models.IntegerField(null=True, default=0, help_text="Number of categories with grey display status")
+    
+    blue_changes = models.IntegerField(null=True, default=0, help_text="Number of changes on blue categories")
+    yellow_changes = models.IntegerField(null=True, default=0, help_text="Number of changes on yellow categories")
+    red_changes = models.IntegerField(null=True, default=0, help_text="Number of changes on red categories")
+    grey_changes = models.IntegerField(null=True, default=0, help_text="Number of changes on grey categories")
+
+    primary_activity_per_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as primary tag")
+    secondary_activity_per_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as secondary tag")
+    involved_activity_per_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as involved tag")
+    who_activity_per_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors from WHO")
+    outside_activity_per_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors outside assigned TAGs")
+    
+    primary_activity_per_blue_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as primary tag")
+    secondary_activity_per_blue_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as secondary tag")
+    involved_activity_per_blue_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as involved tag")
+    who_activity_per_blue_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors from WHO")
+    outside_activity_per_blue_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors outside assigned TAGs")
+    
+    primary_activity_per_yellow_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as primary tag")
+    secondary_activity_per_yellow_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as secondary tag")
+    involved_activity_per_yellow_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as involved tag")
+    who_activity_per_yellow_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors from WHO")
+    outside_activity_per_yellow_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors outside assigned TAGs")
+    
+    primary_activity_per_red_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as primary tag")
+    secondary_activity_per_red_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as secondary tag")
+    involved_activity_per_red_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as involved tag")
+    who_activity_per_red_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors from WHO")
+    outside_activity_per_red_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors outside assigned TAGs")
+    
+    primary_activity_per_grey_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as primary tag")
+    secondary_activity_per_grey_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as secondary tag")
+    involved_activity_per_grey_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors with assigned tag on concepts with tag assigned as involved tag")
+    who_activity_per_grey_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors from WHO")
+    outside_activity_per_grey_category = models.FloatField(null=True, default=0.0, help_text="% of all changes done by authors outside assigned TAGs")
+    
+    tbd_concepts = models.IntegerField(null=True, default=0, help_text="Number of \"To be deleted\" categories")
+    dtbm_concepts = models.IntegerField(null=True, default=0, help_text="Number of \"Decision to be made\" categories")
+    tbr_concepts = models.IntegerField(null=True, default=0, help_text="Number of \"To be retired\" categories")
+
+#class Recommender(models.Model):
+#    instance=models.CharField(max_length=30, db_index=True)
+    
+class CategoriesTagRecommendations(models.Model):
+    instance=models.CharField(max_length=30, db_index=True)
+    category = models.ForeignKey('Category', related_name='similarity_recommendations')
+    recommend = models.ForeignKey('Category', related_name='category_recommendations')
+    tag_similarity = models.FloatField(null=True, default=0.0, help_text="Tag Similarity")
+
+class UserTagRecommendations(models.Model):
+    instance=models.CharField(max_length=30, db_index=True)
+    user = models.ForeignKey('Author', related_name='text_recommendations')
+    recommend = models.ForeignKey('Category', related_name='user_recommendations')
+    tag_similarity = models.FloatField(null=True, default=0.0, help_text="Tag Similarity")
+
+class UserDistanceRecommendations(models.Model):
+    instance=models.CharField(max_length=30, db_index=True)
+    user = models.ForeignKey('Author', related_name='distance_recommendations')
+    recommend = models.ForeignKey('Category', related_name='similar_category')
+    explicit_link_score = models.FloatField(null=True, default=0.0, help_text="Explicit link score")
+    
+class UserCoBehaviourRecommendations(models.Model):
+    instance=models.CharField(max_length=30, db_index=True)
+    user = models.ForeignKey('Author', related_name='cobehaviour_recommendations')
+    recommend = models.ForeignKey('Category', related_name='cobehaviour_recommendation')
+    tag_similarity = models.FloatField(null=True, default=0.0, help_text="TAG Similarity")
+
+class UserUserTagRecommendations(models.Model):
+    instance=models.CharField(max_length=30, db_index=True)
+    user = models.ForeignKey('Author', related_name='author_recommendations')
+    recommend = models.ForeignKey('Author', related_name='similar_author')
+    tag_similarity = models.FloatField(null=True, default=0.0, help_text="Explicit link score")
+    

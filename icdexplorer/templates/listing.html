@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load icd %}
+
+{% block title %}{{ description }} - iCAT Analytics{% endblock title %}
+
+{% block content %}
+
+{% with attribute|prepend:metric_table as attr_name %}
+    <h2>{{ description }}</h2>
+    {% valuestable objects attr_name description 200 100 %}
+{% endwith %}
+
+<div id="pagination_wrapper">
+    <div id="previous_page">&nbsp;
+    {% if page.has_previous %}
+        <a href=/{{ listing_type }}listing/{{ attribute }}/{{ page.previous_page_number}}>Previous Page</a>
+    {% endif %}
+    </div>
+    
+    <div id="next_page">
+    {% if page.has_next %}
+        <a href=/{{ listing_type }}listing/{{ attribute }}/{{ page.next_page_number}}>Next Page</a>
+    {% endif %}
+    &nbsp;</div>
+</div>
+
+{% endblock content %}

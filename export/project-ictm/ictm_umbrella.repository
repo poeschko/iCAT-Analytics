@@ -1,0 +1,1 @@
+database:com.mysql.jdbc.Driver,jdbc:mysql://localhost/ictm,protege,protege,ictm2,ictm2_ann

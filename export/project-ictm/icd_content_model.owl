@@ -1,0 +1,3723 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:bp="http://bioportal.bioontology.org#"
+    xmlns="http://who.int/icd#"
+    xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+    xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:who-fic="http://who.int/fic#"
+    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:iceci="http://who.int/iceci/iceci.owl#"
+  xml:base="http://who.int/icd">
+  <owl:Ontology rdf:about="http://who.int/icd/contentModel"/>
+  <owl:Class rdf:ID="ICDLinearizationView">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Obsolete"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="LeafCodedTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="CodedTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="narrower"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >0</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="SnomedReferenceTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="BioportalReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SnomedReferenceTerm</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="LanguageTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >LanguageTerm</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Term"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="MorphologicallyAbnormalStructureTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ClinicalDescriptionTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >5.3 Morphologically Abnormal Structure</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="SeverityScaleTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Severity Scale</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="SeverityPropertyTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="InteriorCodedTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#CodedTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:complementOf>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:ObjectProperty rdf:ID="inclusion"/>
+            </owl:onProperty>
+            <owl:someValuesFrom>
+              <owl:Class rdf:about="#Term"/>
+            </owl:someValuesFrom>
+          </owl:Restriction>
+        </owl:complementOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="Manifestation_Attribute">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BioportalReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="DefiningTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >6 Manifestation Property</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ClamlReference">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="DomainConcept"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Term">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Term</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="IdentifiableClass"/>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >subclasses of Term correspond to components of  the Foundation Content Model.</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Note that the Lingustic Term is not a subclass of Term because External Definition is not part of the Foundation Content Model, although it is used to help users defining the ICD category.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="BodyPartTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ClinicalDescriptionTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >5.2 Body Part</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="TemporalPropertyValueSet">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Class rdf:ID="ValueSet"/>
+          <owl:Class>
+            <owl:oneOf rdf:parseType="Collection">
+              <TemporalPropertyValueSet rdf:ID="adult">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Adult {25-64 yo</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="infancy">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Infancy  {29-365 days}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="perinatal">
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >range</rdfs:comment>
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Birth (Perinatal) {0}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="young_adult">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Young Adult {19-24 yo}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="antenatal">
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                ></rdfs:comment>
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Antenatal - (in utero) {-40 - 0 weeks}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="neonatal">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Newborn neonatal {1-28 days}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="adolescence">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Adolescence {13-18 yo}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="children_under_5">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Child under 5 {1 -5 yo}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="children_above_5">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Child above 5 {6 -12 yo}</rdfs:label>
+              </TemporalPropertyValueSet>
+              <TemporalPropertyValueSet rdf:ID="geriatric">
+                <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >Geriatric {&gt;65 yo}</rdfs:label>
+              </TemporalPropertyValueSet>
+            </owl:oneOf>
+          </owl:Class>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:ID="CausalFactorTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >7.3 Causal Mechanism</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="CausalPropertyTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="http://who.int/fic#Type">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#DefiningTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ExternalCauseTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >14 External Cause</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#DefiningTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BioportalReferenceTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="IndexTermType">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <IndexTermType rdf:ID="Narrower_Term"/>
+          <IndexTermType rdf:ID="Synonym"/>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ValueSet"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="UrinarySystem">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="GenitourinarySystem"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Urinary System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ResidualCategoryTerm">
+    <rdfs:subClassOf rdf:resource="#LeafCodedTerm"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is a specific type of CodedTerm that corresponds to traditional ICD residual categories such as Not Elsewhere Classified (NEC) and Not Otherwise Specified (NOS) .</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="DigestiveSystem">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="BodySystemsValueSet"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Digestive System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="Linearization">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="LiniearizationEntity"/>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the manifestation of ICD 11 in publishable form. Note, this is the first time that a Coded Element, in the historical tradition of the ICD codes, appears. It is a kind of linearization entity, comprising a Coded Term. However, this Coded Term links back to an Entity ID, which traces its lineage to the cloud layer and the ontology layer. Thus, stomach cancer as a Coded Term would correspond to related concepts at the Category Level and the Ontology Level. Nevertheless, a given linearization may assign different ICD codes in this current model. This is highly controversial, and we will need to address this question. For example, in a primary care linearization, stomach cancer might have been ICD code of I12.34. Whereas in a mortality linearization, the code might be P45.56. Similarly in a morbidity classification the same concept might be Q98.76. The implication is that the Coded Term is a subset of the Linearization rather than that of the Category Layer. However the linkage to the Category Layer occurs through the Entity ID. It is at the Linearization Layer that concepts of inclusions, index terms, exclusions come to the fore. These again all derived from the structures and hierarchies associated with the category layer.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="SynonymTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SynonymTerm</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="IndexTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:hasValue rdf:resource="#Synonym"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="indexTermType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="DiagnosticCriteriaTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >13 Diagnostic Criterion</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#DefiningTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ExternalCauseSection">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ICDSection"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="TreatmentTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >12 Treatment Property</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BioportalReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#DefiningTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ReferenceTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="SelectedCommunicationImpact">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedSocialParticipationImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedMobilityImpact"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedSelfCareImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedInterpersonalRelationsImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedHouseholdActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="SelectedLifeManagementActivitiesImpact"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="RiskFactorQualifier">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ValueSet"/>
+    </rdfs:subClassOf>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <RiskFactorQualifier rdf:ID="Distal"/>
+          <RiskFactorQualifier rdf:ID="Immediate"/>
+          <RiskFactorQualifier rdf:ID="Proximal"/>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="#BodySystemsValueSet">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ValueSet"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ClinicalDescriptionSection">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ClinicalDescriptionSection</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ICDSection"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="MotherLifeCycleConditionTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="LifeCycleConditionTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#ClinicalDescriptionTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >5 Clinical Description</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#DefiningTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BioportalReferenceTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#ReferenceTerm">
+    <rdfs:subClassOf rdf:resource="#Term"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ReferenceTerm</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A type of ICD11_Entity that plays a role to hook the logical definitions from external vocabularies such as SNOMED CT, HUGO or ICF while it also plays a role for value set binding to those characteristics used to describe a clinical criteria, e.g. using "CD_Anatomical_Site" to represent the target concept descriptor of characteristic "Anatomical_Site". 
+
+Mapping relationship: Mappings of the concept to different coding systems (e.g. ICD-0, ICF,...) and other standardised systems like terminologies (SNOMED) etc.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#DomainConcept">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ICD11Entity"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="InclusionTerm">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Exemplers of the category</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#LiniearizationEntity"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <ClinicalDescriptionSection rdf:ID="ICDCategory">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >ICDCategory</rdfs:label>
+            <rdf:type>
+              <owl:Class rdf:ID="ICD10NotesAndHintsSection"/>
+            </rdf:type>
+            <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+            <rdf:type>
+              <owl:Class rdf:ID="LinearizationSection"/>
+            </rdf:type>
+            <rdf:type>
+              <owl:Class rdf:ID="DiagnosticCriteriaSection"/>
+            </rdf:type>
+            <rdf:type>
+              <owl:Class rdf:ID="TermSection"/>
+            </rdf:type>
+            <rdf:type>
+              <owl:Class rdf:ID="TreatmentSection"/>
+            </rdf:type>
+            <icdTitle>
+              <TitleTerm rdf:ID="TitleTerm_2">
+                <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >ICD Categories</label>
+              </TitleTerm>
+            </icdTitle>
+            <rdf:type>
+              <owl:Class rdf:ID="SnomedReferenceSection"/>
+            </rdf:type>
+            <rdf:type>
+              <owl:Class rdf:ID="FunctionalImpactSection"/>
+            </rdf:type>
+            <rdfs:subClassOf rdf:resource="#DomainConcept"/>
+            <rdf:type>
+              <owl:Class rdf:ID="DefinitionSection"/>
+            </rdf:type>
+            <rdf:type>
+              <owl:Class rdf:ID="SpecificConditionSection"/>
+            </rdf:type>
+            <rdf:type>
+              <owl:Class rdf:ID="CausalMechanismAndRiskFactorsSection"/>
+            </rdf:type>
+          </ClinicalDescriptionSection>
+          <owl:Class rdf:about="#SynonymTerm"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#LanguageTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >4.1 Inclusion Term</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ExternalDefinitionTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BioportalReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#LanguageTerm"/>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >External Definition</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedSocialParticipationImpact">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedLifeManagementActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedMobilityImpact"/>
+    </owl:disjointWith>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SelectedSocialParticipationImpact</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedHouseholdActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedInterpersonalRelationsImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSelfCareImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="MultiDescriptionTerm">
+    <rdfs:subClassOf rdf:resource="#Term"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedHouseholdActivitiesImpact">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedLifeManagementActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedInterpersonalRelationsImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSelfCareImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedMobilityImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="EtiologyTypeTerm">
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Same as "Mechanism" in UML view?</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="ExclusionTermType">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <ExclusionTermType rdf:ID="also_code">
+            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >A type 2 excludes note represents "Not included here". An excludes2 note indicates that the condition excluded is not part of the condition it is excluded from but a patient may have both conditions at the same time. When an Excludes2 note appears under a code it is acceptable to use both the code and the excluded code together. (Note: From ICD10CM)</rdfs:comment>
+          </ExclusionTermType>
+          <ExclusionTermType rdf:ID="rule_out">
+            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >A type 1 Excludes note is a pure excludes. It means "NOT CODED HERE!" An Excludes1 note indicates that the code excluded should never be used at the same time as the code above the Excludes1 note. An Excludes1 is for used for when two conditions cannot occur together, such as a congenital form versus an acquired form of the same condition. (From ICD10CM description)</rdfs:comment>
+          </ExclusionTermType>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ValueSet"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="EditorialStatusValueSet">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ValueSet"/>
+    </rdfs:subClassOf>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <EditorialStatusValueSet rdf:ID="In_Conflict">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >In Conflict</rdfs:label>
+          </EditorialStatusValueSet>
+          <EditorialStatusValueSet rdf:ID="Under_Discussion">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Under Discussion</rdfs:label>
+          </EditorialStatusValueSet>
+          <EditorialStatusValueSet rdf:ID="Prefilled">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Prefilled</rdfs:label>
+          </EditorialStatusValueSet>
+          <EditorialStatusValueSet rdf:ID="RSG_Approved">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >RSG Approved</rdfs:label>
+          </EditorialStatusValueSet>
+          <EditorialStatusValueSet rdf:ID="TAG_Approved">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >TAG Approved</rdfs:label>
+          </EditorialStatusValueSet>
+          <EditorialStatusValueSet rdf:ID="WHO_Approved">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >WHO Approved</rdfs:label>
+          </EditorialStatusValueSet>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedWorkAndEconomicLifeActivitiesImpact">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSelfCareImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedMobilityImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedInterpersonalRelationsImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SelectedWorkAndEconomicLifeActivitiesImpact</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedLifeManagementActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+  </owl:Class>
+  <owl:Class rdf:ID="SeverityTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#SeverityPropertyTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Is severity a definitional term?</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Severity Term</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#LifeCycleConditionTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="SpecificConditionTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="ImmuneSystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Immune System</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="HaemolymphoidSystem"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="AutonomicNervousSystem">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="NervousSystem"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Autonomic Nervous System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="TemporalModifierTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#BioportalReferenceTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+  </owl:Class>
+  <owl:Class rdf:ID="VestibularSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Vestibular System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#DefiningTerm">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Defining Terms contributes toward specifying the meaning of the ICD category</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#Term"/>
+  </owl:Class>
+  <owl:Class rdf:ID="MetabolicSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Metabolic System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#ValueSet">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ICD11Entity"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="CentralNervousSystem">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#NervousSystem"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Central Nervous System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="InvestigationTerm">
+    <rdfs:subClassOf rdf:resource="#Manifestation_Attribute"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Same as "Diagnotic_Finding" in UML view?</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >6.2 Finding</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="FullySpecifiedName">
+    <rdfs:subClassOf rdf:resource="#LanguageTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Fully Specified Name</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="EvidenceLevel">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <EvidenceLevel rdf:ID="Expert_Opinion"/>
+          <EvidenceLevel rdf:ID="Systematic_Review_of_Literature_AND_Formalized_Peer_Review_Consensus"/>
+          <EvidenceLevel rdf:ID="Systematic_Review_of_Literature_OR_Formalized_Peer_Review_Consensus"/>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:subClassOf rdf:resource="#ValueSet"/>
+  </owl:Class>
+  <owl:Class rdf:about="#TreatmentSection">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ICDSection"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="EtiologyTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >EtiologyTerm</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:subClassOf rdf:resource="#Obsolete"/>
+  </owl:Class>
+  <owl:Class rdf:ID="VisualSystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Visual System</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SpecificConditionSection">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ICDSection"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="TemporalPropertiesTerm">
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:subClassOf rdf:resource="#DefiningTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >8 Temporal Property</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="BodySystemTerm">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The termId should be the id coming from this ontology form the body systems value set</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >5.1 Body System</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#ClinicalDescriptionTerm"/>
+  </owl:Class>
+  <owl:Class rdf:ID="MusculoskeletalSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Musculoskeletal System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="MaleGenitalSystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Male Genital System</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#GenitourinarySystem"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedInterpersonalRelationsImpact">
+    <owl:disjointWith rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedMobilityImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SelectedInterpersonalRelationImpact</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedLifeManagementActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSelfCareImpact"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="LiteratureReference">
+    <rdfs:subClassOf rdf:resource="#DomainConcept"/>
+  </owl:Class>
+  <owl:Class rdf:ID="MotoricSystem">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#NervousSystem"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Motoric System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ICD10NotesTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ICD10NotesTerm</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#Term"/>
+  </owl:Class>
+  <owl:Class rdf:about="#BioportalReferenceTerm">
+    <rdfs:subClassOf rdf:resource="#Term"/>
+  </owl:Class>
+  <owl:Class rdf:about="#ICDSection">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >not happy with the "Section" postfix</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ICD11 Information Model</rdfs:label>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#ICD11Entity"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="#DiagnosticCriteriaSection">
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+  </owl:Class>
+  <owl:Class rdf:ID="LinearizationView">
+    <rdfs:subClassOf rdf:resource="#ValueSet"/>
+  </owl:Class>
+  <owl:Class rdf:about="#NervousSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Nervous System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="NutritionalSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Nutritional System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedMobilityImpact">
+    <owl:disjointWith rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedLifeManagementActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedInterpersonalRelationsImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSelfCareImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="DiseaseCausingAgentTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#CausalPropertyTerm"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >7.2 Agent</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#GenitourinarySystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Genitourinary System</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SeverityPropertyTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >9 Severity Property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#BioportalReferenceTerm"/>
+    <rdfs:subClassOf rdf:resource="#DefiningTerm"/>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+  </owl:Class>
+  <owl:Class rdf:about="#LinearizationSection">
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >LinearizationSection</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="HaematopoieticSystem">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#HaemolymphoidSystem"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Haematopoietic System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="SceletalSystem">
+    <rdfs:subClassOf rdf:resource="#MusculoskeletalSystem"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Sceletal System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#CausalPropertyTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >7 Causal Property</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#DefiningTerm"/>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:subClassOf rdf:resource="#BioportalReferenceTerm"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedSelfCareImpact">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SelectedSelfCareImpact</rdfs:label>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedLifeManagementActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedInterpersonalRelationsImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedMobilityImpact"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedLifeManagementActivitiesImpact">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedUnderstandingImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedMobilityImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#FunctionalImpactTerm"/>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedInterpersonalRelationsImpact"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SelectedLifeManagementActivitiesImpact</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedSelfCareImpact"/>
+  </owl:Class>
+  <owl:Class rdf:about="#IndexTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Index Term</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#LanguageTerm"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#LiniearizationEntity"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="MuscularSystem">
+    <rdfs:subClassOf rdf:resource="#MusculoskeletalSystem"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Muscular System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="DefinitionTerm">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Definition of ICD category</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#LanguageTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >3. Textual Definition</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="EndocrineSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Endocrine System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#FunctionalImpactTerm">
+    <rdfs:subClassOf rdf:resource="#BioportalReferenceTerm"/>
+    <rdfs:subClassOf rdf:resource="#DefiningTerm"/>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >10 Functional Property (aka Function Impact)</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ChildLifeCycleConditionTerm">
+    <rdfs:subClassOf rdf:resource="#LifeCycleConditionTerm"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedUnderstandingImpact">
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedMobilityImpact"/>
+    <rdfs:subClassOf rdf:resource="#FunctionalImpactTerm"/>
+    <owl:disjointWith rdf:resource="#SelectedSelfCareImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedInterpersonalRelationsImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedLifeManagementActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedChildrenAndYouthImpact"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="TitleTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >1 ICD Concept Title</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#LanguageTerm"/>
+  </owl:Class>
+  <owl:Class rdf:ID="PeripheralNervousSystem">
+    <rdfs:subClassOf rdf:resource="#NervousSystem"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Peripheral Nervous System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#ICD11Entity">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >At the toplevel, the iCAT ICD11 content model is divided into three parts: 
+(1) DomainConcept consisting of the concepts related to the definition of ICD categories. 
+(2) ValueSet consisting of enumerations of values that constitue some of the value domains of ICD properties
+(3) An information model of ICDCategory consisting of a number of ICDSections.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedChildrenAndYouthImpact">
+    <owl:disjointWith rdf:resource="#SelectedSelfCareImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedInterpersonalRelationsImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedMobilityImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SelectedChildrenAndYouthImpact</rdfs:label>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#SelectedSchoolActivitiesImpact"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <rdfs:subClassOf rdf:resource="#FunctionalImpactTerm"/>
+    <owl:disjointWith rdf:resource="#SelectedUnderstandingImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedLifeManagementActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+  </owl:Class>
+  <owl:Class rdf:ID="SkinSystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Skin System (Integumentary System)</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+  </owl:Class>
+  <owl:Class rdf:ID="ExclusionTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#LiniearizationEntity"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#LanguageTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >4.2 Exclusion Term</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="VersionNote"/>
+  <owl:Class rdf:ID="ExternalReference"/>
+  <owl:Class rdf:ID="MentalSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Mental System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="CirculatorySystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Circulatory System (Cardiovascular System)</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#LiniearizationEntity">
+    <rdfs:subClassOf rdf:resource="#DomainConcept"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A type of ICD11_Entity that is used to represent all entities related to publications, such as CodedTerm (traditional ICD category with ICD legacy code), Index Term, Synonym, Inclusion Term and Exclusion Term (two types).</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#HaemolymphoidSystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Haemolymphoid System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ICD10ReferenceTerm">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Reference Term pointing to an ICD-10 category (available for example in BioPortal).</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ICD-10 Reference Term</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#SnomedReferenceSection">
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SnomedReferenceSection</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="RespiratorySystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Respiratory System</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+  </owl:Class>
+  <owl:Class rdf:ID="LinearizationSpecification">
+    <rdfs:subClassOf rdf:resource="#LiniearizationEntity"/>
+  </owl:Class>
+  <owl:Class rdf:about="#ICD10NotesAndHintsSection">
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >check what else needs to be added</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ICD10NotesAndHintsSection</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="SignsAndSymptomsTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >6.1 Sign &amp; Symptom</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#Manifestation_Attribute"/>
+  </owl:Class>
+  <owl:Class rdf:ID="GenomicLinkageTerm">
+    <rdfs:subClassOf rdf:resource="#CausalPropertyTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >7.4 Genomic Characteristics</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#CausalMechanismAndRiskFactorsSection">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >CausalMechanismAndRiskFactorsSection</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+  </owl:Class>
+  <owl:Class rdf:ID="BiologicalSexConditionTerm">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#SpecificConditionTerm"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#SpecificConditionTerm">
+    <rdfs:subClassOf rdf:resource="#BioportalReferenceTerm"/>
+    <rdfs:subClassOf rdf:resource="#ReferenceTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >11 Specific Condition Property</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:about="#TermSection">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >TermSection</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >base inclusion should be a subset of synonym</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+  </owl:Class>
+  <owl:Class rdf:about="#DefinitionSection">
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >DefinitionSection</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="ReferenceSource">
+    <rdfs:subClassOf rdf:resource="#ValueSet"/>
+  </owl:Class>
+  <owl:Class rdf:ID="RiskFactorTerm">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >7.5 Risk Factor</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#CausalPropertyTerm"/>
+  </owl:Class>
+  <owl:Class rdf:about="#FunctionalImpactSection">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >FunctionalImpactSection</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#ICDSection"/>
+  </owl:Class>
+  <owl:Class rdf:about="#SelectedSchoolActivitiesImpact">
+    <owl:disjointWith rdf:resource="#SelectedUnderstandingImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedCommunicationImpact"/>
+    <rdfs:subClassOf rdf:resource="#FunctionalImpactTerm"/>
+    <owl:disjointWith rdf:resource="#SelectedMobilityImpact"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SelectedSchoolActivitiesImpact</rdfs:label>
+    <owl:disjointWith rdf:resource="#SelectedSelfCareImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedInterpersonalRelationsImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedLifeManagementActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedChildrenAndYouthImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedSocialParticipationImpact"/>
+    <owl:disjointWith rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+  </owl:Class>
+  <owl:Class rdf:about="#CodedTerm">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A type of ICD11_Linearization_Entity that holds the traditional ICD legacy code.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="#LiniearizationEntity"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#IdentifiableClass"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="AuditorySystem">
+    <rdfs:subClassOf rdf:resource="#BodySystemsValueSet"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Auditory System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="FemaleGenitalSystem">
+    <rdfs:subClassOf rdf:resource="#GenitourinarySystem"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Female Genital System</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="Type">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+          <Type rdf:ID="DiseaseType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Disease</rdfs:label>
+          </Type>
+          <Type rdf:ID="DisorderOrSyndromeType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Disorder/Syndrome</rdfs:label>
+          </Type>
+          <Type rdf:ID="ExposureToExternalCausesType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >External Causes</rdfs:label>
+          </Type>
+          <Type rdf:ID="GroupingOfConceptsType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Grouping of Concepts</rdfs:label>
+          </Type>
+          <Type rdf:ID="InjuriesType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Injuries</rdfs:label>
+          </Type>
+          <Type rdf:ID="ReasonForEncounterType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Reason for Encounter</rdfs:label>
+          </Type>
+          <Type rdf:ID="SignOrSymptomType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Sign/Symptom</rdfs:label>
+          </Type>
+          <Type rdf:ID="UnspecifiedType">
+            <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >Unspecified</rdfs:label>
+          </Type>
+        </owl:oneOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >2.2 Type</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://who.int/fic#Type"/>
+  </owl:Class>
+  <owl:Class rdf:ID="ParasympatheticNervousSystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Parasympathetic Nervous System</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#AutonomicNervousSystem"/>
+  </owl:Class>
+  <owl:Class rdf:about="#IdentifiableClass">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >IdentifiableClass</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#DomainConcept"/>
+  </owl:Class>
+  <owl:Class rdf:ID="InstanceTemplate"/>
+  <owl:Class rdf:ID="SympatheticNervousSystem">
+    <rdfs:subClassOf rdf:resource="#AutonomicNervousSystem"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Sympathetic Nervous System</rdfs:label>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="childLifeCycle">
+    <rdfs:range rdf:resource="#ChildLifeCycleConditionTerm"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="lifeCycle"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="evidenceLevel">
+    <rdfs:domain rdf:resource="#ClinicalDescriptionTerm"/>
+    <rdfs:range rdf:resource="#EvidenceLevel"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="objectOrSubstanceProducingInjury">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="externalCauseDimension"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="agent"/>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherWorkActivitiesImpact">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="workActivitiesImpact"/>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#narrower">
+    <rdfs:domain rdf:resource="#CodedTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:range rdf:resource="#CodedTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusDiagnosticCriteria">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="editorialStatus"/>
+    </rdfs:subPropertyOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="lifeActivitiesImpact">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="functionalImpact"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="synonym">
+    <rdfs:domain rdf:resource="#TermSection"/>
+    <rdfs:range rdf:resource="#SynonymTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >synonym</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="rootCodedTerm">
+    <rdfs:range rdf:resource="#CodedTerm"/>
+    <rdfs:domain rdf:resource="#Linearization"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="preferredLong">
+    <rdfs:domain rdf:resource="#ICD10NotesAndHintsSection"/>
+    <rdfs:range rdf:resource="#ICD10NotesTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >preferredLong</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="bodySystem">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >bodySystem</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Should this also be a term?!</rdfs:comment>
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+    <rdfs:range rdf:resource="#BodySystemTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusTerm">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedInterpersonalRelationsImpact">
+    <rdfs:range rdf:resource="#SelectedInterpersonalRelationsImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="interpersonalRelationsImpact"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="intent">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#externalCauseDimension"/>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="transportUserRoleOfInjuredPerson">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="transportDimension"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="diagnosticCriteria">
+    <rdfs:domain rdf:resource="#DiagnosticCriteriaSection"/>
+    <rdfs:range rdf:resource="#DiagnosticCriteriaTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasType">
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://who.int/fic#hasType"/>
+    </rdfs:subPropertyOf>
+    <rdfs:range rdf:resource="#Type"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="morbiditySubclasses"/>
+  <owl:ObjectProperty rdf:about="#indexTermType">
+    <rdfs:domain rdf:resource="#IndexTerm"/>
+    <rdfs:range rdf:resource="#IndexTermType"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="riskFactor">
+    <rdfs:domain rdf:resource="#CausalMechanismAndRiskFactorsSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >riskFactor</rdfs:label>
+    <rdfs:range rdf:resource="#RiskFactorTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedSelfCareImpact">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="selfCareImpact"/>
+    </rdfs:subPropertyOf>
+    <rdfs:range rdf:resource="#SelectedSelfCareImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#externalCauseDimension">
+    <rdfs:range rdf:resource="#ExternalCauseTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="severityTerm">
+    <rdfs:domain rdf:resource="#SeverityScaleTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >severity term</rdfs:label>
+    <rdfs:range rdf:resource="#SeverityTerm"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A severity term and its description</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="etiologyType">
+    <rdfs:domain rdf:resource="#CausalMechanismAndRiskFactorsSection"/>
+    <rdfs:range rdf:resource="#EtiologyTypeTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Fill in with Roberts list
+Range is not correct, but we'll leave it this way in this version</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >etiologyType</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="intentDescriptor">
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="severityScale">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >specifies the severity scale associated with an ICD category</rdfs:comment>
+    <rdfs:range rdf:resource="#SeverityScaleTerm"/>
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://who.int/fic#hasType">
+    <rdfs:range rdf:resource="http://who.int/fic#Type"/>
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedLifeManagementActivitiesImpact">
+    <rdfs:range rdf:resource="#SelectedLifeManagementActivitiesImpact"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="lifeManagementActivitiesImpact"/>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#selfCareImpact">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#functionalImpact"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="biologicalSex">
+    <rdfs:domain rdf:resource="#SpecificConditionSection"/>
+    <rdfs:range rdf:resource="#BiologicalSexConditionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="treatment">
+    <rdfs:range rdf:resource="#TreatmentTerm"/>
+    <rdfs:domain rdf:resource="#TreatmentSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#transportDimension">
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Also known as "mechanism descriptor" or "details for mechanism" conform to Robert's model documented in yhe Style Guide from 20 April 2010.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#workActivitiesImpact">
+    <rdfs:subPropertyOf rdf:resource="#lifeActivitiesImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusDefinition">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="mortalityLinearization"/>
+  <owl:ObjectProperty rdf:ID="selectedUnderstandingImpact">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="understandingImpact"/>
+    </rdfs:subPropertyOf>
+    <rdfs:range rdf:resource="#SelectedUnderstandingImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="placeOfOccurrenceDescriptor">
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusFunctionalImpact">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="exclusionType">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >exclusionType</rdfs:label>
+    <rdfs:range rdf:resource="#ExclusionTermType"/>
+    <rdfs:domain rdf:resource="#ExclusionTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="modeOfTransport">
+    <rdfs:subPropertyOf rdf:resource="#transportDimension"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedHouseholdActivitiesImpact">
+    <rdfs:range rdf:resource="#SelectedHouseholdActivitiesImpact"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="householdActivitiesImpact"/>
+    </rdfs:subPropertyOf>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="literatureReference">
+    <rdfs:domain rdf:resource="#ClinicalDescriptionTerm"/>
+    <rdfs:range rdf:resource="#LiteratureReference"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherChildrenAndYouthImpact">
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="childrenAndYouthImpact"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="causalFactor">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="mechanism"/>
+    </rdfs:subPropertyOf>
+    <rdfs:range rdf:resource="#CausalFactorTerm"/>
+    <rdfs:domain rdf:resource="#CausalMechanismAndRiskFactorsSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#householdActivitiesImpact">
+    <rdfs:subPropertyOf rdf:resource="#lifeActivitiesImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="note">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >note</rdfs:label>
+    <rdfs:range rdf:resource="#ICD10NotesTerm"/>
+    <rdfs:domain rdf:resource="#ICD10NotesAndHintsSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="externalReference">
+    <rdfs:domain rdf:resource="#SnomedReferenceSection"/>
+    <rdfs:range rdf:resource="#SnomedReferenceTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >externalReference</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="signsAndSymptoms">
+    <rdfs:range rdf:resource="#SignsAndSymptomsTerm"/>
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >signsAndSymptoms</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherSelfCareImpact">
+    <rdfs:subPropertyOf rdf:resource="#selfCareImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusICD10Notes">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="schoolActivitiesImpact">
+    <rdfs:subPropertyOf rdf:resource="#lifeActivitiesImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="activityWhenInjured">
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#functionalImpact">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >functionalImpact</rdfs:label>
+    <rdfs:range rdf:resource="#FunctionalImpactTerm"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#interpersonalRelationsImpact">
+    <rdfs:subPropertyOf rdf:resource="#functionalImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedMobilityImpact">
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="mobilityImpact"/>
+    </rdfs:subPropertyOf>
+    <rdfs:range rdf:resource="#SelectedMobilityImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusClinicalDescription">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="referenceSource">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#LiteratureReference"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >PMID, ISBN, URL, or other sources of information</rdfs:comment>
+    <rdfs:range rdf:resource="#ReferenceSource"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="placeOfOccurrence">
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="icd10Reference">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >icd10Reference</rdfs:label>
+    <rdfs:range rdf:resource="#ICD10ReferenceTerm"/>
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This property can be used to create external references to ICD-10 categories (available in BioPortal) that correspond to the new External Causes and Injuries categories.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="temporalModifier">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+    <rdfs:range rdf:resource="#TemporalModifierTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="definition">
+    <rdfs:range rdf:resource="#DefinitionTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >definition</rdfs:label>
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="termSynonym">
+    <rdfs:range rdf:resource="#SynonymTerm"/>
+    <rdfs:domain rdf:resource="#MultiDescriptionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="fullySpecifiedName">
+    <rdfs:range rdf:resource="#FullySpecifiedName"/>
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="baseInclusion">
+    <rdfs:domain rdf:resource="#TermSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >base inclusion</rdfs:label>
+    <rdfs:range rdf:resource="#InclusionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="broader">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Note by Alan Rector about why using Broader/Narrower:
+
+This is more than a labelling issue. It is highly substantive.
+
+* Superclass/Subclass means that every member of the superclass is a member of the
+
+subclass. This is a logical relation with logical criteria.
+
+* Broader_than/Narrower_than is a linguistic, or more properly information retrieval
+
+term, that means that the broader items should be retrieved, or browsed to
+
+when the narrow terms are requested.
+
+Example. In a thesaurus, "Aortic valve" might be "narrower than" "Heart". However,
+
+"Aortic Valve" is not a subclass/kind of "heart". Librarians and information retrieval
+
+specialists use "Broader than"/"narrower than" specifically to avoid the implications of
+
+Superclass/Subclass and to emphasise that the relation should not be used for inheritance
+
+or other logical functions, but only for navigation and browsing. Everything true of all
+
+members of a superclass is true of all members of a subclass. There is no implication that
+
+things true of members of a broader class are also true of the narrower class.</rdfs:comment>
+    <rdfs:domain rdf:resource="#CodedTerm"/>
+    <rdfs:range rdf:resource="#CodedTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusSnomedRef">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherMobilityImpact">
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#mobilityImpact"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="substanceUse">
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedSocialParticipationImpact">
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:range rdf:resource="#SelectedSocialParticipationImpact"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:ID="socialParticipationImpact"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherUnderstandingImpact">
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#understandingImpact"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="longDefinition">
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+    <rdfs:range rdf:resource="#DefinitionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="riskFactorModifier">
+    <rdfs:domain rdf:resource="#RiskFactorTerm"/>
+    <rdfs:range rdf:resource="#RiskFactorQualifier"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="diseaseCausingAgent">
+    <rdfs:range rdf:resource="#DiseaseCausingAgentTerm"/>
+    <rdfs:domain rdf:resource="#CausalMechanismAndRiskFactorsSection"/>
+    <rdfs:subPropertyOf rdf:resource="#agent"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="preferred">
+    <rdfs:domain rdf:resource="#ICD10NotesAndHintsSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >preferred</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="#ICD10NotesTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="termTitle">
+    <rdfs:domain rdf:resource="#MultiDescriptionTerm"/>
+    <rdfs:range rdf:resource="#TitleTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#understandingImpact">
+    <rdfs:subPropertyOf rdf:resource="#functionalImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasSeverityScale">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >specifies which standard severity scale corresponds to the ICD category</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#childrenAndYouthImpact">
+    <rdfs:subPropertyOf rdf:resource="#functionalImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="temporalProperties">
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >temporalProperties</rdfs:label>
+    <rdfs:range rdf:resource="#TemporalPropertiesTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="motherLifeCycle">
+    <rdfs:range rdf:resource="#MotherLifeCycleConditionTerm"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#lifeCycle"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="activitiesDescriptor">
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="investigations">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >investigations</rdfs:label>
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+    <rdfs:range rdf:resource="#InvestigationTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#socialParticipationImpact">
+    <rdfs:subPropertyOf rdf:resource="#functionalImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="communicationImpact">
+    <rdfs:subPropertyOf rdf:resource="#functionalImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="versionNote">
+    <rdfs:domain rdf:resource="#ICD11Entity"/>
+    <rdfs:range rdf:resource="#VersionNote"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="exhaustivePartition">
+    <rdfs:range rdf:resource="#ICDCategory"/>
+    <rdfs:domain rdf:resource="#LinearizationSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedCommunicationImpact">
+    <rdfs:range rdf:resource="#SelectedCommunicationImpact"/>
+    <rdfs:subPropertyOf rdf:resource="#communicationImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="baseIndex">
+    <rdfs:domain rdf:resource="#TermSection"/>
+    <rdfs:range rdf:resource="#IndexTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="severity">
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added for backward compaitbility</rdfs:comment>
+    <rdfs:range rdf:resource="#SeverityTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#mobilityImpact">
+    <rdfs:subPropertyOf rdf:resource="#functionalImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="definitionPrefilled">
+    <rdfs:range rdf:resource="#ExternalDefinitionTerm"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:ID="is_prefilled_definition_of"/>
+    </owl:inverseOf>
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#inclusion">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >legay inclusion</rdfs:label>
+    <rdfs:domain rdf:resource="#TermSection"/>
+    <rdfs:range rdf:resource="#InclusionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherSocialParticipationImpact">
+    <rdfs:subPropertyOf rdf:resource="#socialParticipationImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="icdCategory">
+    <rdfs:range rdf:resource="#ICDSection"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ExclusionTerm"/>
+          <owl:Class rdf:about="#InclusionTerm"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The list of ICD categories that correspond to an exclusion or inclusion  term</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="linearization">
+    <rdfs:range rdf:resource="#LinearizationSpecification"/>
+    <rdfs:domain rdf:resource="#LinearizationSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="codingHint">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >codingHint</rdfs:label>
+    <rdfs:domain rdf:resource="#ICD10NotesAndHintsSection"/>
+    <rdfs:range rdf:resource="#ICD10NotesTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="counterMeasureDescriptor">
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#lifeManagementActivitiesImpact">
+    <rdfs:subPropertyOf rdf:resource="#lifeActivitiesImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedChildrenAndYouthImpact">
+    <rdfs:range rdf:resource="#SelectedChildrenAndYouthImpact"/>
+    <rdfs:subPropertyOf rdf:resource="#childrenAndYouthImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="genomicLinkage">
+    <rdfs:range rdf:resource="#GenomicLinkageTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >genomicLinkage</rdfs:label>
+    <rdfs:domain rdf:resource="#CausalMechanismAndRiskFactorsSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="morphologicallyAbnormalStructure">
+    <rdfs:range rdf:resource="#MorphologicallyAbnormalStructureTerm"/>
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="exclusion">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >legacy  exclusion</rdfs:label>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#CodedTerm"/>
+          <owl:Class rdf:about="#TermSection"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="#ExclusionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="temporalRange">
+    <rdfs:range rdf:resource="#TemporalPropertyValueSet"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Age of Occurrence of the condition represented by the ICD category</rdfs:comment>
+    <rdfs:domain rdf:resource="#TemporalPropertiesTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="morbidityLinearization"/>
+  <owl:ObjectProperty rdf:ID="otherInterpersonalRelationsImpact">
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf rdf:resource="#interpersonalRelationsImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="index">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >legacy index term</rdfs:label>
+    <rdfs:range rdf:resource="#IndexTerm"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#CodedTerm"/>
+          <owl:Class rdf:about="#TermSection"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="baseExclusion">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >base exclusion</rdfs:label>
+    <rdfs:range rdf:resource="#ExclusionTerm"/>
+    <rdfs:domain rdf:resource="#TermSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusLinearization">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="introduction">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >introduction</rdfs:label>
+    <rdfs:range rdf:resource="#ICD10NotesTerm"/>
+    <rdfs:domain rdf:resource="#ICD10NotesAndHintsSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="linearizationParent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#LinearizationSpecification"/>
+    <rdfs:range rdf:resource="#ICDSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="mechanismOfInjury">
+    <rdfs:domain rdf:resource="#ExternalCauseSection"/>
+    <rdfs:subPropertyOf rdf:resource="#externalCauseDimension"/>
+    <rdfs:subPropertyOf rdf:resource="#mechanism"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="settingOfEvent">
+    <rdfs:subPropertyOf rdf:resource="#transportDimension"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="bodyPart">
+    <rdfs:range rdf:resource="#BodyPartTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >bodyPart</rdfs:label>
+    <rdfs:domain rdf:resource="#ClinicalDescriptionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasICDCategory">
+    <rdfs:range rdf:resource="#ICDSection"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#CodedTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="primaryCareLinearization"/>
+  <owl:ObjectProperty rdf:ID="termDefinition">
+    <rdfs:domain rdf:resource="#MultiDescriptionTerm"/>
+    <rdfs:range rdf:resource="#DefinitionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="counterPartInCollision">
+    <rdfs:subPropertyOf rdf:resource="#transportDimension"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherCommunicationImpact">
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:range rdf:resource="#FunctionalImpactTerm"/>
+    <rdfs:subPropertyOf rdf:resource="#communicationImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherLifeManagementActivitiesImpact">
+    <rdfs:range rdf:resource="#FunctionalImpactTerm"/>
+    <rdfs:subPropertyOf rdf:resource="#lifeManagementActivitiesImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#lifeCycle">
+    <rdfs:domain rdf:resource="#SpecificConditionSection"/>
+    <rdfs:range rdf:resource="#LifeCycleConditionTerm"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="icdTitle">
+    <rdfs:range rdf:resource="#TitleTerm"/>
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ICDtitle</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#is_prefilled_definition_of">
+    <owl:inverseOf rdf:resource="#definitionPrefilled"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#ExternalDefinitionTerm"/>
+    <rdfs:range rdf:resource="#DefinitionSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="icdRefCode">
+    <rdfs:domain rdf:resource="#ClamlReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="editorialStatusCausalMechanism">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#editorialStatus"/>
+    </rdfs:subPropertyOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="morbidityParent"/>
+  <owl:ObjectProperty rdf:ID="selectedSchoolActivitiesImpact">
+    <rdfs:range rdf:resource="#SelectedSchoolActivitiesImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf rdf:resource="#schoolActivitiesImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherHouseholdActivitiesImpact">
+    <rdfs:subPropertyOf rdf:resource="#householdActivitiesImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="selectedWorkActivitiesImpact">
+    <rdfs:range rdf:resource="#SelectedWorkAndEconomicLifeActivitiesImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+    <rdfs:subPropertyOf rdf:resource="#workActivitiesImpact"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#editorialStatus">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="#EditorialStatusValueSet"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="linearizationView">
+    <rdfs:range rdf:resource="#LinearizationView"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Linearization"/>
+          <owl:Class rdf:about="#LinearizationSpecification"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="otherSchoolActivitiesImpact">
+    <rdfs:subPropertyOf rdf:resource="#schoolActivitiesImpact"/>
+    <rdfs:domain rdf:resource="#FunctionalImpactSection"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="clamlReferences">
+    <rdfs:domain rdf:resource="#Term"/>
+    <rdfs:range rdf:resource="#ClamlReference"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="sortingCode">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#LinearizationView"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The property used to sort linearization views</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="icdCode">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ICDcode</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="level">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >level</rdfs:label>
+    <rdfs:domain rdf:resource="#SeverityTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="clamlContent">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Term"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ageRangeIsDefinitional">
+    <rdfs:domain rdf:resource="#TemporalPropertiesTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="unspecifiedTypeComment">
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Unspecified: When this box is checked, the iCAT user will be required to comment on why it is unspecifie</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ageRangeIsGenerallyTrue">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#TemporalPropertiesTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >true if the disease occurs generally in that population (i.e. measles in children)</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://bioportal.bioontology.org#ontologyId">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the BioPortal ontology id, e.g., "40403"</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ExternalReference"/>
+          <owl:Class rdf:about="#SelectedMobilityImpact"/>
+          <owl:Class rdf:about="#BioportalReferenceTerm"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="language">
+    <rdfs:domain rdf:resource="#LanguageTerm"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >lanugage</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="severityScaleName">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#SeverityScaleTerm"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="kind">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#CodedTerm"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Intended to be used for specifying the kind of category: chapter, block or single category.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="sequenceNumber">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="inclusionType">
+    <rdfs:domain rdf:resource="#InclusionTerm"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >inclusionType</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >subclass</rdf:first>
+          <rdf:rest rdf:parseType="Resource">
+            <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >synonym</rdf:first>
+          </rdf:rest>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="termId">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the termId of the referenced term. Should be full URI if available, or else some other id (e.g. Snomed id)</rdfs:comment>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ReferenceTerm"/>
+          <owl:Class rdf:about="#ExternalReference"/>
+          <owl:Class rdf:about="#SelectedMobilityImpact"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >termId</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="ontologyId">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >ontologyId</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is either the full URI of the ontology (ontology name), or some short name, if full URI does not exist</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#ReferenceTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="clamlUsage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ClamlReference"/>
+          <owl:Class rdf:about="#DefinitionSection"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://bioportal.bioontology.org#shortTermId">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the BioPortal short term id, e.g. "12345" or  "p1:Pizza"</rdfs:comment>
+    <rdfs:domain rdf:resource="#BioportalReferenceTerm"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="definitionType">
+    <rdfs:domain rdf:resource="#ExternalDefinitionTerm"/>
+    <rdfs:range>
+      <owl:DataRange>
+        <owl:oneOf rdf:parseType="Resource">
+          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+          >prefilled</rdf:first>
+        </owl:oneOf>
+      </owl:DataRange>
+    </rdfs:range>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="isIncludedInLinearization">
+    <rdfs:domain rdf:resource="#LinearizationSpecification"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >True if the ICD category is included in the linearization</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="source">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#LanguageTerm"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="adminInfo">
+    <rdfs:domain rdf:resource="#CodedTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Use as Underlying cause code, legal restrictions (country specific), etc.
+Administrative information like "may be coded as underlying cause", "may be used for morbidity coding", "rare disease" and others.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="temporalQualifier">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >temporalQualifier</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#TemporalPropertiesTerm"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="label">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#LanguageTerm"/>
+          <owl:Class rdf:about="#Term"/>
+          <owl:Class rdf:about="#ExternalReference"/>
+          <owl:Class rdf:about="#SelectedMobilityImpact"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >label</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="text">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#ClamlReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="referenceID">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#LiteratureReference"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="diagnosticCriteriaText">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#DiagnosticCriteriaTerm"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="description">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#SeverityTerm"/>
+          <owl:Class rdf:about="#TemporalModifierTerm"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="exclusion_type">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added for backward compatibility</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="sortingLabel">
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://bioportal.bioontology.org#ontologyLabel">
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ExternalReference"/>
+          <owl:Class rdf:about="#SelectedMobilityImpact"/>
+          <owl:Class rdf:about="#BioportalReferenceTerm"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="comment">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >comment</rdfs:label>
+    <rdfs:domain rdf:resource="#ReferenceTerm"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="linearizationSortingLabel">
+    <rdfs:domain rdf:resource="#LinearizationSpecification"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="DatatypeProperty_7"/>
+  <owl:DatatypeProperty rdf:ID="id">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#DefinitionSection"/>
+          <ClinicalDescriptionSection rdf:about="#ICDCategory"/>
+          <owl:Class rdf:about="#IdentifiableClass"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the internal id of a category or term (could be split in two or three other ids)</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >id</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="citation">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >citation</rdfs:label>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#GenomicLinkageTerm"/>
+          <owl:Class rdf:about="#ExternalDefinitionTerm"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="url">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Is this property necessary?</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >url</rdfs:label>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#ReferenceTerm"/>
+          <owl:Class rdf:about="#ExternalReference"/>
+          <owl:Class rdf:about="#SelectedMobilityImpact"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="viewFlag">
+    <rdfs:domain rdf:resource="#CodedTerm"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Every category can have Subset adaptation and special view flags. This allows to group selected codes to a Subset that can be extracted for further use, e.g. to generate ICD-11-Mental Health or ICD-11-Mortality</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="clamlKind">
+    <rdfs:domain rdf:resource="#DefinitionSection"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="diagnosticCriteriaRule">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain rdf:resource="#DiagnosticCriteriaTerm"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="isDefinitional">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#DefiningTerm"/>
+          <owl:Class rdf:about="#EtiologyTerm"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >isDefinitional</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="summary">
+    <rdfs:domain rdf:resource="#LiteratureReference"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <EtiologyTypeTerm rdf:ID="Vascular"/>
+  <BiologicalSexConditionTerm rdf:ID="BiologicalSexNotAppSCTerm">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Not Applicable</label>
+  </BiologicalSexConditionTerm>
+  <EtiologyTypeTerm rdf:ID="Physical"/>
+  <SelectedLifeManagementActivitiesImpact rdf:ID="FunctionalImpactTerm_d220">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d220</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d220</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d220. Undertaking multiple tasks</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d220</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+  </SelectedLifeManagementActivitiesImpact>
+  <SelectedLifeManagementActivitiesImpact rdf:ID="FunctionalImpactTerm_d210">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d210</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d210</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d210</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d210. Undertaking a single task</label>
+  </SelectedLifeManagementActivitiesImpact>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d445">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d445</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d445</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d445. Hand and arm use</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d445</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+  </SelectedMobilityImpact>
+  <SelectedLifeManagementActivitiesImpact rdf:ID="FunctionalImpactTerm_d230">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d230</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d230</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d230. Carrying out daily routine</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d230</termId>
+  </SelectedLifeManagementActivitiesImpact>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d115">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d115</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d115</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d115</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d115. Listening</label>
+  </SelectedUnderstandingImpact>
+  <SelectedLifeManagementActivitiesImpact rdf:ID="FunctionalImpactTerm_d240">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d240</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d240</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d240</url>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d240. Handling stress and other psychological demands</label>
+  </SelectedLifeManagementActivitiesImpact>
+  <InstanceTemplate rdf:ID="adultTermTemplate">
+    <temporalRange rdf:resource="#adult"/>
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+  </InstanceTemplate>
+  <BiologicalSexConditionTerm rdf:ID="IntersexSCTerm">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Hermaphrodism</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >237821001</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=237821001</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >237821001</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+  </BiologicalSexConditionTerm>
+  <SelectedSocialParticipationImpact rdf:ID="FunctionalImpactTerm_d950">
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d950. Political life and citizenship</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d950</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d950</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d950</bp:shortTermId>
+  </SelectedSocialParticipationImpact>
+  <EtiologyTypeTerm rdf:ID="Chemical"/>
+  <SelectedInterpersonalRelationsImpact rdf:ID="FunctionalImpactTerm_d7702">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d7702</termId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d7702</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d7702. Sexual relationships</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d7702</url>
+  </SelectedInterpersonalRelationsImpact>
+  <BiologicalSexConditionTerm rdf:ID="FemaleSCTerm">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >248152002</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >248152002</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Female</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=248152002</url>
+  </BiologicalSexConditionTerm>
+  <SelectedInterpersonalRelationsImpact rdf:ID="FunctionalImpactTerm_d730">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d730. Relating with strangers</label>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d730</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d730</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d730</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedInterpersonalRelationsImpact>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d170">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d170</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d170</url>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d170. Writing</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d170</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedUnderstandingImpact>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d455_d4303">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A component of Vigorous activity or d4303. Carrying on shoulders, hip and back</rdfs:comment>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d455. Moving around or d4303. Carrying on shoulders, hip and back</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d455_d4303</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d455_d4303</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedMobilityImpact>
+  <SelectedCommunicationImpact rdf:ID="FunctionalImpactTerm_d330">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d330</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d330</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d330. Speaking</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d330</url>
+  </SelectedCommunicationImpact>
+  <SelectedChildrenAndYouthImpact rdf:ID="FunctionalImpactTerm_d8201">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d8201</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Attending school</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d8201</bp:shortTermId>
+  </SelectedChildrenAndYouthImpact>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d420">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d420</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d420</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d420</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d420. Transferring oneself</label>
+  </SelectedMobilityImpact>
+  <SelectedHouseholdActivitiesImpact rdf:ID="FunctionalImpactTerm_d630">
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d630</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d630. Preparing meals</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d630</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d630</bp:shortTermId>
+  </SelectedHouseholdActivitiesImpact>
+  <LinearizationView rdf:ID="Speciality_Adaptation_Mental_Health">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Spec. Adapt: Mental Health</rdfs:label>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >05</sortingCode>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Specialty Adaptation: Mental Health</rdfs:comment>
+  </LinearizationView>
+  <SelectedChildrenAndYouthImpact rdf:ID="FunctionalImpactTerm_d8202">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d8202</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d8202</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Taking exams</label>
+  </SelectedChildrenAndYouthImpact>
+  <InstanceTemplate rdf:ID="childrenUnder5TermTemplate">
+    <temporalRange rdf:resource="#children_under_5"/>
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+  </InstanceTemplate>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d430">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d430. Lifting and carrying objects</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d430</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d430</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d430</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+  </SelectedMobilityImpact>
+  <LinearizationView rdf:ID="Morbidity">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A specific LinearizationView for morbidity purpose.</rdfs:comment>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >01</sortingCode>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Morbidity</rdfs:label>
+  </LinearizationView>
+  <SelectedSocialParticipationImpact rdf:ID="FunctionalImpactTerm_d9205">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d9205</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d9205</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d9205. Socializing</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d9205</bp:shortTermId>
+  </SelectedSocialParticipationImpact>
+  <SelectedWorkAndEconomicLifeActivitiesImpact rdf:ID="FunctionalImpactTerm_d8450">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d8450. Seeking employment</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d8450</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d8450</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d8450</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+  </SelectedWorkAndEconomicLifeActivitiesImpact>
+  <SelectedSchoolActivitiesImpact rdf:ID="FunctionalImpactTerm_d830">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d830. Higher education</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d830</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d830</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d830</termId>
+  </SelectedSchoolActivitiesImpact>
+  <MotherLifeCycleConditionTerm rdf:ID="PregnantSCTerm">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >77386006</termId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >77386006</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=77386006</url>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Patient currently pregnant</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+  </MotherLifeCycleConditionTerm>
+  <SelectedWorkAndEconomicLifeActivitiesImpact rdf:ID="FunctionalImpactTerm_d850">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d850. Remunerative employment</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d850</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d850</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d850</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedWorkAndEconomicLifeActivitiesImpact>
+  <InstanceTemplate rdf:ID="geriatricTermTemplate">
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+    <temporalRange rdf:resource="#geriatric"/>
+  </InstanceTemplate>
+  <BiologicalSexConditionTerm rdf:ID="MaleSCTerm">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Male</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >248153007</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >248153007</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=248153007</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+  </BiologicalSexConditionTerm>
+  <SelectedCommunicationImpact rdf:ID="FunctionalImpactTerm_d3501">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d3501</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d3501. Sustaining a conversation</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d3501</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d3501</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedCommunicationImpact>
+  <SelectedInterpersonalRelationsImpact rdf:ID="FunctionalImpactTerm_d760">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d760</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d760. Family relationships</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d760</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d760</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedInterpersonalRelationsImpact>
+  <SelectedHouseholdActivitiesImpact rdf:ID="FunctionalImpactTerm_d660">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d660</termId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d660</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d660. Assisting others</label>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d660</url>
+  </SelectedHouseholdActivitiesImpact>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d4501">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d4501</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4501</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4501. Walking long distances</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d4501</termId>
+  </SelectedMobilityImpact>
+  <SelectedHouseholdActivitiesImpact rdf:ID="FunctionalImpactTerm_d640">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d640. Doing housework</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d640</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d640</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d640</termId>
+  </SelectedHouseholdActivitiesImpact>
+  <SelectedSchoolActivitiesImpact rdf:ID="FunctionalImpactTerm_d820">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d820</url>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d820. School education</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d820</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d820</termId>
+  </SelectedSchoolActivitiesImpact>
+  <SelectedCommunicationImpact rdf:ID="FunctionalImpactTerm_d3500">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d3500</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d3500</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d3500. Starting a conversation</label>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d3500</url>
+  </SelectedCommunicationImpact>
+  <VersionNote rdf:ID="VersionNote2110-04-05">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Removed index term and narrower term
+ from TermSection</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >TermSection has synonyms, and base inclusion term is a subset of Synonyms</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added specific conditions</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added time ranges for temporal property and flags for definition and "general occurrence"</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Created the default "mild, moderate, severe" severity scale</rdfs:comment>
+  </VersionNote>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d4500">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d4500</termId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4500</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d4500</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4500. Walking short distances</label>
+  </SelectedMobilityImpact>
+  <SelectedHouseholdActivitiesImpact rdf:ID="FunctionalImpactTerm_d620">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d620</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d620</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d620</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d620. Acquisition of goods and services</label>
+  </SelectedHouseholdActivitiesImpact>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d130-d155">
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d130-d155</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Not the same as Style Guilde d130-155</rdfs:comment>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d130-d155. Basic learning</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d130-d155</bp:shortTermId>
+  </SelectedUnderstandingImpact>
+  <BiologicalSexConditionTerm rdf:ID="TranssexualSCTerm">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=407374003</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >407374003</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >407374003</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Transsexual</label>
+  </BiologicalSexConditionTerm>
+  <InstanceTemplate rdf:ID="youngAdultTermTemplate">
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+    <temporalRange rdf:resource="#young_adult"/>
+  </InstanceTemplate>
+  <LinearizationView rdf:ID="Research">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Research</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A specific LinearizationView for research purpose.</rdfs:comment>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >04</sortingCode>
+  </LinearizationView>
+  <MotherLifeCycleConditionTerm rdf:ID="BirthSCTerm">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Birth</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >3950001</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >3950001</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=3950001</url>
+  </MotherLifeCycleConditionTerm>
+  <VersionNote rdf:ID="VersionNote2110-04-07">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Make TemporalPropertyTerm's age range, ageRangeIsDefinition, "ageRangeIsGenerallyTrue properties functional</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added legacy inclusion &amp; legacy exclusion, in addition to base inclusion &amp; base exclusion</rdfs:comment>
+  </VersionNote>
+  <SelectedSocialParticipationImpact rdf:ID="FunctionalImpactTerm_d940">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d940</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d940</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d940</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d940. Human rights</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedSocialParticipationImpact>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d5301">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d5301</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d5301</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d5301</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d5301. Regulating defecation</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedSelfCareImpact>
+  <ReferenceSource rdf:ID="ISBN"/>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d550">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d550</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d550. Eating</label>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d550</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d550</termId>
+  </SelectedSelfCareImpact>
+  <LinearizationView rdf:ID="Mortality">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Mortality</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A specific LinearizationView for mortality purpose.</rdfs:comment>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >02</sortingCode>
+  </LinearizationView>
+  <LinearizationView rdf:ID="PrimaryCare">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Primary Care</rdfs:label>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >03</sortingCode>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A specific LinearizationView for primary care purpose.</rdfs:comment>
+  </LinearizationView>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d5300">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d5300</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d5300. Regulating urination</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d5300</termId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d5300</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedSelfCareImpact>
+  <SelectedWorkAndEconomicLifeActivitiesImpact rdf:ID="FunctionalImpactTerm_d8451">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d8451</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d8451. Maintaining a job</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d8451</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d8451</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedWorkAndEconomicLifeActivitiesImpact>
+  <InstanceTemplate rdf:ID="infancyTermTemplate">
+    <temporalRange rdf:resource="#infancy"/>
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+  </InstanceTemplate>
+  <SelectedInterpersonalRelationsImpact rdf:ID="FunctionalImpactTerm_d740_d750">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d740. Formal relationships or d750. Informal social relationships</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d740_d750</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d740_d750</termId>
+  </SelectedInterpersonalRelationsImpact>
+  <InstanceTemplate rdf:ID="childrenAbove5TermTemplate">
+    <temporalRange rdf:resource="#children_above_5"/>
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+  </InstanceTemplate>
+  <LinearizationView rdf:ID="Specialty_Adaptation_Paediatrics">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Spec. Adapt: Paediatrics</rdfs:label>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >09</sortingCode>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Specialty Adaptation: Paediatrics</rdfs:comment>
+  </LinearizationView>
+  <InstanceTemplate rdf:ID="adolescenceTermTemplate">
+    <temporalRange rdf:resource="#adolescence"/>
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+  </InstanceTemplate>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d475">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d475</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d475</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d475</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d475. Driving</label>
+  </SelectedMobilityImpact>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d510">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d510</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d510. Washing oneself</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d510</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d510</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedSelfCareImpact>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d520">
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d520</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d520</url>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d520. Caring for body parts</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d520</bp:shortTermId>
+  </SelectedSelfCareImpact>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d560">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d560</url>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d560. Drinking</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d560</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d560</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+  </SelectedSelfCareImpact>
+  <EtiologyTypeTerm rdf:ID="Paraneoplastic"/>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d540">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d540</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d540. Dressing</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d540</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d540</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedSelfCareImpact>
+  <SelectedChildrenAndYouthImpact rdf:ID="FunctionalImpactTerm_d140">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d140</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d140. Learning to read</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d140</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d140</bp:shortTermId>
+  </SelectedChildrenAndYouthImpact>
+  <EtiologyTypeTerm rdf:ID="Infectious"/>
+  <LinearizationView rdf:ID="Specialty_Adaptation_Dermatology">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Specialty Adaptation: Dermatology</rdfs:comment>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >06</sortingCode>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Spec. Adapt: Dermatology</rdfs:label>
+  </LinearizationView>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d4602">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4602. Moving around outside the home and other buildings</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d4602</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d4602</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4602</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedMobilityImpact>
+  <InstanceTemplate rdf:ID="antenatalTermTemplate">
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+    <temporalRange rdf:resource="#antenatal"/>
+  </InstanceTemplate>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d4154">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4154</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d4154</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d4154</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4154. Maintaining a standing position</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedMobilityImpact>
+  <EtiologyTypeTerm rdf:ID="Iatrogenic"/>
+  <SelectedSchoolActivitiesImpact rdf:ID="FunctionalImpactTerm_d825">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d825</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d825. Vocational training</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d825</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d825</termId>
+  </SelectedSchoolActivitiesImpact>
+  <EtiologyTypeTerm rdf:ID="Genetic"/>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d4600">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d4600</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4600</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4600. Moving around within the home</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d4600</termId>
+  </SelectedMobilityImpact>
+  <SelectedSocialParticipationImpact rdf:ID="FunctionalImpactTerm_d920">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d920</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d920</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d920. Recreation and leisure</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d920</bp:shortTermId>
+  </SelectedSocialParticipationImpact>
+  <ChildLifeCycleConditionTerm rdf:ID="NeonatalPeriodSCTerm">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The neonatal period (as one of the periods of life) commences at birth and ends 28 completed days after birth.</rdfs:comment>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >255407002</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Neonatal Period</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >255407002</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=255407002</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+  </ChildLifeCycleConditionTerm>
+  <SelectedSocialParticipationImpact rdf:ID="FunctionalImpactTerm_d910">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d910. Community life</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d910</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d910</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d910</url>
+  </SelectedSocialParticipationImpact>
+  <SelectedSelfCareImpact rdf:ID="FunctionalImpactTerm_d570">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d570. Looking after one's health</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d570</termId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d570</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d570</url>
+  </SelectedSelfCareImpact>
+  <LinearizationView rdf:ID="Specialty_Adaptation_Neurology">
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >08</sortingCode>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Specialty Adaptation: Neurology</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Spec. Adapt: Neurology</rdfs:label>
+  </LinearizationView>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d470">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d470. Using transportation</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d470</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d470</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d470</bp:shortTermId>
+  </SelectedMobilityImpact>
+  <SelectedChildrenAndYouthImpact rdf:ID="FunctionalImpactTerm_d150">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d150. Learning to calculate</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d150</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d150</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d150</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedChildrenAndYouthImpact>
+  <SelectedCommunicationImpact rdf:ID="FunctionalImpactTerm_d310-d325">
+    <rdf:type rdf:resource="#SelectedChildrenAndYouthImpact"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></rdfs:comment>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d310-d325</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d310-d325</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d310-d325. Communicating - receiving written, spoken,  non-verbal &amp; formal sign-language messages</label>
+  </SelectedCommunicationImpact>
+  <InstanceTemplate rdf:ID="neonatalTermTemplate">
+    <temporalRange rdf:resource="#neonatal"/>
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+  </InstanceTemplate>
+  <SelectedSocialParticipationImpact rdf:ID="FunctionalImpactTerm_d9201">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d9201</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d9201</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d9201</url>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d9201. Sports</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedSocialParticipationImpact>
+  <SelectedChildrenAndYouthImpact rdf:ID="FunctionalImpactTerm_d335">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d335</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d335</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d335. Producing nonverbal messages</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d335</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedChildrenAndYouthImpact>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d440">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d440</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d440. Fine hand use</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d440</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d440</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+  </SelectedMobilityImpact>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d4105">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d4105</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4105</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d4105</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4105. Bending</label>
+  </SelectedMobilityImpact>
+  <MotherLifeCycleConditionTerm rdf:ID="AbortionSCTerm">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Abortion</label>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >70317007</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >70317007</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=70317007</url>
+  </MotherLifeCycleConditionTerm>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d110">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d110</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d110. Watching</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d110</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d110</termId>
+  </SelectedUnderstandingImpact>
+  <EtiologyTypeTerm rdf:ID="Nutritional"/>
+  <LinearizationSpecification rdf:ID="TestIsIncludedSlotLinearization">
+    <isIncludedInLinearization rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean"
+    >true</isIncludedInLinearization>
+  </LinearizationSpecification>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d172">
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d172</termId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d172</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d172</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d172. Calculating</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+  </SelectedUnderstandingImpact>
+  <SelectedInterpersonalRelationsImpact rdf:ID="FunctionalImpactTerm_d7200_d7500">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d7200_7500</termId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d7200. Forming relationships or d7500. Informal relationships with friends</label>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d7200_d7500</bp:shortTermId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+  </SelectedInterpersonalRelationsImpact>
+  <MotherLifeCycleConditionTerm rdf:ID="PuerperiumSCTerm">
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Postpartum state</label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Postpartum state (Puerperium) of the mother</rdfs:comment>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >86569001</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=86569001</url>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >86569001</termId>
+  </MotherLifeCycleConditionTerm>
+  <SelectedMobilityImpact rdf:ID="FunctionalImpactTerm_d4104">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4104. Standing</label>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d4104</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d4104</termId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d4104</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+  </SelectedMobilityImpact>
+  <VersionNote rdf:ID="VersionNote2010-03-05">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Restructured functional impact object property hierarchy so that,  each functional impact property (e.g., cognition) has two subproperties (e.g., selectedCognigion and otherCognition).</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Modified External Cause properties so that they are consistent with External_Cause_content_Model.doc (6 major axes corresponding to C1 - C7 in ICECI) and *descriptor subaxes.</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Made intent, mechanismOfInjury, object/substatnce, activity when injured, and place of occurrence functional properties.</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added a subclass of ICDCategory: ICDExternalCauseCategory. It is an instance of DefinitionSection, ExternalCauseSection, Linearizationsection, and TermSection.</rdfs:comment>
+  </VersionNote>
+  <EtiologyTypeTerm rdf:ID="Neoplastic"/>
+  <ChildLifeCycleConditionTerm rdf:ID="PerinatalPeriodSCTerm">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The perinatal period (referring to the life period of the child to be born or recently born) commences at 22 completed weeks (154 days) of gestation (the time when birth weight is normally 500 g), and ends seven completed days after birth.</rdfs:comment>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Perinatal Period</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >42122</bp:ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >371578004</termId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >371578004</bp:shortTermId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >SNOMED Clinical Terms</ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/42122/?id=371578004</url>
+  </ChildLifeCycleConditionTerm>
+  <SelectedChildrenAndYouthImpact rdf:ID="FunctionalImpactTerm_d9200_d880">
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d9200_d800</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d9200_d880</bp:shortTermId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Playing with others</label>
+  </SelectedChildrenAndYouthImpact>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d160">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d160</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d160</termId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d160</url>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d160. Focusing attention</label>
+  </SelectedUnderstandingImpact>
+  <SeverityScaleTerm rdf:ID="DefaultMildModerateSevereScale">
+    <severityTerm>
+      <SeverityTerm rdf:ID="Mild"/>
+    </severityTerm>
+    <severityTerm>
+      <SeverityTerm rdf:ID="Moderate"/>
+    </severityTerm>
+    <severityTerm>
+      <SeverityTerm rdf:ID="Severe"/>
+    </severityTerm>
+  </SeverityScaleTerm>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d175">
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d175</url>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d175. Solving problems</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d175</bp:shortTermId>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d175</termId>
+  </SelectedUnderstandingImpact>
+  <LinearizationView rdf:ID="Specialty_Adaptation_Musculoskeletal">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Spec. Adapt: Musculoskeletal</rdfs:label>
+    <sortingCode rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >07</sortingCode>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Specialty Adaptation: Musculoskeletal</rdfs:comment>
+  </LinearizationView>
+  <VersionNote rdf:ID="VersionNote2010-02-23">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Created a "hasICDCategories" property (domain BaseExclusionTerm, range: ICDCategory) for ICD categories of an exclusion term.</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added SeverityScaleTerm (which has a name and a set of SeverityTerm). SeverityTerm has a "level" and "description" property</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added risk factor qualifiers: immeidate, proximal, and distal to RiskFactorTerm</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added Functional Impact value set. Added functional impact property tree corresponding to the functional impact on the person domains.</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Created mechansim and agent subproperties of causalFactor property and added CausalMechanismAndRiskFactorSection as the domain of the subproperties.</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added Treatment Section (with "treatment" property) to the ICD11 Information Model.</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Made "Type" of ICD category consistent with the specification in the Style Guide</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Removed isSynonym and isNarrower Boolean properties, and replaced them with index term type property that has the enumerated set {synonym, narrower_term} as value domain</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Clarified the meaning of DefiningTerm with Tania, and removed textual terms (as as Fullyspecified name) as subclasses of DefiningTerm.</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Systematically relabeled the classes so that they correspond to the Style Guide for the Content Model</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Added ExternalCauses Section, with external causes dimensions (e.g., intent, mechansim of injury, object/substance) as properties. Added an ExternalCauseTerm as the range of the properties</rdfs:comment>
+  </VersionNote>
+  <SelectedChildrenAndYouthImpact rdf:ID="FunctionalImpactTerm_d145">
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d145</bp:shortTermId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d145. Learning to write</label>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d145</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d145</termId>
+  </SelectedChildrenAndYouthImpact>
+  <SelectedUnderstandingImpact rdf:ID="FunctionalImpactTerm_d166">
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d166. Reading</label>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d166</termId>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d166</url>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d166</bp:shortTermId>
+  </SelectedUnderstandingImpact>
+  <ReferenceSource rdf:ID="PMID"/>
+  <SelectedWorkAndEconomicLifeActivitiesImpact rdf:ID="FunctionalImpactTerm_d860">
+    <bp:ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >40865</bp:ontologyId>
+    <bp:ontologyLabel rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</bp:ontologyLabel>
+    <ontologyId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >International Classification of Functioning, Disability and Health (ICF)</ontologyId>
+    <label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d860. Basic economic transactions</label>
+    <bp:shortTermId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >d860</bp:shortTermId>
+    <url rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://bioportal.bioontology.org/visconcepts/40865/?id=d860</url>
+    <termId rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >http://who.int/icf#d860</termId>
+  </SelectedWorkAndEconomicLifeActivitiesImpact>
+  <InstanceTemplate rdf:ID="perinatalTermTemplate">
+    <rdf:type rdf:resource="#TemporalPropertiesTerm"/>
+    <temporalRange rdf:resource="#perinatal"/>
+  </InstanceTemplate>
+  <VersionNote rdf:ID="VersionNote2010-02-10">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Systematically copied UML content model documentation to corresponding classes, properties, and individuals in the iCAT content model</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Recreated comments in the UML content model as Collaborative Protege annotations</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Re-organized top-level classes, making Domainconcept, ICD Information Model, and ValueSet subclasses of ICD11Entity</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Labeled ICDSection to ICD Information Model</rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></rdfs:comment>
+  </VersionNote>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 3.4.5, Build 593)  http://protege.stanford.edu -->

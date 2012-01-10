@@ -17,6 +17,26 @@
 		background-color: white;
 	}
 	
+    #legend {
+        position: absolute;
+        left: 8px;
+        top: 162px;
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+        padding: 0 0 0 0px;
+    }
+    
+    #colorBox {
+        position: absolute;
+        left: 8px;
+        top: 185px;
+        width: 150px;
+        font-size: 12px;
+        padding: 10px 10px 0 10px;
+        background-color: #EEE;
+    }
+    
 	/*#navigation {
 		position: absolute;
 		right: 10px;
@@ -65,18 +85,71 @@
 		left: 30px;
 		top: 110px;
 	}
-	
+	#heatmap_slider {
+      float:left;
+      clear:right;
+      width:300px;
+    }
 </style>
 {% endblock head %}
 
 {% block control %}
+<script type="text/javascript">
+    function getStatusColors() {
+        return "Legend:<hr><div class=\"size_wrapper\"><div class=\"legend_diameter\">size =</div><div class=\"feature_text\">"+ $("#feature option:selected").text() +"</div></div><div class=\"legend_wrapper\"><div class=\"color_grey legend_color\">&nbsp;</div><div> = status unset</div></div><div class=\"legend_wrapper\"><div class=\"color_red legend_color\">&nbsp;</div><div> = avoid commenting</div></div><div class=\"legend_wrapper\"><div class=\"color_yellow legend_color\">&nbsp;</div><div> = comment if essential</div></div><div class=\"legend_wrapper\"><div class=\"color_blue legend_color\">&nbsp;</div><div> = ready for comments</div></div>";
+    }
+    
+    function getLanguageColors() {
+        return "Legend:<hr><div class=\"size_wrapper\"><div class=\"legend_diameter\">size =</div><div class=\"feature_text\">"+ $("#feature option:selected").text() +"</div></div><div style=\"clear:both\"></div><div class=\"legend_wrapper\"><div class=\"color_grey legend_color\">&nbsp;</div><div> = 0 languages</div></div><div class=\"legend_wrapper\"><div class=\"color_yellow legend_color\">&nbsp;</div><div> = 1 language</div></div><div class=\"legend_wrapper\"><div class=\"color_orange legend_color\">&nbsp;</div><div> = 2 languages</div></div><div class=\"legend_wrapper\"><div class=\"color_red legend_color\">&nbsp;</div><div> = 3 languages</div></div><div class=\"legend_wrapper\"><div class=\"color_blue legend_color\">&nbsp;</div><div> = 4 languages</div></div><div class=\"legend_wrapper\"><div class=\"color_darkblue legend_color\">&nbsp;</div><div> = 5 languages</div></div>";
+    }
+    
+    function getHeatmapColors() {
+        return "Legend:<hr><div class=\"size_wrapper\"><div class=\"legend_diameter\">size =</div><div class=\"feature_text\">"+ $("#feature option:selected").text() +"</div></div><div style=\"clear:both\"></div><div class=\"legend_wrapper\"><div class=\"h_color_blackblue legend_color\">&nbsp;</div><div> >= 1y since last activity</div></div><div class=\"legend_wrapper\"><div class=\"h_color_darkestblue legend_color\">&nbsp;</div><div> < 1y since last activity</div></div><div class=\"legend_wrapper\"><div class=\"h_color_darkblue legend_color\">&nbsp;</div><div> < 6m since last activity</div></div><div class=\"legend_wrapper\"><div class=\"h_color_violet legend_color\">&nbsp;</div><div> < 1m since last activity</div></div><div class=\"legend_wrapper\"><div class=\"h_color_pink legend_color\">&nbsp;</div><div> < 2w since last activity</div></div><div class=\"legend_wrapper\"><div class=\"h_color_lightred legend_color\">&nbsp;</div><div> < 7d since last activity</div></div><div class=\"legend_wrapper\"><div class=\"h_color_red legend_color\">&nbsp;</div><div> < 3d since last activity</div></div>";
+    }
+    
+    function updateColorCodes() {
+        if($("#heatmap").attr("checked"))
+            $("#colorBox").html(getHeatmapColors());
+        else {
+            if($("#feature option:selected").val().split("_")[0] == "mlm") {
+                $("#colorBox").html(getLanguageColors());
+            } else {
+                $("#colorBox").html(getStatusColors());
+            }
+        }
+    }
+    
+    $(document).ready(function() {
+        $("#colorBox").hide();
+        $("#toggleLegend").click(function() {
+            updateColorCodes();
+            $("#colorBox").toggle();
+            return false;
+        });
+        
+        $("#heatmap").change(function() {
+            updateColorCodes();
+        });
+        
+        $("#feature").change(function() {
+            updateColorCodes();
+        });
+    });
+</script>
+
+<div id="legend">
+    <a href="#" id="toggleLegend"><img src="media/legend.gif" alt="?"/></a>
+</div>
+<div id="colorBox"></div>
 <div id="control">
     Network:
     <select id="networkSelect">
         <option value="categories">Categories</option>
         <option value="authors">Authors</option>
         <option value="properties">Properties</option>
-    </select><br />
+    </select>
+    <input type="checkbox" name="heatmap" value="true" id="heatmap"> Activate heatmap
+    <br />
     <span id="categoriesControl">
         Author:
         <select id="author">
@@ -133,7 +206,6 @@
 {% endblock control %}
 
 {% block all %}
-
 <div id="graph"></div>
 
 <!--<div id="navigation">
@@ -165,6 +237,8 @@
 		$("#loading").ajaxStop(function() {
 			$(this).hide();
 		});
+        
+
 		/*var graph = createTagsGraph('graph');
 		function zoomIn() {
 			graph.zoomIn();
@@ -290,6 +364,7 @@
                 g: $('#networkSelect').val(),
     			u: $('#author').val(),
     			l: $('#layout').val(),
+                h: $('#heatmap').attr("checked"),
                 f: $('#feature').val(),
                 af: $('#authorFeature').val(),
                 s: $('#show').val(),
@@ -339,7 +414,7 @@
             //var accumulated = $('#accumulated:checked').val() == "on";
             var author = $('#author').val();
             var feature = author == '' ? $('#feature').val() : $('#authorFeature').val();
-            
+            var heatmap = $('#heatmap').attr("checked");
             params = {
 				'borderW': xmin,
 				'borderN': ymin,
@@ -349,6 +424,7 @@
                 'author': author,
 				'layout': $('#layout').val(),
                 'feature': feature,
+                'heatmap': heatmap,
                 'show': $('#show').val(),
                 'showProperties': $('#showProperties').val(),
 				//'weight': $('#weight').val(),
@@ -366,15 +442,19 @@
                     return 2;
                 return 2 + 10 * Math.sqrt(1.0 * (value - minValue) / (maxValue - minValue));
             }
-            
+
             $.getJSON('/ajax/graph/', params, function(data, textStatus, xhr) {
     			$.each(data.nodes, function(i, item) {
-    				var x = item[0];
+    				
+                    var x = item[0];
     				var y = item[1];
     				var id = item[2];
     				var count = item[3];
     				var display = item[4];
                     var shortDisplay = item[5];
+                    if(count == null){
+                        count = 0;
+                    }
                     var countDisplay = parseInt(count) == count ? count : count.toFixed(3);
                     display = display + " (" + countDisplay + ")";
                     var shortDisplayCount = shortDisplay + " (" + countDisplay + ")";
@@ -383,13 +463,53 @@
                     var colorHover = "";
                     if (graph == 'categories') {
                         switch (color) {
+                        
+                        // Heatmap Color Codes
+                        case "h_blackblue":
+                            color = "#02003F"
+                            colorHover = "#030066"
+                            break;
+                        case "h_darkestblue":
+                            color = "#040098";
+                            colorHover = "#0600FF";
+                            break;
+                        case "h_darkblue":
+                            color = "#00649D";
+                            colorHover = "#00A2FF";
+                            break;
+                        case "h_blue":
+                            color = "#00C3B3";
+                            colorHover = "#00FFEA";
+                            break;
+                        case "h_yellow":
+                            color = "#FFE400";
+                            colorHover = "#A99700";
+                            break;
+                        case "h_orange":
+                            color = "#B74900";
+                            colorHover = "#FF6C00";
+                            break;
+                        case "h_red":
+                            color = "#C10000";
+                            colorHover = "#FF0000";
+                            break;
+                            
+                        // Status Colors & Title/Definition Count Numbers
                         case "blue":
                             color = "#137FAE";
                             colorHover = "#1DC5FF";
                             break;
+                        case "darkblue":
+                            color = "#181E9A";
+                            colorHover = "#444CF0";
+                            break;
                         case "red":
                             color = "#B20912";
                             colorHover = "#FF1027";
+                            break;
+                        case "orange":
+                            color = "#D37530";
+                            colorHover = "#FABC45";
                             break;
                         case "yellow":
                             color = "#FDC605";
@@ -454,7 +574,6 @@
         });
         
         network.refresh();
-        
         $('#networkSelect').change(paramsChange);
         $('#author').change(paramsChange);
         $('#layout').change(paramsChange);
@@ -463,6 +582,7 @@
         //$('#accumulated').change(paramsChange);
         $('#show').change(paramsChange);
         $('#showProperties').change(paramsChange);
+        $('#heatmap').change(paramsChange);
         
         //paramsChange();
 	});

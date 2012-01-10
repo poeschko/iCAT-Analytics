@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% load icd %}
+
+{% block title %}Categories - iCAT Analytics{% endblock title %}
+
+{% block content %}
+    
+<h2 class="centered">Dashboard</h2>
+
+<h2>Basic statistics</h2>
+
+Number of categories : {{ basic_ontology_stats.category_count }}<br/>
+Number of changes: {{ basic_ontology_stats.change_count }}<br/>
+Number of annotations: {{ basic_ontology_stats.annotation_count }}<br/>
+Number of authors: {{ basic_ontology_stats.author_count }}<br/>
+Number of TAGs: {{ basic_ontology_stats.tag_count }}<br/>
+
+
+<div style="width:430px; float:left;">
+    <h2 style="width: 430px;float:left;">Number of colored categories</h2>
+    <div id="plotColoredCategories" style="float:left; margin-top: 0.5em; width:430px; height:230px"></div>
+    <script type="text/javascript">
+        var categoriesData = {{ colored_categories|js }};
+        $.plot($('#plotColoredCategories'), categoriesData, { series: {
+            pie: {
+                show: true,
+                radius: 1,
+                 label: {
+                        show: true,
+                        radius: 1,
+                        formatter: function(label, series){
+                           return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                        },
+                        background: { opacity: 0.8 }
+                    }
+            }
+        }});
+    </script>
+</div>
+<div style="width: 430px; float:left;">
+    <h2 style="width: 430px; float:left;">Changes of colored categories</h2>
+    <div id="plotColoredCategoryChanges" style="float:left; clear:right; margin-top: 0.5em; width:430px; height:230px"></div>
+    <script type="text/javascript">
+        var categoryChangeData = {{ colored_category_changes|js }};
+        $.plot($('#plotColoredCategoryChanges'), categoryChangeData, { series: {
+            pie: {
+                show: true,
+                radius: 1,
+                 label: {
+                        show: true,
+                        radius: 1,
+                        formatter: function(label, series){
+                           return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                        },
+                        background: { opacity: 0.8 }
+                    }
+                
+            }
+        }});
+    </script>
+</div>
+<div style="clear:both;"></div>
+
+<h2>Average changes per category</h2>
+<div id="plotAverageColoredCategoryChanges" style="margin-top: 0.5em; width:430px; height:230px"></div>
+<script type="text/javascript">
+    var categoryAverageChangeData = {{ colored_category_average_changes|js }};
+	$.plot($('#plotAverageColoredCategoryChanges'), categoryAverageChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+            
+        }
+    }});
+</script>
+<div style="clear:both;"></div>
+
+<div style="width: 430px; float:left;">
+<h2>TAG changes of all categories</h2>
+<div id="plotAllCategoryTagChanges" style="margin-top: 0.5em; width:430px; height:230px"></div>
+<script type="text/javascript">
+    var categoryTagChangeData = {{ all_category_tag_changes|js }};
+	$.plot($('#plotAllCategoryTagChanges'), categoryTagChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+            
+        }
+    }});
+</script>
+</div>
+
+<div style="width: 430px; float:left;">
+<h2>TAG changes of blue categories</h2>
+<div id="plotBlueCategoryTagChanges" style="margin-top: 0.5em; width:430px; height:230px"></div>
+<script type="text/javascript">
+    var categoryTagChangeData = {{ blue_category_tag_changes|js }};
+	$.plot($('#plotBlueCategoryTagChanges'), categoryTagChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+            
+        }
+    }});
+</script>
+</div>
+<div style="clear:both;"></div>
+
+<div style="width: 430px; float:left;">
+<h2>TAG changes of yellow categories</h2>
+<div id="plotYellowCategoryTagChanges" style="margin-top: 0.5em; width:430px; height:230px"></div>
+<script type="text/javascript">
+    var categoryTagChangeData = {{ yellow_category_tag_changes|js }};
+	$.plot($('#plotYellowCategoryTagChanges'), categoryTagChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+            
+        }
+    }});
+</script>
+</div>
+
+<div style="width: 430px; float:left;">
+<h2>TAG changes of red categories</h2>
+<div id="plotRedCategoryTagChanges" style="margin-top: 0.5em; width:430px; height:230px"></div>
+<script type="text/javascript">
+    var categoryTagChangeData = {{ red_category_tag_changes|js }};
+	$.plot($('#plotRedCategoryTagChanges'), categoryTagChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+            
+        }
+    }});
+</script>
+</div>
+<div style="clear:both;"></div>
+
+
+<div style="width: 430px; float:left;">
+<h2>TAG changes of grey categories</h2>
+<div id="plotGreyCategoryTagChanges" style="margin-top: 0.5em; width:430px; height:230px"></div>
+<script type="text/javascript">
+    var categoryTagChangeData = {{ grey_category_tag_changes|js }};
+	$.plot($('#plotGreyCategoryTagChanges'), categoryTagChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+            
+        }
+    }});
+</script>
+</div>
+<div style="clear:both;"></div>
+
+<!--
+<h2>Basic Author statistics</h2>
+<ul>
+    <li>Average # of changes per author</li>
+    <li>Average # of annotations per author</li>
+    <li>blue concepts per tag (in %?)</li>
+    <li>TAG Activity</li>
+</ul>
+
+<h2>Concepts that might have faulty display states</h2>
+-->
+    
+{% endblock content %}
+

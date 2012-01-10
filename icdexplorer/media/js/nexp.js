@@ -645,6 +645,15 @@ function Network(element, screenWidth, screenHeight, options) {
 		
 		this.refresh();
 	}
+    /*
+    this.displayLegend = function() {
+        var legend = that.paper.rect(NAVCTRL_POS, 85, 200, 250, 4);
+		legend.attr({fill: white, stroke: "1px", cursor: "pointer"});
+
+		var text = that.paper.text(NAVCTRL_POS + NAVCTRL_SIZE/2, y + NAVCTRL_SIZE/2, caption);
+		text.attr({fill: "black", cursor: "pointer"});
+		text.attr("font-size", NAVCTRL_SIZE);
+    }*/
 	
 	this.building = false;
 	
@@ -819,6 +828,11 @@ function Network(element, screenWidth, screenHeight, options) {
 		createNavControl(NAVCTRL_POS + 2 * (NAVCTRL_SIZE + NAVCTRL_D), "-", function() {
 			that.doZoom(0.5, new Point(that.screenWidth / 2, that.screenHeight / 2));
 		});
+        /*
+        createNavControl(NAVCTRL_POS + 3 * (NAVCTRL_SIZE + NAVCTRL_D), "?", function() {
+            that.displayLegend();
+        });
+        */
 	}
 
   if (this.options.mouseWheelZoom) {
