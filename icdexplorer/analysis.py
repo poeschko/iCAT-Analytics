@@ -30,7 +30,6 @@ import networkx as nx
 
 import networkx as nx
 
-import orange, orngTree
 from statlib import stats
 
 def username(name):
@@ -84,6 +83,8 @@ def learn_changes_pyml():
     print "Done"
 
 def learn_orange():
+    import orange, orngTree
+
     data = orange.ExampleTable("../orange/categories.tab")
     rt = orngTree.TreeLearner(data, measure="retis", mForPruning=2, minExamples=20)
     orngTree.printTxt(rt, leafStr="%V %I")
@@ -277,17 +278,16 @@ def export_r_timeseries():
 def export_changes_accumulated():
     print "Export time-accumulated changes to R format"
     
-    changes = Change.objects.filter(instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
+    empty_values = ['', '(empty)']
+    
+    changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
     changes = changes.defer('old_value', 'new_value')
     print "Relevant changes total: %d" % changes.count()
-    changes = changes.filter(levenshtein_distance__isnull=False).exclude(property="")
+    changes = changes.filter(levenshtein_distance__isnull=False)
+    if not settings.IS_WIKI:
+        changes = changes.exclude(property="")
     print "Property and Levenshtein distance set: %d" % changes.count()
-    """changes = changes.filter(property__in=['icd title', 'short definition', 'synonym',
-        'diagnostic criteria', 'detailed definition', 'body system', 'body part',
-        'fully specified name',
-        'note', 'signs and symptoms'])"""
     
-    empty_values = ['', '(empty)']
     if settings.IS_WIKI:
         modify_changes = changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)
         text_changes = changes = list(changes)
@@ -295,10 +295,10 @@ def export_changes_accumulated():
         non_textual_properties = ['sorting label', 'use', 'display status', 'type', 'inclusions', 'exclusions',
             'primary tag']
         text_changes = changes.exclude(property__in=non_textual_properties)
-        modify_changes = text_changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)
+        modify_changes = text_changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)    
     
-    modify_changes = list(modify_changes)
-    print "Modifying changes: %d" % len(modify_changes)
+    #changes = Change.objects.all()[:5000]
+    #modify_changes = text_changes = changes = list(changes)
     
     if not settings.IS_WIKI:
         text_changes = list(text_changes)
@@ -348,6 +348,10 @@ def export_changes_accumulated():
             calculate_gini(authors),
             len(vocabulary), sum(vocabulary.itervalues())])
     write_csv('../output/changes_accumulated_text.dat', output)
+    
+    print "Get modifying changes"
+    modify_changes = list(modify_changes)
+    print "Modifying changes: %d" % len(modify_changes)
     
     output = [['count', 'week', 'concepts', 'levenshtein', 'levenshtein_rel',
         'total_levenshtein', 'total_levenshtein_rel', 'total_levenshtein_sim',
