@@ -75,21 +75,24 @@ def parse_wiki_dump(file):
                                               r_c, r_text, r_comment))
             current_page.revisions = revisions
             yield current_page
+            element.clear()
 
 def load_wiki():
     #for file in open("filenames.txt"):
     instance = settings.INSTANCE
     
+    print "Delete previous data"
     for model in [Category, OntologyComponent, Author, Change]:
         model.objects.filter(instance=instance).delete()
     
+    print "Load new data"
     authors = {}    # cache for Author instances
     for dirpath, dirnames, filenames in os.walk(settings.WIKI_INPUT_DIR):
         filenames.sort()
         for filename in filenames:
             if filename.endswith('.xml'):
-                page_generator = parse_wiki_dump(settings.WIKI_INPUT_DIR + filename)
                 print filename
+                page_generator = parse_wiki_dump(settings.WIKI_INPUT_DIR + filename)
                 for page in page_generator:
                     print page.title
                     category = Category.objects.create(instance=instance, name=page.title,

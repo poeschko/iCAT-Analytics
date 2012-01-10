@@ -4,7 +4,7 @@ IS_SERVER = False
 #BASE_DIR = '/home/simon/Desktop/WORKINGDIR/iCAT-Analytics/icdexplorer/'
 BASE_DIR = '/Users/Jan/Uni/Stanford/ICD-Python/icdexplorer/'
 
-DEBUG = True
+DEBUG = False
 
 ENABLE_CACHE = IS_SERVER
 
