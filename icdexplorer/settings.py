@@ -7,8 +7,9 @@ jan@poeschko.com
 """
 
 from settings_site import (IS_SERVER, BASE_DIR, DEBUG, ENABLE_CACHE,
-    INSTANCE, IS_NCI, IS_ICTM,
-    DB_NAME, DB_USER, DB_PASSWORD)
+    INSTANCE, IS_NCI, IS_ICTM, IS_WIKI,
+    DB_NAME, DB_USER, DB_PASSWORD,
+    WIKI_INPUT_DIR)
 
 #IS_SERVER = False
 

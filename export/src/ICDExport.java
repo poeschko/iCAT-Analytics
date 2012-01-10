@@ -33,9 +33,10 @@ import java.util.Properties;
 public class ICDExport {
     //public final static String baseDir = "/Users/Jan/Uni/Stanford/ICD/";
     //public final static String exportDir = baseDir + "data/";
+	public static String exportDir = "C:\\Users\\simon\\Desktop\\";
+    public static String projectDir = "C:\\Users\\simon\\Desktop\\Github\\iCAT-Analytics\\export\\project\\";
     
-    public static String projectDir;
-    public static String exportDir;
+    //public static String exportDir;
     
     public final static String NS = ICDContentModelConstants.NS;
     public final static String ICD_CHANGE_CLASS = "Annotation";
@@ -64,7 +65,7 @@ public class ICDExport {
     public static void main(String[] args) {
         loadConfiguration();
         
-        //exportContent();
+        exportContent();
         exportChAO();
         
         System.out.println("Done");
