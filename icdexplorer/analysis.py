@@ -287,13 +287,13 @@ def export_changes_accumulated():
         'fully specified name',
         'note', 'signs and symptoms'])"""
     
+    empty_values = ['', '(empty)']
     if settings.IS_WIKI:
         modify_changes = changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)
         text_changes = changes = list(changes)
     else:
         non_textual_properties = ['sorting label', 'use', 'display status', 'type', 'inclusions', 'exclusions',
             'primary tag']
-        empty_values = ['', '(empty)']
         text_changes = changes.exclude(property__in=non_textual_properties)
         modify_changes = text_changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)
     
