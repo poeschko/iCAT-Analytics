@@ -24,6 +24,7 @@ else:
 IS_NCI = INSTANCE.startswith('nci')
 IS_ICTM = INSTANCE.startswith('ictm')
 IS_WIKI = INSTANCE.startswith('wiki')
+IS_ICD = not IS_NCI and not IS_ICTM and not IS_WIKI 
 
 WIKI_INPUT_DIR = BASE_DIR + '../wiki/randomsample_icd10/'
 

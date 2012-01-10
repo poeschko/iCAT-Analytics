@@ -57,11 +57,11 @@ elif settings.IS_ICTM:
     ROOT_CATEGORY = 'http://who.int/ictm#ICTMCategory'
 else:
     ROOT_CATEGORY = 'http://who.int/icd#ICDCategory'
-
-"""AUTHOR_SUBS = {
-    'ttania': 'Tania Tudorache',
-    'Molly Robinson': 'Molly Meri Robinson',
-}"""
+    
+def node_name(category):
+    if isinstance(category, basestring):
+        return category.encode('utf-8')
+    return category.name.encode('utf-8')
 
 def createnetwork():
     print "Create network"
@@ -69,82 +69,18 @@ def createnetwork():
     categories = Category.objects.filter(instance=settings.INSTANCE) #.select_related('change_component')
     print "%d categories" % len(categories)
     for index, category in enumerate(categories):
-        #print category.name
         if index % 1000 == 0:
             print "  %d: %s" % (index, category)
-        """try:
-            chao = category.chao
-            annotations = chao.annotations.count()
-            changes = chao.changes.count()
-            activity = annotations + changes
-        except OntologyComponent.DoesNotExist:
-            #print "No ChAO component for %s" % category.name
-            activity = 0"""
-        G.add_node(str(category.name), display=category.display) #, weight=activity)
-        #children = category.children.all()
-        #for child in children:
-        #    G.add_edge(str(child.name), str(category.name))
+        G.add_node(node_name(category), display=category.display) #, weight=activity)
         parents = category.parents.values_list('name', flat=True)
         if not (parents or category.name == ROOT_CATEGORY):
             print category.name
         for parent_name in parents:
-            G.add_edge(str(category.name), str(parent_name))
+            G.add_edge(node_name(category), node_name(parent_name))
             
     print "Save graph"
     PickledData.objects.set(settings.INSTANCE, 'graph', G)
     print "Network saved"
-    
-"""def createtree():
-    G = nx.DiGraph()
-    categories = Category.objects.select_related('change_component')
-    print "%d categories" % len(categories)
-    for index, category in enumerate(categories):
-        if index % 100 == 0:
-            print "  %d: %s" % (index, category)
-        try:
-            chao = category.chao
-            annotations = chao.annotations.count()
-            changes = chao.changes.count()
-            activity = annotations + changes
-        except OntologyComponent.DoesNotExist:
-            #print "No ChAO component for %s" % category.name
-            activity = 0
-        G.add_node(category.name, display=category.display, weight=activity)
-        #children = category.children.all()
-        #for child in children:
-        #    G.add_edge(child.name, category.name)
-        parents = category.parents.all()
-        parents = list(parents)
-        root = sorted = None
-        for parent in parents:
-            if parent.name == ROOT_CATEGORY:
-                root = parent
-            elif parent.sorting_label:
-                if sorted is not None:
-                    print "More than one sorted parent for %s: %s" % (category, parents)
-                sorted = parent
-        if root is not None:
-            parent = root
-        elif sorted is not None:
-            parent = sorted
-        else:
-            if len(parents) > 1:
-                print "Non-unique parents for %s: %s" % (category, parents)
-            parent = parents[0]
-        G.add_edge(category.name, parent.name)
-            
-    PickledData.objects.set(settings.INSTANCE, 'tree', G)
-    """
-    
-"""def get_graph():
-    Gunicode = PickledData.objects.get(settings.INSTANCE, 'graph')
-    G = nx.DiGraph()
-    for node in Gunicode:
-        G.add_node(str(node))
-        G.node[node] = Gunicode.node[node]
-    for u, v in Gunicode.edges_iter():
-        G.add_edge(str(u), str(v))
-    return G"""
 
 def call_dot(prog, filename, args, temp_output='output.dot', verbose=True):
     cmdline = [prog, '-Tdot', '-o' + temp_output, filename] + args
@@ -182,7 +118,6 @@ def call_dot(prog, filename, args, temp_output='output.dot', verbose=True):
         if stderr_output:
             stderr_output = ''.join(stderr_output)
         
-    #pid, status = os.waitpid(p.pid, 0)
     status = p.wait()
     
     if status != 0 :
@@ -192,25 +127,12 @@ def call_dot(prog, filename, args, temp_output='output.dot', verbose=True):
     elif stderr_output:
         print stderr_output
     
-    # For each of the image files...
-    #
-    """for img in self.shape_files:
-    
-        # remove it
-        #
-        os.unlink( os.path.join( tmp_dir, os.path.basename(img) ) )
-
-    os.unlink(tmp_name)"""
-    #os.unlink(temp_output)
-    
-    with open('output.dot', 'r') as output:
+    with open(temp_output, 'r') as output:
         result = output.read()
     
     return result
 
 def get_dot_pos(content):
-    #D = P.create_dot(prog=['neato', ['-v']])
-    
     node_re = re.compile(r'"(.*?)" \[pos="([0-9.e+-]+),([0-9.e+-]+)"')
     pos = {}
     for match in node_re.finditer(content):
@@ -226,40 +148,12 @@ def get_dot_pos(content):
         pos[node] = ((x-x_min) / (x_max-x_min), (y-y_min) / (y_max-y_min))
     return pos
     
-    """D = content
-
-    Q=pydot.graph_from_dot_data(D)
-
-    node_pos={}
-    for n in G.nodes():
-        node=Q.get_node(pydot.Node(str(n)).get_name())
-        if isinstance(node,list):
-            node=node[0]
-        pos=node.get_pos()[1:-1] # strip leading and trailing double quotes
-        if pos != None:
-            xx,yy=pos.split(",")
-            node_pos[n]=(float(xx),float(yy))
-    return node_pos"""
-    #pos = node_pos
-    
 def graphpositions():
-    #G = get_graph()
     print "Load graph"
-    """G = PickledData.objects.get(settings.INSTANCE, 'graph')
-    for node in G:
-        G.node[node]['display'] = G.node[node]['display'].encode('utf8')
-        G.node[node] = {}
-    Gnew = nx.DiGraph()
-    for node in G:
-        Gnew.add_node(str(node))
-    for u, v in G.edges_iter():
-        Gnew.add_ed"""
-    #G = get_graph()
     graph_file = '../graph/graph.dot'
     if not os.path.exists(graph_file):
         G = PickledData.objects.get(settings.INSTANCE, 'graph')
         print "Create GraphViz graph"
-        #nx.write_dot(G, 'graph.dot')
         edges = G.edges()
         P = pydot.graph_from_edges(edges, directed=True)
         print "Export graph"
@@ -271,12 +165,6 @@ def graphpositions():
     print "Layout"
     for layout, key, dot_prog in settings.LAYOUTS:
         print layout
-        #pos = nx.pydot_layout(G, prog='dot', root=ROOT_CATEGORY.encode('utf8'), args='v')
-        #pos = nx.pydot_layout(G, prog='sfdp', root=ROOT_CATEGORY.encode('utf8'), args='-v')
-        
-        #if root is not None :
-        #P.set("root", str(ROOT_CATEGORY))
-    
         out_filename = '../graph/positions_%s.dot' % key
         
         if not os.path.exists(out_filename):
@@ -305,15 +193,12 @@ def adjust_positions():
         print layout
         
         pos = PickledData.objects.get(settings.INSTANCE, 'graph_positions_original_%s' % key)
-        #PickledData.objects.set(settings.INSTANCE, 'graph_pos_%s_unadjusted' % dot_prog, pos)
         root_x, root_y = pos[ROOT_CATEGORY]
         pos = dict((node, (x - root_x, y - root_y)) for node, (x, y) in pos.iteritems())
-        #print pos[:100]
         max_abs_x = max(abs(x) for node, (x, y) in pos.iteritems())
         max_abs_y = max(abs(y) for node, (x, y) in pos.iteritems())
         max_abs = max(max_abs_x, max_abs_y)
         pos = dict((node, (x / max_abs, y / max_abs)) for node, (x, y) in pos.iteritems())    
-        #print pos[ROOT_CATEGORY]
         PickledData.objects.set(settings.INSTANCE, 'graph_positions_%s' % key, pos)
     print "Done"
     
@@ -345,33 +230,15 @@ def store_positions():
     print "Done"
     
 def exportnetwork():
-    #G = get_graph()
     G = PickledData.objects.get(settings.INSTANCE, 'graph')
     nx.write_graphml(G, 'graph.graphml', prettyprint=True)
     
-"""class Point(object):
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        
-    def __add__(self, other):
-        return Point(self.x + other.x, self.y + other.y)
-    
-    def __mul__(self, other):
-        return Point(self.x * other, self.y * other)
-    
-    def rotate(self, angle):
-        pass"""
-    
 def lineargraphs():
-    #DISTANCE = 1
-    
     linearizations = LinearizationSpec.objects.values_list('linearization', flat=True).distinct()
     linearizations = list(linearizations)
     print linearizations
     categories = Category.objects.select_related('change_component')
     categories = list(categories)
-    #pos = {}
     graphs = {}
     for linearization in linearizations:
         print linearization
@@ -383,25 +250,10 @@ def lineargraphs():
                 parent = category.linearizations_child.get(linearization=linearization).parent
             except (Category.DoesNotExist, LinearizationSpec.DoesNotExist):
                 parents_count = category.parents.count()
-                #if parents_count > 1:
-                #    print "Non-unique parents (%d) for %s: %s" % (parents_count, category, category.parents.all())
                 for parent in category.parents.all():
                     break
-                #parent = category.parents
             G.add_edge(category.name, parent.name)
         graphs[linearization] = G
-        #pos[linearization] = nx.pydot_layout(G, prog='twopi', root=ROOT_CATEGORY)
-        
-        """angle = 2 * math.pi
-        pos[ROOT_CATEGORY] = complex(0, 0)
-        level = G.predecessors(ROOT_CATEGORY)
-        while level:
-            next_level = []
-            for node in level:
-                parent_pos = pos[G.successors(node)]
-                pos[node] = parent_pos + DISTANCE * 
-                next_level += [pre for per in G.predecessors_iter(node) if per not in pos]
-            level = next_level"""
             
     PickledData.objects.set(settings.INSTANCE, 'graphs_linear', graph)
     
@@ -426,7 +278,7 @@ def normalize_property(name):
     return name
     
 def compute_extra_change_data():
-    print "Compute extra change data"
+    print "Compute extra change data for composite changes"
     
     def compile(exprs):
         if not isinstance(exprs, (list, tuple)):
@@ -435,11 +287,12 @@ def compute_extra_change_data():
     
     change_kinds = [(kind, compile(exprs)) for kind, exprs in Change.kinds.iteritems()]
     change_kinds = sorted(change_kinds, key=lambda (k, e): (-len(k), k))
-    changes = Change.objects.filter(_instance=settings.INSTANCE, composite=settings.INSTANCE, type="Composite_Change").order_by('_name')
+    
+    changes = Change.objects.filter(_instance=settings.INSTANCE)
+    changes = changes.filter(composite=settings.INSTANCE, type="Composite_Change")
+    changes = changes.order_by('_name')
 
     for index, change in enumerate(changes):
-        #if index < 357000:
-        #    continue
         if index % 1000 == 0:
             print "%d: %s" % (index, change._name)
         if change.action == 'Composite_Change':
@@ -497,7 +350,6 @@ def compute_follow_ups():
                 for property in other_properties:
                     key = (change.property, property)
                     follows[key] = follows.get(key, 0) + 1
-    #print follow_ups
     PickledData.objects.set(settings.INSTANCE, 'follow_ups', follow_ups)
     print "Done"
     
@@ -510,24 +362,13 @@ def compute_sessions():
         for author, author_changes in group(changes, lambda change: change.author_id):
             last_change = author_changes[-1]
             last_change.ends_session = True
-            last_change.save() 
-    """for index, change in enumerate(all_changes):
-        if index % 1000 == 0:
-            print "%d: %s" % (index, change._name)
-        key = (change.apply_to_id, change.author_id, change.property)
-        if last is not None and key != last:
-            last_change.ends_session = True
             last_change.save()
-        last_change = change
-        last = key
-    last_change.ends_session = True
-    last_change.save()"""
     print "Done"
     
 def compute_author_reverts():
     print "Compute author reverts"
     
-    from django.db import connection #, transaction
+    from django.db import connection
     
     cursor = connection.cursor()
 
@@ -555,9 +396,7 @@ def find_annotation_components():
         if index % 1000 == 0:
             print "%d: %s" % (index, annotation.name)
         component = annotation
-        #considered = set([component])
         while True:
-            #print component.annotates_id
             try:
                 component = component.annotates
             except AnnotatableThing.DoesNotExist:
@@ -565,10 +404,6 @@ def find_annotation_components():
                 break
             try:
                 component = component.ontologycomponent
-                #if component in considered:
-                #    print "Cycle: %s" % considered
-                #break
-                #considered.add(component)
                 break
             except AnnotatableThing.DoesNotExist:
                 try:
@@ -581,91 +416,58 @@ def find_annotation_components():
 def find_change_categories():
     print "Find change categories"
     changes = Change.objects.filter(instance=settings.INSTANCE).order_by('pk') #.select_related('composite').order_by('name')
-    changes = changes.filter(pk__gte=settings.INSTANCE + "_4_annotation_Thesaurus_Class211442")
+    #changes = changes.filter(pk__gte=settings.INSTANCE + "_4_annotation_Thesaurus_Class211442")
+    #changes = changes.only('composite', 'name', 'apply_to')
     for index, change in enumerate(changes):
-        #if index < 7700:
-        #    continue
-        #if change.
         if index % 1000 == 0:
             print "%d: %s" % (index, change.name)
         composite = change
-        #considered = set([component])
         while composite.composite_id:
-            #print component.annotates_id
             try:
                 composite = composite.composite
             except Change.DoesNotExist:
-                #component = None
                 break
-        try:
-            change.apply_to = composite.apply_to
-        except OntologyComponent.DoesNotExist:
-            print "No apply_to: %s (composite: %s) -> %s" % (change, composite, composite.apply_to_id)
-            change.apply_to = None
-        change.save()
-        """    try:
-                component = component.ontologycomponent
-                #if component in considered:
-                #    print "Cycle: %s" % considered
-                #break
-                #considered.add(component)
-                break
-            except AnnotatableThing.DoesNotExist:
-                try:
-                    component = component.annotation
-                except:
-                    print component.name
-        annotation.component = component
-        annotation.save()"""
+        if change != composite:
+            try:
+                change.apply_to = composite.apply_to
+            except OntologyComponent.DoesNotExist:
+                print "No apply_to: %s (composite: %s) -> %s" % (change, composite, composite.apply_to_id)
+                change.apply_to = None
+            change.save()
         
 def calc_author_metrics(from_name=None, to_name=None):
     print "Calculate author metrics"
-    #categories = dict((category.name, category) for category in Category.objects.all().select_related('chao'))
     all_categories = Category.objects.filter(instance=settings.INSTANCE)
     categories = all_categories.select_related('chao')
     categories = list(categories)
     authors = Author.objects.filter(instance=settings.INSTANCE).order_by('name')
     authors = list(authors)
-    #authors = list(author.instance_name for author in authors)
     G = PickledData.objects.get(settings.INSTANCE, 'graph')
-    #weights = {}
     print "Get existing metrics"
     all_metrics_instances = AuthorCategoryMetrics.objects.filter(instance=settings.INSTANCE)
     all_metrics_instances = dict(((metrics.author.pk, metrics.category.pk), metrics) for metrics in all_metrics_instances)
     for author in authors:
-        #if author.name < 'Jayanthi Stjernsward':
-        #    continue
-        # There must be some memory leak in here, so we have to split up calls to calc_author_metrics
-        # into several ranges of authors
         if from_name is not None and author.name < from_name:
             continue
         if to_name is not None and author.name >= to_name:
             continue
         print author.name
-        """weights[author] = {}
-        for weight_id, weight_name, weight_func in settings.WEIGHTS:
-            print "  " + weight_name
-            weights[author][weight_id] = [{}, {}] # single / accumulated
-            weight = weights[author][weight_id]"""
-        #filter_changes = {'chao__changes__author': author}
-        annotated_changes = all_categories.filter(chao__changes__author=author, chao__changes__action="Composite_Change").exclude(chao__changes__kind="Automatic").annotate(changes_count=Count('chao__changes'))
+        annotated_changes = all_categories.filter(chao__changes__author=author)
+        if settings.IS_ICD:
+            annotated_changes = annotated_changes.filter(chao__changes__action="Composite_Change")
+        annotated_changes = annotated_changes.exclude(chao__changes__kind="Automatic").annotate(changes_count=Count('chao__changes'))
         annotated_changes = dict((c.pk, c.changes_count) for c in annotated_changes)
-        #filter_annotations = {} if author is None else {'chao__annotations__author': author}
         annotated_annotations = all_categories.filter(chao__annotations__author=author).annotate(annotations_count=Count('chao__annotations'))
         annotated_annotations = dict((c.pk, c.annotations_count) for c in annotated_annotations)
         all_metrics = {}
         any_activity = False
         for index, category in enumerate(categories):
-            #metrics, created = AuthorCategoryMetrics.objects.get_or_create(category=category, author=author, save=False)
             try:
-                #metrics = AuthorCategoryMetrics.objects.get(author=author, category=category)
                 metrics = all_metrics_instances[(author.pk, category.pk)]
-            #except AuthorCategoryMetrics.DoesNotExist:
             except KeyError:
                 metrics = AuthorCategoryMetrics(author=author, category=category, instance=settings.INSTANCE)
                 all_metrics_instances[(author.pk, category.pk)] = metrics
                 metrics.set_pos(category)
-            #metrics.instance = settings.INSTANCE
             metrics.changes = annotated_changes.get(category.pk, 0)
             metrics.annotations = annotated_annotations.get(category.pk, 0)
             metrics.activity = metrics.changes + metrics.annotations
@@ -674,25 +476,11 @@ def calc_author_metrics(from_name=None, to_name=None):
                 metrics.save()
                 any_activity = True
             all_metrics[category.name] = metrics.get_metrics_dict()
-            #if index % 1000 == 0:
-            #    print '%d: %s' % (index, category.name)
-            #activity = G.node[name]['weight']
-            #weight[0][category.name] = weight_func(category, {} if author is None else {'author': author})
-            """w = weight_func(annotated_changes.get(category.pk, 0), annotated_annotations.get(category.pk, 0))
-            if w > 0:
-                weight[0][category.name] = w"""
-            #qt[weight_id].insert(x, y, name, (-depth, weight))
         if any_activity:
             print "  Accumulate"
             for index, category in enumerate(categories):
-                #if index % 1000 == 0:
-                #    print '%d: %s' % (index, category.name)
-                #all_children = nx.bfs_successors(G, category.name)
-                #metrics = author.category_metrics.get(category=category)
                 try:
-                    #metrics = AuthorCategoryMetrics.objects.get(author=author, category=category)
                     metrics = all_metrics_instances[(author.pk, category.pk)]
-                #except AuthorCategoryMetrics.DoesNotExist:
                 except KeyError:
                     metrics = AuthorCategoryMetrics(author=author, category=category, instance=settings.INSTANCE)
                     metrics.changes = metrics.annotations = metrics.activity = 0
@@ -700,25 +488,10 @@ def calc_author_metrics(from_name=None, to_name=None):
                 calculate_accumulated(metrics, all_metrics, G)
                 if metrics.acc_activity > 0:
                     metrics.save()
-                """all_children = set()
-                def include(node):
-                    if node not in all_children:
-                        all_children.add(node)
-                        for child in G.predecessors_iter(node):
-                            include(child)
-                include(category.name)
-                childs_weight = sum(weight[0].get(child, 0) for child in all_children)
-                if childs_weight > 0:
-                    weight[1][category.name] = childs_weight"""
-                # + weights[weight_id][0][category.name]
-        #print "    Highest: %d" % max(weight[0].values())
-    #print "Save"
-    #PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     print "Done"
    
      
 def calc_weights():
-    #categories = dict((category.name, category) for category in Category.objects.all().select_related('chao'))
     all_categories = Category.objects.filter(instance=settings.INSTANCE)
     categories = all_categories.select_related('chao')
     categories = list(categories)
@@ -740,18 +513,10 @@ def calc_weights():
             annotated_annotations = all_categories.filter(**filter_annotations).annotate(annotations_count=Count('chao__annotations'))
             annotated_annotations = dict((c.pk, c.annotations_count) for c in annotated_annotations)
             for index, category in enumerate(categories):
-                #if index % 1000 == 0:
-                #    print '%d: %s' % (index, category.name)
-                #activity = G.node[name]['weight']
-                #weight[0][category.name] = weight_func(category, {} if author is None else {'author': author})
                 w = weight_func(annotated_changes.get(category.pk, 0), annotated_annotations.get(category.pk, 0))
                 if w > 0:
                     weight[0][category.name] = w
-                #qt[weight_id].insert(x, y, name, (-depth, weight))
             for index, category in enumerate(categories):
-                #if index % 1000 == 0:
-                #    print '%d: %s' % (index, category.name)
-                #all_children = nx.bfs_successors(G, category.name)
                 all_children = set()
                 def include(node):
                     if node not in all_children:
@@ -762,15 +527,9 @@ def calc_weights():
                 childs_weight = sum(weight[0].get(child, 0) for child in all_children)
                 if childs_weight > 0:
                     weight[1][category.name] = childs_weight
-                # + weights[weight_id][0][category.name]
-            #print "    Highest: %d" % max(weight[0].values())
     print "Save"
     PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     print "Done"
-
-
-#def calc_acc_weights():
-    
 
 def compact_weights():
     weights = PickledData.objects.get(settings.INSTANCE, 'weights')
@@ -802,47 +561,36 @@ def calculate_accumulated(metrics, all_metrics, G):
     get_indirect_children(G, all_children, metrics.category.name)
     for key, value, description in metrics.get_metrics():
         if key.startswith('acc_'):
-            #if key == 'acc_activity':
             childs_sum = sum(all_metrics.get(child, {}).get(key[4:], 0) for child in all_children)
-            #if childs_sum > 0:
-                #weight[1][category.name] = childs_weight
             setattr(metrics, key, childs_sum)
     
 def calc_metrics(accumulate_only=False, compute_centrality=True):
-    #DISPLAY_STATUS_RE = re.compile(r'.*set to: (.*?)\(.*')
-    
     print "Construct graph"
     G = PickledData.objects.get(settings.INSTANCE, 'graph')
     print "Nodes: %d" % len(G)
     print "Edges: %d" % G.size()
-    print "Level 1: %d" % len(G.predecessors(ROOT_CATEGORY))
-    #s = 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A-CMF_Regimen'
-    #print G.successors(s)
-    #print nx.shortest_path_length(G, source=s, target=ROOT_CATEGORY)
+    if ROOT_CATEGORY in G:
+        print "Level 1: %d" % len(G.predecessors(node_name(ROOT_CATEGORY)))
     G_undirected = G.to_undirected()
     print "Calc metrics"
     categories = Category.objects.filter(instance=settings.INSTANCE).order_by('name') #.select_related('chao')
     categories = list(categories)
-    #categories = list(categories)
-    #hits = nx.hits(G)
     if compute_centrality:
         print "Betweenness centrality"
         centrality = nx.betweenness_centrality(G)
         print "Betweenness undirected"
         centrality_undirected = nx.betweenness_centrality(G_undirected)
-        #print "Eigenvector centrality"
-        #eigenvector_centrality = nx.eigenvector_centrality_numpy(G_undirected)
         print "Pagerank"
         pageranks = nx.pagerank(G)
         print "Closeness centrality"
         closeness_centrality = nx.closeness_centrality(G_undirected)
         print "Clustering"
         clustering = nx.clustering(G_undirected)
-    #return
     all_metrics = {}
     for index, category in enumerate(categories):
-        if index % 1000 == 0:
-            print '%d: %s' % (index, category.name)
+        node = node_name(category)
+        if settings.IS_WIKI or index % 1000 == 0:
+            print '%d: %s' % (index, node)
         try:
             metrics = category.metrics
         except CategoryMetrics.DoesNotExist:
@@ -852,12 +600,8 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
             changes = []
             annotations = []
             for chao in category.chao.all():
-                changes += list(chao.changes.filter(Change.relevant_filter).order_by('timestamp'))
+                changes += list(chao.changes.filter(Change.relevant_filter).order_by('timestamp').only('property', 'author'))
                 annotations += list(chao.annotations.filter(Annotation.relevant_filter))
-            #chao = category.chao
-            #if chao is not None:
-            #    changes = chao.changes.filter(Change.relevant_filter).order_by('timestamp')
-            #    annotations = chao.annotations.filter(Annotation.relevant_filter)
             metrics.changes = len(changes)
             metrics.annotations = len(annotations)
             metrics.activity = metrics.changes + metrics.annotations
@@ -885,35 +629,21 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
             metrics.overrides = sum(len(prop) - 1 for prop in authors_by_property.itervalues())
             metrics.edit_sessions = sum(len(prop) for prop in authors_by_property.itervalues())
             metrics.authors_by_property = sum(len(set(prop)) for prop in authors_by_property.itervalues())
-            """else:
-                metrics.activity = metrics.changes = metrics.annotations = 0
-                metrics.authors_changes = metrics.authors_annotations = metrics.authors = 0
-                metrics.authors_gini = 0
-                metrics.overrides = metrics.edit_sessions = metrics.authors_by_property = 0"""
             try:
-                metrics.depth = nx.shortest_path_length(G, source=str(category.name), target=str(ROOT_CATEGORY))
+                if ROOT_CATEGORY in G:
+                    metrics.depth = nx.shortest_path_length(G, source=node, target=node_name(ROOT_CATEGORY))
+                else:
+                    metrics.depth = 0
             except nx.exception.NetworkXError:
                 metrics.depth = 0
             if compute_centrality:
-                metrics.pagerank = pageranks[category.name]
-                metrics.betweenness_centrality = centrality[category.name]
-                metrics.betweenness_centrality_undirected = centrality_undirected[category.name]
-                #metrics.eigenvector_centrality = eigenvector_centrality[category.name]
-                metrics.closeness_centrality = closeness_centrality[category.name]
-                metrics.clustering = clustering[category.name]
+                metrics.pagerank = pageranks[node]
+                metrics.betweenness_centrality = centrality[node]
+                metrics.betweenness_centrality_undirected = centrality_undirected[node]
+                metrics.closeness_centrality = closeness_centrality[node]
+                metrics.clustering = clustering[node]
             metrics.parents = category.parents.count()
             metrics.children = category.children.count()
-            
-            """ds_value = None
-            if chao:
-                try:
-                    last_ds_change = chao.changes.filter(action='Property Value Changed',
-                        context__startswith='Property: displayStatus').order_by('-timestamp')[0]
-                    ds_value = DISPLAY_STATUS_RE.match(last_ds_change.context)
-                except IndexError:
-                    pass
-            metrics.display_status = ds_value.group(1) if ds_value else None
-            if metrics.display_status: print metrics.display_status"""
             
             for key, value, descriptin in metrics.get_metrics():
                 if key.startswith('acc_'):
@@ -922,10 +652,6 @@ def calc_metrics(accumulate_only=False, compute_centrality=True):
             metrics.save()
             
         all_metrics[category.name] = metrics.get_metrics_dict()
-        
-        #if index == 1000:
-        #    break
-    #PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     
     print "Accumulate"
     
@@ -942,23 +668,6 @@ def calc_timespan_metrics():
     MINMAX_CHANGES_DATE = Change.objects.filter(instance=settings.INSTANCE).aggregate(min=Min('timestamp'), max=Max('timestamp'))
     MIN_CHANGES_DATE = MINMAX_CHANGES_DATE['min'] #.date()
     MAX_CHANGES_DATE = MINMAX_CHANGES_DATE['max'] #.date() + timedelta(days=1)
-
-    """
-    #timespans_splits = [MAX_CHANGES_DATE-timedelta(days=2), MAX_CHANGES_DATE-timedelta(days=7), MAX_CHANGES_DATE-timedelta(days=28)]
-    timespans_splits = [MAX_CHANGES_DATE-timedelta(days=16*7), MAX_CHANGES_DATE-timedelta(days=4*7)]
-    #timespans_spans = []
-    timespans = []
-    for split in timespans_splits:
-        #timespans_spans.append((MIN_CHANGES_DATE, split))
-        #timespans_spans.append((split, MAX_CHANGES_DATE))
-        
-        following, created = Timespan.objects.get_or_create(start=split, stop=MAX_CHANGES_DATE)
-        timespans.append(following)
-        preceding, created = Timespan.objects.get_or_create(start=MIN_CHANGES_DATE, stop=split)
-        timespans.append(preceding)
-        preceding.following.add(following)
-        preceding.save()
-    """
     
     split = datetime(2011, 04, 21)
     timespans = [
@@ -968,32 +677,11 @@ def calc_timespan_metrics():
             stop=split)[0]
     ]
     
-    #for timespan in timespans:
-    #    timespan.save()
-    
     timespans[1].following.add(timespans[0])
     
     for timespan in timespans:
         timespan.save()
         
-    #timespans = []
-    #for start, stop in timespans_spans:
-    #    timespan, created = Timespan.objects.get_or_create(start=start, stop=stop)
-    #    timespans.append(timespan)
-    #G_undirected = G.to_undirected()
-    #categories = list(categories)
-    #hits = nx.hits(G)
-    #centrality = nx.betweenness_centrality(G)
-    #print "Betweenness undirected"
-    #centrality_undirected = nx.betweenness_centrality(G_undirected)
-    #print "Eigenvector centrality"
-    #eigenvector_centrality = nx.eigenvector_centrality_numpy(G_undirected)
-    #pageranks = nx.pagerank(G)
-    #print "Closeness centrality"
-    #closeness_centrality = nx.closeness_centrality(G_undirected)
-    #print "Clustering"
-    #clustering = nx.clustering(G_undirected)
-    #return
     for timespan in timespans[:1]:
         print (timespan.start, timespan.stop)
         #timespan.save()
@@ -1065,17 +753,6 @@ def calc_timespan_metrics():
             metrics.save()
     #PickledData.objects.set(settings.INSTANCE, 'weights', weights)
     
-    """days_after_last_change = models.IntegerField(db_index=True, help_text="Days after last change")
-    days_before_first_change = models.IntegerField()
-    days_after_median_change = models.IntegerField()
-    days_after_last_annotation = models.IntegerField(db_index=True, help_text="Days after last annotation")
-    days_before_first_annotation = models.IntegerField()
-    days_after_median_annotation = models.IntegerField()
-    changes_parents = models.IntegerField()
-    annotations_parents = models.IntegerField()
-    changes_children = models.IntegerField()
-    annotations_children = models.IntegerField()"""
-    
 def value_to_csv(value, na="NA"):
     if value is None:
         return na
@@ -1088,7 +765,6 @@ def write_csv(filename, values, na="NA"):
     content = u'\n'.join(u'\t'.join(value_to_csv(value, na) for value in row) for row in values)
     with open(filename, 'w') as file:
         file.write(content.encode('utf-8'))
-    
 
 def createquadtree():
     categories = dict((category.name, category) for category in Category.objects.filter(instance=settings.INSTANCE).select_related('chao'))
@@ -1178,23 +854,50 @@ def corr2latex():
         print "\\\\ \n".join("&".join('%8s' % value for value in row) for row in result)
         print ""
         
+class CachedQuery(object):
+    def __init__(self, model):
+        self.model = model
+        self.cache = {}
+        
+    def get(self, pk, **fields):
+        try:
+            return self.cache[pk]
+        except KeyError:
+            instance, created = model.objects.get_or_create(pk, **fields)
+            self.cache[pk] = instance
+            return instance
+        
+    def __iter__(self):
+        return self.cache.itervalues()
+        
 def create_authors():
     from django.db import connection
     
     cursor = connection.cursor()
     
+    authors = CachedQuery(Author)
+    
     print "Changes"
-    changes = cursor.execute("""select icd_change.author_id, count(*) as c
+    """changes = cursor.execute(""select icd_change.author_id, count(*) as c
 from icd_change
 where icd_change._instance=%s
-and icd_change.action = "Composite_Change" and kind != "Automatic"
+and ((icd_change.action = "Composite_Change" and kind != "Automatic")
+    or (icd_change.action = ""))
 group by icd_change.author_id 
-order by c desc""", [settings.INSTANCE])
-    for row in cursor.fetchall():
-        name, count = row
+order by c desc"", [settings.INSTANCE])"""
+
+    #for row in cursor.fetchall():
+    changes = Change.objects.filter(instance=settings.INSTANCE).filter(Change.relevant_filter)
+    for change in debug_iter(changes):
+        author = authors.get(change.author_id, instance=settings.INSTANCE,
+            name=change.author_id[len(settings.INSTANCE):])
+        author.changes_count += 1
+        """name, count = row
         author, created = Author.objects.get_or_create(instance_name=name,
             instance=settings.INSTANCE, name=name[len(settings.INSTANCE):])
         author.changes_count = count
+        author.save()"""
+    for author in debug_iter(authors):
         author.save()
 
     print "Annotations"
@@ -1215,18 +918,19 @@ order by c desc""", [settings.INSTANCE])
 def load_extra_authors_data():
     print "Load extra authors data"
     
-    with open(settings.INPUT_DIR + 'metaproject_users_2_group_exported.csv', 'rb') as f:
-        reader = csv.reader(f, delimiter='\t', quoting=csv.QUOTE_MINIMAL)
-        reader.next()
-        for row in reader:
-            name, groups = row
-            author, created = Author.objects.get_or_create(instance_name=settings.INSTANCE + name,
-                instance=settings.INSTANCE, name=name)
-            groups = groups.split(',')
-            for group_name in groups:
-                group_name = group_name.strip().strip('"')
-                group, created = Group.objects.get_or_create(instance=settings.INSTANCE, name=group_name)
-                author.groups.add(group)
+    if settings.IS_ICD:
+        with open(settings.INPUT_DIR + 'metaproject_users_2_group_exported.csv', 'rb') as f:
+            reader = csv.reader(f, delimiter='\t', quoting=csv.QUOTE_MINIMAL)
+            reader.next()
+            for row in reader:
+                name, groups = row
+                author, created = Author.objects.get_or_create(instance_name=settings.INSTANCE + name,
+                    instance=settings.INSTANCE, name=name)
+                groups = groups.split(',')
+                for group_name in groups:
+                    group_name = group_name.strip().strip('"')
+                    group, created = Group.objects.get_or_create(instance=settings.INSTANCE, name=group_name)
+                    author.groups.add(group)
     
     """csv = open('../input/users.csv', 'r')
     authors = Author.objects.filter(instance=settings.INSTANCE).order_by('name')
@@ -1278,13 +982,9 @@ def calc_cooccurrences():
     for index, category in enumerate(categories):
         if index % 1000 == 0:
             print (index, category)
-        #if category.chao is not None:
         authors = set()
-        #for change in category.chao.changes.filter(Change.relevant_filter):
         for change in changes_by_category.get(category.pk, []):
             authors.add(change)
-        #authors.extend()
-        #for annotation in category.chao.annotations.all():
         for annotation in annotations_by_category.get(category.pk, []):
             authors.add(annotation)
         for author in authors:
@@ -1445,10 +1145,10 @@ def calc_author_metrics_split():
         
 def calc_edit_distances():
     print "Calc edit distances"
-    changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
+    changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
     #changes = changes.filter()
     #changes = changes.exclude(old_value="").exclude(new_value="")
-    for change in debug_iter(changes):
+    for change in debug_iter(queryset_generator(changes), n=100):
         old_value = change.old_value
         if old_value == '(empty)': old_value = ''
         new_value = change.new_value
@@ -1463,8 +1163,8 @@ def calc_edit_distances():
             change.levenshtein_distance_rel = 1.0 * change.levenshtein_distance / max(len(change.old_value),
                 len(change.new_value))
         change.levenshtein_similarity = 1.0 / (1 + ld)
-        change.lcs = longest_common_subsequence(old_value, new_value)
-        change.lcs_rel = 1.0 * change.lcs / max(len(old_value), 1)
+        #change.lcs = longest_common_subsequence(old_value, new_value)
+        #change.lcs_rel = 1.0 * change.lcs / max(len(old_value), 1)
         change.save()
     print "Done"
     
@@ -1557,29 +1257,37 @@ def preprocess_nci():
     #create_properties_network()
 
 def preprocess():
-    #find_annotation_components()
-    #compute_extra_change_data()
-    #create_authors()
-    #compute_follow_ups()
-    #load_extra_authors_data()
-    #create_properties()
-    #createnetwork()
-    #calc_metrics()
-    #calc_author_metrics_split()
-    #calc_weights()
-    #compact_weights()
-    #graphpositions()
+    find_annotation_components()
+    compute_extra_change_data()
+    create_authors()
+    if not settings.IS_WIKI:
+        compute_follow_ups() # too slow for wiki data
     
-    #adjust_positions()
-    #createquadtree()
-    #store_positions()
-    #compute_sessions()
-    #compute_author_reverts()
-    #calc_cooccurrences()
-    #create_authors_network()
-    #create_properties_network()
-    #calc_hierarchy()
+    load_extra_authors_data()
+    create_properties()
+    createnetwork()
+    
+    calc_edit_distances()
+    
+    if not settings.IS_WIKI:
+        calc_metrics()
+        calc_author_metrics_split()
+    calc_weights()
+    compact_weights()
+    graphpositions()
+    
+    adjust_positions()
+    createquadtree()
+    store_positions()
+    compute_sessions()
+    compute_author_reverts()
+    calc_cooccurrences()
+    create_authors_network()
+    create_properties_network()
+    calc_hierarchy()
+    
     #print_sql_indexes()
+    
     """
     #calc_timespan_metrics()
     #export_r_categories()
@@ -1590,9 +1298,9 @@ def preprocess():
     #return
     """
 def main():
-    preprocess_incremental()
+    #preprocess_incremental()
     #preprocess_nci()
-    #preprocess()
+    preprocess()
     
     #foo = ['', 'http://who.int/icd#DS_Yellow', 'http://who.int/icd#DS_Blue', 'http://who.int/icd#DS_Red']
     #from random import choice

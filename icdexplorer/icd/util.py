@@ -11,10 +11,12 @@ from datetime import datetime, date, timedelta
 from math import floor
 from hashlib import md5
 import colorsys
+
+import Levenshtein
     
-def debug_iter(items):
+def debug_iter(items, n=1000):
     for index, item in enumerate(items):
-        if index % 1000 == 0:
+        if index % n == 0:
             print "%d: %s" % (index, item)
         yield item
 
@@ -138,6 +140,8 @@ def group(items, key_func):
 def levenshtein(a,b):
     "Calculates the Levenshtein distance between a and b."
     
+    return Levenshtein.distance(a, b)
+    
     n, m = len(a), len(b)
     if n > m:
         # Make sure n <= m, to use O(min(n,m)) space
@@ -194,3 +198,31 @@ def add_to_dict(dict, key, value=1):
     except KeyError:
         dict[key] = value
     
+def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk):
+    """ 
+    Iterate over a Django Queryset ordered by the primary key
+
+    This method loads a maximum of chunksize (default: 1000) rows in its
+    memory at the same time while django normally would load all rows in its
+    memory. Using the iterator() method only causes it to not preload all the
+    classes.
+
+    Note that the implementation of the generator does not support ordered query sets.
+
+    """
+    last_pk = get_pk(queryset.order_by('-pk')[0])
+    queryset = queryset.order_by('pk')
+    #pk = get_pk(queryset[0]) - 1
+    last_pk = None #get_pk(queryset[0])
+    new_items = True
+    #while pk < last_pk:
+    while new_items:
+        new_items = False
+        chunk = queryset
+        if last_pk is not None:
+            chunk = chunk.filter(pk__gt=last_pk)
+        chunk = chunk[:chunksize]
+        for row in chunk:
+            last_pk = get_pk(row)
+            new_items = True
+            yield row

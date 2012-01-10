@@ -7,7 +7,7 @@ jan@poeschko.com
 """
 
 from settings_site import (IS_SERVER, BASE_DIR, DEBUG, ENABLE_CACHE,
-    INSTANCE, IS_NCI, IS_ICTM, IS_WIKI,
+    INSTANCE, IS_NCI, IS_ICTM, IS_WIKI, IS_ICD,
     DB_NAME, DB_USER, DB_PASSWORD,
     WIKI_INPUT_DIR)
 

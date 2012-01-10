@@ -1,9 +1,15 @@
 """
 Load Wikipedia XML dumps into iCAT Analytics
 
+XML files are loaded from the directory specified by
+settings_site.WIKI_INPUT_DIR (and all sub-directories).
+
+Set settings_site.DEBUG to False to disable the Django query log
+(which can grow pretty big).
+
 Make sure the MySQL variable max_allowed_packet is big enough to handle
 all the data for a single revision, which is usually bigger than the
-default 1 MB.
+default 1 MB (256 MB should be enough).
 """
 
 import sys
@@ -70,7 +76,10 @@ def parse_wiki_dump(file, skip_unless_title=None):
                     r_comment = revision.findtext('comment')
                 else:
                     r_comment = None
-                r_text = revision.findtext('text')
+                try:
+                    r_text = revision.findtext('text').decode('utf-8')
+                except UnicodeDecodeError:
+                    r_text = ""
                 revisions.append(WikiRevision(r_id, r_timestamp,
                                               r_c, r_text, r_comment))
             current_page.revisions = revisions
@@ -137,6 +146,7 @@ def load_wiki():
                             author=author,
                             timestamp=revision.timestamp,
                             apply_to=comp,
+                            property="text",
                             old_value=old_value,
                             new_value=revision.text,
                             additional_info=revision.comment or '',
