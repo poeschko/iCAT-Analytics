@@ -290,6 +290,8 @@ class Change(AnnotatableThing):
     #relevant_filter = ~Q(action="Export") & ~Q(context__startswith="Automatic")
     if settings.IS_NCI:
         relevant_filter = ~Q(action="Composite_Change")
+    elif settings.IS_WIKI:
+        relevant_filter = Q()
     else:
         relevant_filter = Q(action="Composite_Change") & ~Q(context__startswith="Automatic")
     
@@ -301,7 +303,7 @@ class Change(AnnotatableThing):
     author = models.ForeignKey('Author', related_name='changes')
     timestamp = models.DateTimeField(db_index=True)
     apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
-    composite = models.ForeignKey('self', related_name='parts')
+    composite = models.ForeignKey('self', related_name='parts', null=True)
     #context = models.CharField(max_length=250)
     context = models.TextField()
     action = models.CharField(max_length=250)
