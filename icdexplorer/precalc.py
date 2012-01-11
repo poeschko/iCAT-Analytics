@@ -1159,6 +1159,7 @@ def calc_edit_distances():
         new_value = change.new_value
         if new_value == '(empty)': new_value = ''
         #if old_value or new_value:
+        changed = False
         if change.levenshtein_distance is None:
             change.levenshtein_distance = ld = levenshtein(old_value, new_value)
             if old_value == new_value == "":
@@ -1169,9 +1170,13 @@ def calc_edit_distances():
                 change.levenshtein_distance_rel = 1.0 * change.levenshtein_distance / max(len(change.old_value),
                     len(change.new_value))
             change.levenshtein_similarity = 1.0 / (1 + ld)
-        change.lcs = longest_common_subsequence(old_value, new_value)
-        change.lcs_rel = 1.0 * change.lcs / max(len(old_value), 1)
-        change.save()
+            changed = True
+        if change.lcs is None:
+            change.lcs = longest_common_subsequence(old_value, new_value)
+            change.lcs_rel = 1.0 * change.lcs / max(len(old_value), 1)
+            changed = True
+        if changed:
+            change.save()
     print "Done"
     
 def calc_extra_properties_data():
