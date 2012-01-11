@@ -1150,7 +1150,8 @@ def calc_edit_distances():
     changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
     #changes = changes.filter()
     #changes = changes.exclude(old_value="").exclude(new_value="")
-    changes = queryset_generator(changes)
+    #changes = queryset_generator(changes)
+    changes = queryset_generator(changes, reverse=True)
     #changes = changes[:100]
     for change in debug_iter(changes, n=100):
         old_value = change.old_value

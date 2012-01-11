@@ -239,7 +239,7 @@ def add_to_dict(dict, key, value=1):
     except KeyError:
         dict[key] = value
     
-def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk):
+def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reverse=False):
     """ 
     Iterate over a Django Queryset ordered by the primary key
 
@@ -251,8 +251,8 @@ def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk):
     Note that the implementation of the generator does not support ordered query sets.
 
     """
-    last_pk = get_pk(queryset.order_by('-pk')[0])
-    queryset = queryset.order_by('pk')
+    last_pk = get_pk(queryset.order_by(('' if reverse else '-' + 'pk')[0])
+    queryset = queryset.order_by(('-' if reverse else '') + 'pk')
     #pk = get_pk(queryset[0]) - 1
     last_pk = None #get_pk(queryset[0])
     new_items = True
