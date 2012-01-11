@@ -280,8 +280,11 @@ def export_changes_accumulated():
     
     empty_values = ['', '(empty)']
     
+    vocabulary_analysis = not settings.IS_WIKI
+    
     changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
-    changes = changes.defer('old_value', 'new_value')
+    if not vocabulary_analysis:
+        changes = changes.defer('old_value', 'new_value')
     print "Relevant changes total: %d" % changes.count()
     changes = changes.filter(levenshtein_distance__isnull=False)
     if not settings.IS_WIKI:
@@ -334,13 +337,14 @@ def export_changes_accumulated():
         total_levenshtein_sim += change.levenshtein_similarity
         if change.lcs_rel is not None:
             total_lcs_rel += change.lcs_rel # if change.old_value else 1
-        for word in get_words(change.old_value):
-            if word in vocabulary:
-                vocabulary[word] -= 1
-                if not vocabulary[word]:
-                    del vocabulary[word]
-        for word in get_words(change.new_value):
-            add_to_dict(vocabulary, word)
+        if vocabulary_analysis:
+            for word in get_words(change.old_value):
+                if word in vocabulary:
+                    vocabulary[word] -= 1
+                    if not vocabulary[word]:
+                        del vocabulary[word]
+            for word in get_words(change.new_value):
+                add_to_dict(vocabulary, word)
         output.append([index, index+1, get_week(change.timestamp), len(concepts),
             change.levenshtein_distance, change.levenshtein_distance_rel,
             total_levenshtein, total_levenshtein_rel, total_levenshtein_sim,
@@ -375,13 +379,14 @@ def export_changes_accumulated():
         total_levenshtein_sim += change.levenshtein_similarity
         if change.lcs_rel is not None:
             total_lcs_rel += change.lcs_rel
-        for word in get_words(change.old_value):
-            if word in vocabulary:
-                vocabulary[word] -= 1
-                if not vocabulary[word]:
-                    del vocabulary[word]
-        for word in get_words(change.new_value):
-            add_to_dict(vocabulary, word)
+        if vocabulary_analysis:
+            for word in get_words(change.old_value):
+                if word in vocabulary:
+                    vocabulary[word] -= 1
+                    if not vocabulary[word]:
+                        del vocabulary[word]
+            for word in get_words(change.new_value):
+                add_to_dict(vocabulary, word)
         output.append([index, index+1, get_week(change.timestamp), len(concepts),
             change.levenshtein_distance, change.levenshtein_distance_rel,
             total_levenshtein, total_levenshtein_rel, total_levenshtein_sim,
@@ -404,15 +409,15 @@ def export_changes_accumulated():
         concepts.add(change.apply_to_id)
         add_to_dict(authors, change.author_id)
         total_levenshtein += change.levenshtein_distance
-        if change.property in non_textual_properties or change.old_value in empty_values or change.new_value in empty_values:
+        """if change.property in non_textual_properties or change.old_value in empty_values or change.new_value in empty_values:
             total_levenshtein_rel += 1
             total_levenshtein_sim += 0
             total_lcs_rel += 0
-        else:
-            total_levenshtein_rel += change.levenshtein_distance_rel
-            total_levenshtein_sim += change.levenshtein_similarity
-            if change.lcs_rel is not None:
-                total_lcs_rel += change.lcs_rel
+        else:"""
+        total_levenshtein_rel += change.levenshtein_distance_rel
+        total_levenshtein_sim += change.levenshtein_similarity
+        if change.lcs_rel is not None:
+            total_lcs_rel += change.lcs_rel
         output.append([index, index+1, get_week(change.timestamp), len(concepts),
             change.levenshtein_distance, change.levenshtein_distance_rel,
             total_levenshtein, total_levenshtein_rel, total_levenshtein_sim,

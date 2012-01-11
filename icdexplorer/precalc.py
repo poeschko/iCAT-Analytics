@@ -1150,23 +1150,26 @@ def calc_edit_distances():
     changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
     #changes = changes.filter()
     #changes = changes.exclude(old_value="").exclude(new_value="")
-    for change in debug_iter(queryset_generator(changes), n=100):
+    changes = queryset_generator(changes)
+    #changes = changes[:100]
+    for change in debug_iter(changes, n=100):
         old_value = change.old_value
         if old_value == '(empty)': old_value = ''
         new_value = change.new_value
         if new_value == '(empty)': new_value = ''
         #if old_value or new_value:
-        change.levenshtein_distance = ld = levenshtein(old_value, new_value)
-        if old_value == new_value == "":
-            change.levenshtein_distance_norm = 0
-            change.levenshtein_distance_rel = 0
-        else:
-            change.levenshtein_distance_norm = 2.0 * ld / (len(old_value) + len(new_value) + ld)
-            change.levenshtein_distance_rel = 1.0 * change.levenshtein_distance / max(len(change.old_value),
-                len(change.new_value))
-        change.levenshtein_similarity = 1.0 / (1 + ld)
-        #change.lcs = longest_common_subsequence(old_value, new_value)
-        #change.lcs_rel = 1.0 * change.lcs / max(len(old_value), 1)
+        if change.levenshtein_distance is None:
+            change.levenshtein_distance = ld = levenshtein(old_value, new_value)
+            if old_value == new_value == "":
+                change.levenshtein_distance_norm = 0
+                change.levenshtein_distance_rel = 0
+            else:
+                change.levenshtein_distance_norm = 2.0 * ld / (len(old_value) + len(new_value) + ld)
+                change.levenshtein_distance_rel = 1.0 * change.levenshtein_distance / max(len(change.old_value),
+                    len(change.new_value))
+            change.levenshtein_similarity = 1.0 / (1 + ld)
+        change.lcs = longest_common_subsequence(old_value, new_value)
+        change.lcs_rel = 1.0 * change.lcs / max(len(old_value), 1)
         change.save()
     print "Done"
     
@@ -1274,19 +1277,20 @@ def preprocess():
     if not settings.IS_WIKI:
         calc_metrics()
         calc_author_metrics_split()
-    calc_weights()
-    compact_weights()
-    graphpositions()
-    
-    adjust_positions()
-    createquadtree()
-    store_positions()
-    compute_sessions()
-    compute_author_reverts()
-    calc_cooccurrences()
-    create_authors_network()
-    create_properties_network()
-    calc_hierarchy()
+        
+        calc_weights()
+        compact_weights()
+        graphpositions()
+        
+        adjust_positions()
+        createquadtree()
+        store_positions()
+        compute_sessions()
+        compute_author_reverts()
+        calc_cooccurrences()
+        create_authors_network()
+        create_properties_network()
+        calc_hierarchy()
     
     #print_sql_indexes()
     

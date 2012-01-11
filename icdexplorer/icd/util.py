@@ -13,11 +13,14 @@ from hashlib import md5
 import colorsys
 
 import Levenshtein
+
+from stringutils import lcs_length
     
 def debug_iter(items, n=1000):
     for index, item in enumerate(items):
         if index % n == 0:
-            print "%d: %s" % (index, item)
+            #print "%d: %s" % (index, item)
+            print "%s: %5d: %s" % (datetime.now(), index, item)
         yield item
 
 def get_week(datetime):
@@ -213,10 +216,12 @@ def lcs(xs, ys):
         return lcs(xb, yb) + lcs(xe, ye)
 
 def longest_common_subsequence(a, b):
-    return len(lcs(a, b))
+    return lcs_length(a.encode('utf-8'), b.encode('utf-8'))
     
-    blocks = Levenshtein.matching_blocks(Levenshtein.editops(a, b), a, b)
-    return sum(length for index1, index2, length in blocks)
+    #return len(lcs(a, b))
+    
+    #blocks = Levenshtein.matching_blocks(Levenshtein.editops(a, b), a, b)
+    #return sum(length for index1, index2, length in blocks)
     
     m, n = len(a), len(b)
     c = [[0 for j in range(n+1)] for i in range(m+1)]
