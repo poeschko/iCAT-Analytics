@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import edu.stanford.bmir.icd.claml.ICDContentModel;
+//import edu.stanford.bmir.icd.claml.ICDContentModelConstants;
 import edu.stanford.bmir.icd.claml.ICDContentModelConstants;
 import edu.stanford.smi.protege.model.Project;
 import edu.stanford.smi.protege.model.KnowledgeBase;
@@ -13,6 +14,7 @@ import edu.stanford.smi.protege.model.Cls;
 import edu.stanford.smi.protege.model.Instance;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
+import edu.stanford.smi.protegex.owl.*;
 import edu.stanford.smi.protegex.owl.model.RDFResource;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.RDFSNamedClass;
@@ -30,47 +32,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class ICDExport {
-    //public final static String baseDir = "/Users/Jan/Uni/Stanford/ICD/";
-    //public final static String exportDir = baseDir + "data/";
-	public static String exportDir = "C:\\Users\\simon\\Desktop\\";
-    public static String projectDir = "C:\\Users\\simon\\Desktop\\Github\\iCAT-Analytics\\export\\project\\";
-    
-    //public static String exportDir;
-    
-    public final static String NS = ICDContentModelConstants.NS;
-    public final static String ICD_CHANGE_CLASS = "Annotation";
-
-    //private static OWLModel owlModel;
-    //private static ICDContentModel icdContentModel;
-    
-    public static void loadConfiguration() {
-        Properties props = new Properties();
-        String configurationFileName = "configuration.properties";
-        try {
-            InputStream propsStream = new FileInputStream(configurationFileName);
-            try {
-                props.load(propsStream);
-                propsStream.close();
-            } catch (IOException e) {
-                System.err.println("Error reading configuration file");     
-            }
-            projectDir = props.getProperty("projectDir");
-            exportDir = props.getProperty("exportDir");
-        } catch (FileNotFoundException e) {
-            System.err.println("Configuration file not found: " + configurationFileName);            
-        }
-    }
-
+public class ICTMExport {
+    public static String exportDir = "C:\\Users\\simon\\Desktop\\";
     public static void main(String[] args) {
-        loadConfiguration();
-        
-        exportContent();
-        exportChAO();
-        
+    	exportContent();
+    	exportChAO();
         System.out.println("Done");
     }
-    
+
     public static String escape(String value) {
         if (value == null)
             return "";
@@ -122,28 +91,65 @@ public class ICDExport {
         }
         return result;
     }
-    
+
+    @SuppressWarnings("unchecked")
+    private static Collection<RDFSNamedClass> getRDFSNamedClassCollection(Collection someColl) {
+        if (someColl == null) {
+            return null;
+        }
+        Set<RDFSNamedClass> coll = new LinkedHashSet<RDFSNamedClass>();
+        for (Iterator iterator = someColl.iterator(); iterator.hasNext();) {
+            Object cls = iterator.next();
+            if (cls instanceof RDFSNamedClass) {
+                coll.add((RDFSNamedClass) cls);
+            }
+        }
+        return coll;
+    }
     private static void exportContent() {
         System.out.println("Export content");
-        
-        Project contentProject = Project.loadProjectFromFile(projectDir + "icd_umbrella.pprj", new ArrayList());
+
+        Project contentProject = Project.loadProjectFromFile("C:\\Users\\simon\\Desktop\\Github\\iCAT-Analytics\\export\\project-ictm\\ictm_umbrella_db.pprj", new ArrayList());
         OWLModel knowledgeBase = (OWLModel) contentProject.getKnowledgeBase();
         ICDContentModel icdContentModel = new ICDContentModel(knowledgeBase);
         
-        //Slot displayStatusSlot = knowledgeBase.getSlot("displayStatus");
-        
         try {
-            BufferedWriter categories = new BufferedWriter(new FileWriter(exportDir + "icd_category.txt"));
-            BufferedWriter category_children = new BufferedWriter(new FileWriter(exportDir + "icd_category_children.txt"));
-            BufferedWriter category_linearizations = new BufferedWriter(new FileWriter(exportDir + "icd_linearizationspec.txt"));
+            BufferedWriter categories = new BufferedWriter(new FileWriter(exportDir + "ictm_category.txt"));
+            BufferedWriter category_children = new BufferedWriter(new FileWriter(exportDir + "ictm_category_children.txt"));
+            BufferedWriter category_linearizations = new BufferedWriter(new FileWriter(exportDir + "ictm_linearizationspec.txt"));
+            BufferedWriter category_title_languages = new BufferedWriter(new FileWriter(exportDir + "ictm_category_title_language.txt"));
+            BufferedWriter category_definition_languages = new BufferedWriter(new FileWriter(exportDir + "ictm_category_definition_language.txt"));
             
             int index = 0;
-            Collection<RDFSNamedClass> categoriesCollection = icdContentModel.getICDCategories();
-            categoriesCollection.add(icdContentModel.getICDCategory("http://who.int/icd#ICDCategory"));
-            System.out.println(String.format("%d categories", categoriesCollection.size()));
-            for (RDFSNamedClass category : categoriesCollection) {
+            RDFSNamedClass ictmCatCls = knowledgeBase.getRDFSNamedClass("http://who.int/ictm#ICTMCategory");
+            Collection subclasses = ictmCatCls.getSubclasses(true);
+            System.out.println(ictmCatCls.getSameAs());
+            System.out.println(subclasses.toArray());
+            Collection<RDFSNamedClass> clses = new ArrayList();
+			clses.addAll(subclasses);
+			clses.add(ictmCatCls);
+            System.out.println("ICTM Categories count: "+ clses.size());
+            System.out.println(String.format("%d categories", clses.size()));
+            try {
+            for (RDFSNamedClass category : clses) {
+            	
                 String name = category.getName();
                 String display = category.getBrowserText();
+                
+            	Collection<RDFResource> titles = category.getPropertyValues(icdContentModel.getIcdTitleProperty());
+            	for(RDFResource title : titles) {
+            		String splitTitle = (String) title.getPropertyValue(icdContentModel.getLabelProperty());
+            		//Object splitTitle = title.getPropertyValue(icdContentModel.getIcdTitleProperty());
+                	Object languageCode = title.getPropertyValue(icdContentModel.getLangProperty());
+                	category_title_languages.write(joinEscaped("\t", name, splitTitle, (String)languageCode) + "\n");
+            	}
+            	Collection<RDFResource> definitions = category.getPropertyValues(icdContentModel.getDefinitionProperty());
+            	for(RDFResource definition : definitions) {
+            		String splitTitle = (String) definition.getPropertyValue(icdContentModel.getLabelProperty());
+            		//Object splitTitle = title.getPropertyValue(icdContentModel.getIcdTitleProperty());
+                	Object languageCode = definition.getPropertyValue(icdContentModel.getLangProperty());
+                	category_definition_languages.write(joinEscaped("\t", name, splitTitle, (String)languageCode) + "\n");
+            	}
                 if (index % 100 == 0) {
                     System.out.println(String.format("%d: %s", index, display));
                     categories.flush();
@@ -151,9 +157,7 @@ public class ICDExport {
                     category_linearizations.flush();
                 }
                 ++index;
-                
                 String sortingLabel = (String) category.getPropertyValue(icdContentModel.getSortingLabelProperty());
-
                 String definition = "";
                 RDFResource defTerm = icdContentModel.getTerm(category, icdContentModel.getDefinitionProperty());
                 if (defTerm != null) {
@@ -167,13 +171,12 @@ public class ICDExport {
                 RDFProperty assignedPrimaryTagProperty = icdContentModel.getAssignedPrimaryTagProperty();
                 RDFProperty assignedSecondaryTagProperty = icdContentModel.getAssignedSecondaryTagProperty();
                 String assignedPrimaryTag = getString(assignedPrimaryTagProperty != null ? category.getPropertyValue(assignedPrimaryTagProperty) : null);
-                
                 String assignedSecondaryTag = getString(assignedSecondaryTagProperty != null ? category.getPropertyValue(assignedSecondaryTagProperty) : null);
-                //String displayStatus = getString(category.getOwnSlotValue(displayStatusSlot));
-                String line = joinEscaped("\t", name, display, sortingLabel, definition,
-                    displayStatus, assignedPrimaryTag, assignedSecondaryTag);
-                categories.write(line + "\n");
                 
+                String line = joinEscaped("\t", name, display, sortingLabel, definition,
+                              displayStatus, assignedPrimaryTag, assignedSecondaryTag);
+                    		  categories.write(line + "\n");
+                    
                 Collection<RDFSNamedClass> children = icdContentModel.getChildren(category);
                 for (RDFSNamedClass child : children)
                     category_children.write(joinEscaped("\t", name, child.getName()) + "\n");
@@ -184,12 +187,13 @@ public class ICDExport {
                     RDFSNamedClass linearizationParent = (RDFSNamedClass) linearizationSpec.getPropertyValue(icdContentModel.getLinearizationParentProperty());
                     Boolean isIncludedInLinearization = (Boolean) linearizationSpec.getPropertyValue(icdContentModel.getIsIncludedInLinearizationProperty());
                     String linSortingLabel = (String) linearizationSpec.getPropertyValue(icdContentModel.getLinearizationSortingLabelProperty());
-    
                     category_linearizations.write(joinEscaped("\t", name, linearization == null ? "" : linearization.getBrowserText(), linearizationParent == null ? "" : linearizationParent.getName(), name, linSortingLabel, isIncludedInLinearization == null ? "\\N" : (isIncludedInLinearization ? "1" : "0")) + "\n");
                 }
+            	
             }
-            
-            category_linearizations.close();
+            } catch (ClassCastException e) {
+            	System.out.println(e);
+            }
             category_children.close();
             categories.close();
             
@@ -201,42 +205,39 @@ public class ICDExport {
     
     private static void exportChAO() {
         System.out.println("Export ChAO");
-        
-        Project annotationProject = Project.loadProjectFromFile(projectDir + "annotation_ICD.pprj", new ArrayList());
-        
-        KnowledgeBase knowledgeBase = annotationProject.getKnowledgeBase();
-        System.out.println(knowledgeBase);
-        
-        Slot timestampSlot = knowledgeBase.getSlot("timestamp");
-        Slot createdSlot = knowledgeBase.getSlot("created");
-        Slot modifiedSlot = knowledgeBase.getSlot("timestamp");
-        Slot annotatesSlot = knowledgeBase.getSlot("annotates");
-        Slot authorSlot = knowledgeBase.getSlot("author");
-        Slot bodySlot = knowledgeBase.getSlot("body");
-        Slot contextSlot = knowledgeBase.getSlot("context");
-        Slot subjectSlot = knowledgeBase.getSlot("subject");
-        Slot relatedSlot = knowledgeBase.getSlot("related");
-        Slot actionSlot = knowledgeBase.getSlot("action");
-        Slot applyToSlot = knowledgeBase.getSlot("applyTo");
-        Slot partOfCompositeChangeSlot = knowledgeBase.getSlot("partOfCompositeChange");
-        Slot archivedSlot = knowledgeBase.getSlot("archived");
-        Slot currentNameSlot = knowledgeBase.getSlot("currentName");
-        Slot domainOfInterestSlot = knowledgeBase.getSlot("domainOfInterest");
-        Slot watchedBranchSlot = knowledgeBase.getSlot("watchedBranch");
-        Slot watchedEntitySlot = knowledgeBase.getSlot("watchedEntity");
-        
-        try {
-            /*BufferedWriter changes = new BufferedWriter(new FileWriter(exportDir + "icd_change.txt"));
-            BufferedWriter annotations = new BufferedWriter(new FileWriter(exportDir + "icd_annotation.txt"));
-            BufferedWriter ontologyComponents = new BufferedWriter(new FileWriter(exportDir + "icd_ontologycomponent.txt"));
-            */
-            BufferedWriter users = new BufferedWriter(new FileWriter(exportDir + "icd_user.txt"));
+        try {   	
             
-            BufferedWriter userDomainOfInterest = new BufferedWriter(new FileWriter(exportDir + "icd_user_domain_of_interest.txt"));
-            BufferedWriter userWatchedBranches = new BufferedWriter(new FileWriter(exportDir + "icd_user_watched_branches.txt"));
-            BufferedWriter userWatchedEntities = new BufferedWriter(new FileWriter(exportDir + "icd_user_watched_entities.txt"));
+        	BufferedWriter changes = new BufferedWriter(new FileWriter(exportDir + "ictm_change.txt", true));
+            BufferedWriter annotations = new BufferedWriter(new FileWriter(exportDir + "ictm_annotation.txt", true));
+            BufferedWriter ontologyComponents = new BufferedWriter(new FileWriter(exportDir + "ictm_ontologycomponent.txt", true));
+            BufferedWriter users = new BufferedWriter(new FileWriter(exportDir + "ictm_user.txt"));
+            BufferedWriter userDomainOfInterest = new BufferedWriter(new FileWriter(exportDir + "ictm_user_domain_of_interest.txt"));
+            BufferedWriter userWatchedBranches = new BufferedWriter(new FileWriter(exportDir + "ictm_user_watched_branches.txt"));
+            BufferedWriter userWatchedEntities = new BufferedWriter(new FileWriter(exportDir + "ictm_user_watched_entities.txt"));
             
-            /*Cls annotation = knowledgeBase.getCls("Annotation");
+            System.out.println("Export project ");
+            Project annotationProject = Project.loadProjectFromFile("C:\\Users\\simon\\Desktop\\Github\\iCAT-Analytics\\export\\project-ictm\\annotation_ictm_umbrella_db.pprj", new ArrayList());
+            KnowledgeBase knowledgeBase = annotationProject.getKnowledgeBase();
+            
+            Slot timestampSlot = knowledgeBase.getSlot("timestamp");
+            Slot createdSlot = knowledgeBase.getSlot("created");
+            Slot modifiedSlot = knowledgeBase.getSlot("timestamp");
+            Slot annotatesSlot = knowledgeBase.getSlot("annotates");
+            Slot authorSlot = knowledgeBase.getSlot("author");
+            Slot bodySlot = knowledgeBase.getSlot("body");
+            Slot contextSlot = knowledgeBase.getSlot("context");
+            Slot subjectSlot = knowledgeBase.getSlot("subject");
+            Slot relatedSlot = knowledgeBase.getSlot("related");
+            Slot actionSlot = knowledgeBase.getSlot("action");
+            Slot applyToSlot = knowledgeBase.getSlot("applyTo");
+            Slot partOfCompositeChangeSlot = knowledgeBase.getSlot("partOfCompositeChange");
+            Slot archivedSlot = knowledgeBase.getSlot("archived");
+            Slot currentNameSlot = knowledgeBase.getSlot("currentName");
+            Slot domainOfInterestSlot = knowledgeBase.getSlot("domainOfInterest");
+            Slot watchedBranchSlot = knowledgeBase.getSlot("watchedBranch");
+            Slot watchedEntitySlot = knowledgeBase.getSlot("watchedEntity");
+            
+            Cls annotation = knowledgeBase.getCls("Annotation");
             Collection<Cls> annotationClasses = annotation.getSubclasses();
             for (Cls cls : annotationClasses) {
                 String type = cls.getBrowserText();
@@ -260,12 +261,14 @@ public class ICDExport {
                             created, modified, annotates, subject, body, context, related,
                             archived == null ? "\\N" : (archived ? "1" : "0"),
                             browserText);
+                    //System.out.println(line);
                     if (index % 100 == 0)
                         System.out.println(String.format("%d: %s", index, line));
                     index += 1;
                     annotations.write(line + "\n");
                 }
             }
+            
             
             Cls change = knowledgeBase.getCls("Change");
             Collection<Cls> changeClasses = change.getSubclasses();
@@ -275,25 +278,30 @@ public class ICDExport {
                 System.out.println(cls.getBrowserText() + ": " + instances.size());
                 int index = 0;
                 for (Instance instance : instances) {
-                    String name = instance.getName();
-                    String browserText = instance.getBrowserText();
-                    String timestamp = getTimestamp(instance.getOwnSlotValue(timestampSlot));
-                    String applyTo = getString(instance.getOwnSlotValue(applyToSlot));
-                    String partOfCompositeChange = getString(instance.getOwnSlotValue(partOfCompositeChangeSlot));
-                    String author = getString(instance.getOwnSlotValue(authorSlot));
-                    String context = getString(instance.getOwnSlotValue(contextSlot));
-                    String action = getString(instance.getOwnSlotValue(actionSlot));
-                    String line = joinEscaped("\t", name, type,
-                            author, 
-                            timestamp, applyTo, partOfCompositeChange, context,
-                            action,
-                            browserText);
-                    if (index % 100 == 0)
+                	//if (cls.getBrowserText().equals("Property_Value")) {
+	                    String name = instance.getName();
+	                    String browserText = instance.getBrowserText();
+	                    String timestamp = getTimestamp(instance.getOwnSlotValue(timestampSlot));
+	                    String applyTo = getString(instance.getOwnSlotValue(applyToSlot));
+	                    String partOfCompositeChange = getString(instance.getOwnSlotValue(partOfCompositeChangeSlot));
+	                    String author = getString(instance.getOwnSlotValue(authorSlot));
+	                    String context = getString(instance.getOwnSlotValue(contextSlot));
+	                    String action = getString(instance.getOwnSlotValue(actionSlot));
+	                    String line = joinEscaped("\t", name, type,
+	                            author, 
+	                            timestamp, applyTo, partOfCompositeChange, context,
+	                            action,
+	                            browserText);
+	                    
+                    //System.out.println(line);
+                    if (index % 1000 == 0)
                         System.out.println(String.format("%d: %s", index, line));
-                    index += 1;
                     changes.write(line + "\n");
+                    index += 1;
+                	//}
                 }
             }
+            
             
             Cls ontologyComponent = knowledgeBase.getCls("Ontology_Component");
             Collection<Cls> ontologyComponentClasses = ontologyComponent.getSubclasses();
@@ -313,7 +321,6 @@ public class ICDExport {
                     ontologyComponents.write(line + "\n");
                 }
             }
-            */
             
             Cls user = knowledgeBase.getCls("User");
             ArrayList<Cls> userClasses = new ArrayList<Cls>(user.getSubclasses());
@@ -356,16 +363,15 @@ public class ICDExport {
             userWatchedEntities.close();
             userWatchedBranches.close();
             userDomainOfInterest.close();
-            
             users.close();
-            /*ontologyComponents.close();
-            annotations.close();
-            changes.close();*/
+            System.out.println("Project exported");                   
             
+            ontologyComponents.close();
+            annotations.close();
+            changes.close();
             System.out.println("ChAO exported");
         } catch (IOException e) {
             System.err.println("IO Error");
         }
     }
-
 }

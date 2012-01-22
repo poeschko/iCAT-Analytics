@@ -53,6 +53,61 @@
 	                         });
 </script>
 
+{% if changes %}
+<div style="clear:both;"></div>
+
+<div style="width: 490px; float:left;clear:both;">
+<h2>TAG changes</h2>
+<div id="plotCategoryTagChanges" style="margin-top: 0.5em; width:450px; height:230px"></div>
+<script type="text/javascript">
+    var categoryTagChangeData = {{ tag_activity|js }};
+	$.plot($('#plotCategoryTagChanges'), categoryTagChangeData, { series: {
+        pie: {
+            show: true,
+            radius: 1,
+             label: {
+                    show: true,
+                    radius: 1,
+                    formatter: function(label, series){
+                       return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+series.data[0][1]+'</div>';
+                    },
+                    background: { opacity: 0.8 }
+                }
+        }
+    }});
+</script>
+</div>
+<div style="clear:both;"></div>
+{% endif %}
+
+<!--
+<h2>TAGs</h2>
+<table>
+    <thead>
+    <tr>
+        <td>Type</td>
+        <td>Name</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Primary Tag</td>
+        <td>{{ category.primary_tag }}</td>
+    </tr>
+    <tr>
+        <td>Secondary Tag</td>
+        <td>{{ category.secondary_tag }}</td>
+    </tr>
+    
+    {% for tag in involved_tags %}
+    <tr>
+        <td>Involved Tag</td>
+        <td>{{ tag.name }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+-->
 
 {% if parents %}
 <h2>Parents</h2>
@@ -72,6 +127,52 @@
 </ul>
 {% endif %}
 
+{% if titles %}
+<h2>Titles</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Language Code</th>
+    </tr>
+  </thead>
+  {% for title in titles %}
+  <tr>
+    <td class="category_title">{{ title.title }}</td> 
+    <td class="language_code">{{ title.language_code }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% if definitions %}
+<h2>Definitions</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Definition</th>
+      <th>Language Code</th>
+    </tr>
+  </thead>
+  {% for definition in definitions %}
+  <tr>
+    <td><div class="category_definition">{{ definition.definition }}</div></td> 
+    <td class="language_code">{{ definition.language_code }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<!-- Recommender -->
+{% if recommendations %}
+<h2>Similar categories</h2>
+
+<ul>
+{% for category in recommendations %}
+    <li><a href="{{ category.get_absolute_url }}">{{ category }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
 
 <h2>Features</h2>
 
@@ -83,6 +184,20 @@
         </tr>
     </thead>
     {% for name, value, display in category.metrics.get_metrics %}
+    <tr>
+        <td>{{ display }}</td>
+        <td class="number">{{ value }}</td>
+    </tr>
+    {% endfor %}
+    
+    {% for name, value, display in category.accumulated_metrics.get_metrics %}
+    <tr>
+        <td>{{ display }}</td>
+        <td class="number">{{ value }}</td>
+    </tr>
+    {% endfor %}
+    
+    {% for name, value, display in category.multilanguage_metrics.get_metrics %}
     <tr>
         <td>{{ display }}</td>
         <td class="number">{{ value }}</td>

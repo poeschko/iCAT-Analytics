@@ -8,8 +8,8 @@ jan@poeschko.com
 from django.conf import settings
 from django.db.models import Min, Max
 from django.contrib.auth.models import User
-
-from icdexplorer.icd.models import Category, Change, Annotation, CategoryMetrics, Author, Group, AuthorCategoryMetrics, Property
+from datetime import datetime
+from icdexplorer.icd.models import Category, Change, Annotation, CategoryMetrics, TimespanCategoryMetrics, Author, Group, AuthorCategoryMetrics, Property, AccumulatedCategoryMetrics, MultilanguageCategoryMetrics
 from icdexplorer.storage.models import PickledData
 
 print "Load data"
@@ -33,7 +33,7 @@ WEIGHTS = PickledData.objects.get(settings.INSTANCE, 'weights')
 AUTHORS = dict((author.instance_name, author) for author in Author.objects.filter(instance=settings.INSTANCE))
 for author in AUTHORS.values():
     author.groups_list = list(author.groups.order_by('name'))
-GROUPS = Group.objects.order_by('name')
+GROUPS = Group.objects.filter(instance=settings.INSTANCE).order_by('name')
 for group in GROUPS:
     group.authors_list = list(group.authors.all())
     group.authors_list.sort(key=lambda author: author.changes_count + author.annotations_count, reverse=True)
@@ -45,9 +45,21 @@ GRAPH_AUTHORS_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'author_gra
 
 print "Author Graphs loaded"
 
-FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
-AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
+TIMESPAN_FEATURES = []#[(name, description) for name, value, description in TimespanCategoryMetrics.objects.all()[0].get_metrics()]
+#TIMESPAN_FEATURES = []
+CATEGORY_FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
+ACCUMULATED_FEATURES = [(name, description) for name, value, description in AccumulatedCategoryMetrics.objects.all()[0].get_metrics()]
+MULTILANGUAGE_FEATURES = [(name, description) for name, value, description in MultilanguageCategoryMetrics.objects.all()[0].get_metrics()]
+FEATURES = CATEGORY_FEATURES + ACCUMULATED_FEATURES + MULTILANGUAGE_FEATURES #+ TIMESPAN_FEATURES
 
+# TEMP FIX:
+#FEATURES = []
+AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
+AUTHOR_FILTER = Author.objects.all()[0].get_filter_metrics()
+MULTILANGUAGE_FILTER = MultilanguageCategoryMetrics.objects.all()[0].get_filter_metrics()
+ACCUMULATED_FILTER = AccumulatedCategoryMetrics.objects.all()[0].get_filter_metrics()
+CATEGORYMETRICS_FILTER = CategoryMetrics.objects.all()[0].get_filter_metrics()
+TIMESPAN_FILTER = []#TimespanCategoryMetrics.objects.all()[0].get_filter_metrics()
 print "Features loaded"
 
 MINMAX_CHANGES_DATE = Change.objects.filter(_instance=settings.INSTANCE).aggregate(min=Min('timestamp'), max=Max('timestamp'))

@@ -26,6 +26,35 @@
     </tr>
 </table>
  
+<!-- Recommender -->
+{% if similarity_categories %}
+    <h2>Concepts similar to previously edited concepts of {{ author.name }}:</h2>
+    <ul>
+    {% for category in similarity_categories %}
+        <li><a href="{{ category.get_absolute_url }}">{{ category }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if distance_categories %}
+    <h2>Closely linked categories to those that {{ author.name }} previously edited:</h2>
+    <ul>
+    {% for category in distance_categories %}
+        <li><a href="{{ category.get_absolute_url }}">{{ category }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if coedit_categories %}
+    <h2>Other users with similar interests as {{ author.name }} were interested in:</h2>
+    <ul>
+    {% for category in coedit_categories %}
+        <li><a href="{{ category.get_absolute_url }}">{{ category }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+ 
  {% if co_authors %}
 <h2>Co-authors</h2>
 

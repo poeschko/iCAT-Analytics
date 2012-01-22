@@ -13,4 +13,34 @@
 <h2>Number of categories by display status</h2>
 {% valuestable display_status "count" "Display status" 200 %}
 
+{% if language_codes %}
+    <h2>Number of category titles by language code</h2>
+    {% valuestable language_codes "count" "Language code" 200 %}
+{% endif %}
+
+{% if definition_language_codes %}
+    <h2>Number of category definitions by language code</h2>
+    {% valuestable definition_language_codes "count" "Language code" 200 %}
+{% endif %}
+
+{% if titles %}
+    <h2>Number of categories by amount of titles</h2>
+    {% valuestable titles "count" "Different Titles per category" 200 %}
+{% endif %}
+
+{% if title_languages %}
+    <h2>Number of categories by amount of title languages</h2>
+    {% valuestable title_languages "count" "Different title languages per category" 200 %}
+{% endif %}
+
+{% if definitions %}
+    <h2>Number of categories by amount of definitions</h2>
+    {% valuestable definitions "count" "Different Definitions per category" 200 %}
+{% endif %}
+
+{% if definition_languages %}
+    <h2>Number of categories by amount of definition languages</h2>
+    {% valuestable definition_languages "count" "Different definition languages per category" 200 %}
+{% endif %}
+
 {% endblock %}

@@ -15,6 +15,8 @@ from settings_site import (IS_SERVER, BASE_DIR, DEBUG, ENABLE_CACHE,
 
 #ENABLE_CACHE = True #IS_SERVER
 
+DEFAULT_CHARSET='utf-8'
+
 """if IS_SERVER:
     #BASE_DIR = '/apps/bmir.apps/socialanalysis/'
     BASE_DIR = '/srv/protege/www/vhosts/socialanalysis/icdexplorer/'

@@ -12,6 +12,15 @@
 {% for name, display, categories in features %}
     <li><a href="#{{ name }}">{{ display }}</a></li>
 {% endfor %}
+{% for name, display, categories in accumulated_features %}
+    <li><a href="#{{ name }}">{{ display }}</a></li>
+{% endfor %}
+{% for name, display, categories in multilanguage_features %}
+    <li><a href="#{{ name }}">{{ display }}</a></li>
+{% endfor %}
+{% for name, display, categories in timespan_features %}
+    <li><a href="#{{ name }}">{{ display }}</a></li>
+{% endfor %}
 </ul>
 
 {% for name, display, categories in features %}
@@ -20,7 +29,32 @@
 {% with name|prepend:"metrics." as attr_name %}
 {% valuestable categories attr_name "Category" 200 10 %}
 {% endwith %}
+<div class="show_listing">
+    <a href="/categorylisting/{{ name }}/" target="_blank">Show all</a>
+</div>
 
+{% endfor %}
+
+{% for name, display, categories in accumulated_features %}
+<h2 id="{{ name }}">{{ display }}</h2>
+
+{% with name|prepend:"accumulated_metrics." as attr_name %}
+{% valuestable categories attr_name "Category" 200 10 %}
+{% endwith %}
+<div class="show_listing">
+    <a href="/categorylisting/{{ name }}/" target="_blank">Show all</a>
+</div>
+{% endfor %}
+
+{% for name, display, categories in multilanguage_features %}
+<h2 id="{{ name }}">{{ display }}</h2>
+
+{% with name|prepend:"multilanguage_metrics." as attr_name %}
+{% valuestable categories attr_name "Category" 200 10 %}
+{% endwith %}
+<div class="show_listing">
+    <a href="/categorylisting/{{ name }}/" target="_blank">Show all</a>
+</div>
 {% endfor %}
 
 {% endblock %}

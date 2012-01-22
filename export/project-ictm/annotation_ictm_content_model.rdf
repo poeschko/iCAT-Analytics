@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE rdf:RDF [
+	 <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+	 <!ENTITY kb 'http://protege.stanford.edu/kb#'>
+	 <!ENTITY rdfs 'http://www.w3.org/2000/01/rdf-schema#'>
+]>
+<rdf:RDF xmlns:rdf="&rdf;"
+	 xmlns:kb="&kb;"
+	 xmlns:rdfs="&rdfs;">
+<kb:AnnotationStatus rdf:about="&kb;Active"
+	 kb:description="Active"
+	 rdfs:label="Active"/>
+<kb:ChangeStatus rdf:about="&kb;Approved"
+	 kb:description="Approved"
+	 rdfs:label="Approved"/>
+<kb:AnnotationStatus rdf:about="&kb;Inactive"
+	 kb:description="Inactive"
+	 rdfs:label="Inactive"/>
+<kb:ChangeStatus rdf:about="&kb;Proposed"
+	 kb:description="Proposed"
+	 rdfs:label="Proposed"/>
+<kb:ChangeStatus rdf:about="&kb;Rejected"
+	 kb:description="Rejected"
+	 rdfs:label="Rejected"/>
+<kb:Status rdf:about="&kb;Under_review"
+	 kb:description="Under review"
+	 rdfs:label="Under review"/>
+<kb:Property_Created rdf:about="&kb;annotation_ictm_content_model_Class0"
+	 kb:action="Property_Created"
+	 kb:author=""
+	 kb:context="Property Create: objectProperty_1"
+	 kb:creationName="http://who.int/ictm#objectProperty_1"
+	 rdfs:label="Property Create: objectProperty_1">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class2"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class7"/>
+</kb:Property_Created>
+<kb:Ontology_Property rdf:about="&kb;annotation_ictm_content_model_Class1"
+	 kb:currentName="http://who.int/ictm#hasType"
+	 rdfs:label="http://who.int/ictm#hasType">
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class0"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class11"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class13"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class18"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class20"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class22"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class24"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class26"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class28"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class3"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class5"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class7"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class9"/>
+</kb:Ontology_Property>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class10"
+	 kb:date="02/01/2011 00:50:04 PST"
+	 kb:sequence="4"
+	 rdfs:label="02/01/2011 00:50:04 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_content_model_Class11"
+	 kb:action="Composite_Change"
+	 kb:author=""
+	 kb:context="Create Property hasType"
+	 rdfs:label="Create Property hasType">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class12"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class7"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class9"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class12"
+	 kb:date="02/01/2011 00:50:04 PST"
+	 kb:sequence="5"
+	 rdfs:label="02/01/2011 00:50:04 PST"/>
+<kb:Superproperty_Added rdf:about="&kb;annotation_ictm_content_model_Class13"
+	 kb:action="Superproperty_Added"
+	 kb:author=""
+	 kb:context="Superproperty Added: hasType (added to: who-fic:hasType)"
+	 rdfs:label="Superproperty Added: hasType (added to: who-fic:hasType)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class14"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class20"/>
+</kb:Superproperty_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class14"
+	 kb:date="02/01/2011 00:50:15 PST"
+	 kb:sequence="6"
+	 rdfs:label="02/01/2011 00:50:15 PST"/>
+<kb:Subproperty_Added rdf:about="&kb;annotation_ictm_content_model_Class15"
+	 kb:action="Subproperty_Added"
+	 kb:author=""
+	 kb:context="Subproperty Added: who-fic:hasType (added to: hasType)"
+	 rdfs:label="Subproperty Added: who-fic:hasType (added to: hasType)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class16"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class17"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class20"/>
+</kb:Subproperty_Added>
+<kb:Ontology_Property rdf:about="&kb;annotation_ictm_content_model_Class16"
+	 kb:currentName="http://who.int/fic#hasType"
+	 rdfs:label="http://who.int/fic#hasType">
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class15"/>
+</kb:Ontology_Property>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class17"
+	 kb:date="02/01/2011 00:50:15 PST"
+	 kb:sequence="7"
+	 rdfs:label="02/01/2011 00:50:15 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_content_model_Class18"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subPropertyOf for instance: hasType set to: who-fic:hasType(Old values:who-fic:hasType)</kb:context>
+	<rdfs:label>Property: rdfs:subPropertyOf for instance: hasType set to: who-fic:hasType(Old values:who-fic:hasType)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class19"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class20"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class19"
+	 kb:date="02/01/2011 00:50:15 PST"
+	 kb:sequence="8"
+	 rdfs:label="02/01/2011 00:50:15 PST"/>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class2"
+	 kb:date="02/01/2011 00:49:58 PST"
+	 kb:sequence="0"
+	 rdfs:label="02/01/2011 00:49:58 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_content_model_Class20"
+	 kb:action="Composite_Change"
+	 kb:author=""
+	 kb:context="Add to hasType superproperties who-fic:hasType"
+	 rdfs:label="Add to hasType superproperties who-fic:hasType">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class13"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class15"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class18"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class21"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class21"
+	 kb:date="02/01/2011 00:50:15 PST"
+	 kb:sequence="9"
+	 rdfs:label="02/01/2011 00:50:15 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_content_model_Class22"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:range for instance: hasType set to: Type(Old values:)</kb:context>
+	<rdfs:label>Property: rdfs:range for instance: hasType set to: Type(Old values:)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class23"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class24"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class23"
+	 kb:date="02/01/2011 00:51:09 PST"
+	 kb:sequence="10"
+	 rdfs:label="02/01/2011 00:51:09 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_content_model_Class24"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Add Type to range of hasType -- Apply to: http://who.int/ictm#hasType</kb:context>
+	<rdfs:label>Add Type to range of hasType -- Apply to: http://who.int/ictm#hasType</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class22"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class25"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class25"
+	 kb:date="02/01/2011 00:51:09 PST"
+	 kb:sequence="11"
+	 rdfs:label="02/01/2011 00:51:09 PST"/>
+<kb:Individual_Added rdf:about="&kb;annotation_ictm_content_model_Class26"
+	 kb:action="Individual_Added"
+	 kb:author="">
+	<kb:context>Instance Added: hasType (instance of: owl:FunctionalProperty)</kb:context>
+	<rdfs:label>Instance Added: hasType (instance of: owl:FunctionalProperty)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class27"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class28"/>
+</kb:Individual_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class27"
+	 kb:date="02/01/2011 00:51:12 PST"
+	 kb:sequence="12"
+	 rdfs:label="02/01/2011 00:51:12 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_content_model_Class28"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Add to hasType direct type : owl:FunctionalProperty -- Apply to: http://who.int/ictm#hasType</kb:context>
+	<rdfs:label>Add to hasType direct type : owl:FunctionalProperty -- Apply to: http://who.int/ictm#hasType</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class26"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class29"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class29"
+	 kb:date="02/01/2011 00:51:12 PST"
+	 kb:sequence="13"
+	 rdfs:label="02/01/2011 00:51:12 PST"/>
+<kb:Individual_Added rdf:about="&kb;annotation_ictm_content_model_Class3"
+	 kb:action="Individual_Added"
+	 kb:author="">
+	<kb:context>Instance Added: objectProperty_1 (instance of: owl:ObjectProperty)</kb:context>
+	<rdfs:label>Instance Added: objectProperty_1 (instance of: owl:ObjectProperty)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class4"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class7"/>
+</kb:Individual_Added>
+<kb:Superclass_Removed rdf:about="&kb;annotation_ictm_content_model_Class30"
+	 kb:action="Superclass_Removed"
+	 kb:author=""
+	 kb:context="Superclass Removed: Type (removed from: icd:Type)"
+	 rdfs:label="Superclass Removed: Type (removed from: icd:Type)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class31"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class32"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class36"/>
+</kb:Superclass_Removed>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_content_model_Class31"
+	 kb:currentName="http://who.int/ictm#Type"
+	 rdfs:label="http://who.int/ictm#Type">
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class30"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class32"
+	 kb:date="02/01/2011 00:51:34 PST"
+	 kb:sequence="14"
+	 rdfs:label="02/01/2011 00:51:34 PST"/>
+<kb:Subclass_Removed rdf:about="&kb;annotation_ictm_content_model_Class33"
+	 kb:action="Subclass_Removed"
+	 kb:author=""
+	 kb:context="Subclass Removed: icd:Type (removed from: Type)"
+	 rdfs:label="Subclass Removed: icd:Type (removed from: Type)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class34"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class35"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class36"/>
+</kb:Subclass_Removed>
+<kb:Ontology_Class rdf:about="&kb;annotation_ictm_content_model_Class34"
+	 kb:currentName="http://who.int/icd#Type"
+	 rdfs:label="http://who.int/icd#Type">
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class33"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class36"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class38"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class40"/>
+	<kb:changes rdf:resource="&kb;annotation_ictm_content_model_Class42"/>
+</kb:Ontology_Class>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class35"
+	 kb:date="02/01/2011 00:51:34 PST"
+	 kb:sequence="15"
+	 rdfs:label="02/01/2011 00:51:34 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_content_model_Class36"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Remove superclass Type from icd:Type -- Apply to: http://who.int/icd#Type</kb:context>
+	<rdfs:label>Remove superclass Type from icd:Type -- Apply to: http://who.int/icd#Type</rdfs:label>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class30"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class33"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class34"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class37"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class42"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class37"
+	 kb:date="02/01/2011 00:51:34 PST"
+	 kb:sequence="16"
+	 rdfs:label="02/01/2011 00:51:34 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_content_model_Class38"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: rdfs:subClassOf for instance: icd:Type set to: who-fic:Type(Old values:who-fic:Type, Type)</kb:context>
+	<rdfs:label>Property: rdfs:subClassOf for instance: icd:Type set to: who-fic:Type(Old values:who-fic:Type, Type)</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class34"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class39"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class42"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class39"
+	 kb:date="02/01/2011 00:51:34 PST"
+	 kb:sequence="17"
+	 rdfs:label="02/01/2011 00:51:34 PST"/>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class4"
+	 kb:date="02/01/2011 00:49:58 PST"
+	 kb:sequence="1"
+	 rdfs:label="02/01/2011 00:49:58 PST"/>
+<kb:Property_Value rdf:about="&kb;annotation_ictm_content_model_Class40"
+	 kb:action="Property Value Changed"
+	 kb:author="">
+	<kb:context>Property: owl:equivalentClass for instance: icd:Type set to: {icd:DiseaseType icd:DisorderOrSyndromeType icd:ExposureToExternalCausesType icd:GroupingOfConceptsType icd:InjuriesType icd:ReasonForEncounterType icd:SignOrSymptomType icd:UnspecifiedType}(Old values:{icd:DiseaseType icd:DisorderOrSyndromeType icd:ExposureToExternalCausesType icd:GroupingOfConceptsType icd:InjuriesType icd:ReasonForEncounterType icd:SignOrSymptomType icd:UnspecifiedType})</kb:context>
+	<rdfs:label>Property: owl:equivalentClass for instance: icd:Type set to: {icd:DiseaseType icd:DisorderOrSyndromeType icd:ExposureToExternalCausesType icd:GroupingOfConceptsType icd:InjuriesType icd:ReasonForEncounterType icd:SignOrSymptomType icd:UnspecifiedType}(Old values:{icd:DiseaseType icd:DisorderOrSyndromeType icd:ExposureToExternalCausesType icd:GroupingOfConceptsType icd:InjuriesType icd:ReasonForEncounterType icd:SignOrSymptomType icd:UnspecifiedType})</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class34"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class41"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class42"/>
+</kb:Property_Value>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class41"
+	 kb:date="02/01/2011 00:51:34 PST"
+	 kb:sequence="18"
+	 rdfs:label="02/01/2011 00:51:34 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_content_model_Class42"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Delete condition Type from icd:Type -- Apply to: http://who.int/icd#Type</kb:context>
+	<rdfs:label>Delete condition Type from icd:Type -- Apply to: http://who.int/icd#Type</rdfs:label>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class34"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class36"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class38"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class40"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class43"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class43"
+	 kb:date="02/01/2011 00:51:34 PST"
+	 kb:sequence="19"
+	 rdfs:label="02/01/2011 00:51:34 PST"/>
+<kb:DomainProperty_Added rdf:about="&kb;annotation_ictm_content_model_Class5"
+	 kb:action="DomainProperty_Added"
+	 kb:author=""
+	 kb:context="Domain Property Added: objectProperty_1(added to: owl:Thing)"
+	 rdfs:label="Domain Property Added: objectProperty_1(added to: owl:Thing)">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class6"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class7"/>
+</kb:DomainProperty_Added>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class6"
+	 kb:date="02/01/2011 00:49:58 PST"
+	 kb:sequence="2"
+	 rdfs:label="02/01/2011 00:49:58 PST"/>
+<kb:Composite_Change rdf:about="&kb;annotation_ictm_content_model_Class7"
+	 kb:action="Composite_Change"
+	 kb:author="">
+	<kb:context>Create object property objectProperty_1 -- Apply to: http://who.int/ictm#objectProperty_1</kb:context>
+	<rdfs:label>Create object property objectProperty_1 -- Apply to: http://who.int/ictm#objectProperty_1</rdfs:label>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class0"/>
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class11"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class3"/>
+	<kb:subChanges rdf:resource="&kb;annotation_ictm_content_model_Class5"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class8"/>
+</kb:Composite_Change>
+<kb:Timestamp rdf:about="&kb;annotation_ictm_content_model_Class8"
+	 kb:date="02/01/2011 00:49:58 PST"
+	 kb:sequence="3"
+	 rdfs:label="02/01/2011 00:49:58 PST"/>
+<kb:Name_Changed rdf:about="&kb;annotation_ictm_content_model_Class9"
+	 kb:action="Name_Changed"
+	 kb:author=""
+	 kb:context="Name change from 'objectProperty_1' to 'hasType'"
+	 kb:newName="http://who.int/ictm#hasType"
+	 kb:oldName="http://who.int/ictm#objectProperty_1"
+	 rdfs:label="Name change from 'objectProperty_1' to 'hasType'">
+	<kb:applyTo rdf:resource="&kb;annotation_ictm_content_model_Class1"/>
+	<kb:timestamp rdf:resource="&kb;annotation_ictm_content_model_Class10"/>
+	<kb:partOfCompositeChange rdf:resource="&kb;annotation_ictm_content_model_Class11"/>
+</kb:Name_Changed>
+</rdf:RDF>
