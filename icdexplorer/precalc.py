@@ -70,7 +70,7 @@ def createnetwork():
     print "%d categories" % len(categories)
     for index, category in enumerate(categories):
         if index % 1000 == 0:
-            print "  %d: %s" % (index, category)
+            print " %d: %s" % (index, category)
         G.add_node(node_name(category), display=category.display) #, weight=activity)
         parents = category.parents.values_list('name', flat=True)
         if not (parents or category.name == ROOT_CATEGORY):
@@ -179,13 +179,13 @@ def graphpositions():
             with open(out_filename, 'r') as output:
                 result = output.read()
         
-        print "  Get positions"
+        print " Get positions"
         pos = get_dot_pos(result)
-        print "  Got %d positions" % len(pos)
+        print " Got %d positions" % len(pos)
         
-        print "  Save"
+        print " Save"
         PickledData.objects.set(settings.INSTANCE, 'graph_positions_original_%s' % key, pos)
-        print "  Done"
+        print " Done"
         
 def adjust_positions():
     print "Correct positions to (-1, 1) range with root in center"
@@ -198,7 +198,7 @@ def adjust_positions():
         max_abs_x = max(abs(x) for node, (x, y) in pos.iteritems())
         max_abs_y = max(abs(y) for node, (x, y) in pos.iteritems())
         max_abs = max(max_abs_x, max_abs_y)
-        pos = dict((node, (x / max_abs, y / max_abs)) for node, (x, y) in pos.iteritems())    
+        pos = dict((node, (x / max_abs, y / max_abs)) for node, (x, y) in pos.iteritems())
         PickledData.objects.set(settings.INSTANCE, 'graph_positions_%s' % key, pos)
     print "Done"
     
@@ -218,7 +218,7 @@ def store_positions():
         print name
         for index, category in enumerate(items):
             if index % 1000 == 0:
-                print "  %d: %s" % (index, category)
+                print " %d: %s" % (index, category)
             for layout, key, dot_prog in settings.LAYOUTS:
                 try:
                     x, y = pos[key][key_func(category)]
@@ -245,7 +245,7 @@ def lineargraphs():
         G = nx.DiGraph()
         for index, category in enumerate(categories):
             if index % 100 == 0:
-                print "  %d: %s" % (index, category)
+                print " %d: %s" % (index, category)
             try:
                 parent = category.linearizations_child.get(linearization=linearization).parent
             except (Category.DoesNotExist, LinearizationSpec.DoesNotExist):
@@ -374,10 +374,10 @@ def compute_author_reverts():
 
     reverts = {}
     cursor.execute("""
-        select author_id, override_by_id, count(*) from icd_change
-        where _instance=%s and ends_session and override_by_id is not null
-        group by author_id, override_by_id;
-    """, [settings.INSTANCE])
+select author_id, override_by_id, count(*) from icd_change
+where _instance=%s and ends_session and override_by_id is not null
+group by author_id, override_by_id;
+""", [settings.INSTANCE])
     rows = cursor.fetchall()
     for author, revert_by, count in rows:
         reverts[(revert_by, author)] = count
@@ -392,7 +392,7 @@ def find_annotation_components():
     print str(len(annotations))
     for index, annotation in enumerate(annotations):
         #if index < 7700:
-        #    continue
+        # continue
         if index % 1000 == 0:
             print "%d: %s" % (index, annotation.name)
         component = annotation
@@ -477,7 +477,7 @@ def calc_author_metrics(from_name=None, to_name=None):
                 any_activity = True
             all_metrics[category.name] = metrics.get_metrics_dict()
         if any_activity:
-            print "  Accumulate"
+            print " Accumulate"
             for index, category in enumerate(categories):
                 try:
                     metrics = all_metrics_instances[(author.pk, category.pk)]
@@ -503,7 +503,7 @@ def calc_weights():
         print author
         weights[author] = {}
         for weight_id, weight_name, weight_func in settings.WEIGHTS:
-            print "  " + weight_name
+            print " " + weight_name
             weights[author][weight_id] = [{}, {}] # single / accumulated
             weight = weights[author][weight_id]
             filter_changes = {} if author is None else {'chao__changes__author': author}
@@ -672,7 +672,7 @@ def calc_timespan_metrics():
     split = datetime(2011, 04, 21)
     timespans = [
         Timespan.objects.get_or_create(instance=settings.INSTANCES[1], start=split,
-            stop=datetime(2011, 07, 28))[0],   # gets rid of initial WHO changes
+            stop=datetime(2011, 07, 28))[0], # gets rid of initial WHO changes
         Timespan.objects.get_or_create(instance=settings.INSTANCES[0], start=MIN_CHANGES_DATE,
             stop=split)[0]
     ]
@@ -780,7 +780,7 @@ def createquadtree():
             if author < "2011-11-24_04h02mTomris Turmen":
                 continue
             print "Build tree for '%s'" % author
-            qt = dict(((id, acc), QuadTree(-1, 1, -1, 1)) for id, name, f in settings.WEIGHTS for acc in (0, 1)) 
+            qt = dict(((id, acc), QuadTree(-1, 1, -1, 1)) for id, name, f in settings.WEIGHTS for acc in (0, 1))
             for index, (name, pos) in enumerate(positions.iteritems()):
                 if index % 1000 == 0:
                     print (index, name)
@@ -798,13 +798,13 @@ def createquadtree():
                         weight = weights[author][weight_id][accumulate].get(category.name, 0)
                         #weight = weights.get((weight_id, category.name), 0)
                         #if weight > 0:
-                        #    print name
+                        # print name
                         if weight > 0:
                             qt[(weight_id, accumulate)].insert(x, y, name, (-depth, weight))
                 
             print "Save"
             #with open(settings.DATA_DIR + 'hashtags_positions_tree', 'wb') as data_file:
-            #    pickle.dump(qt, data_file, protocol=pickle.HIGHEST_PROTOCOL)
+            # pickle.dump(qt, data_file, protocol=pickle.HIGHEST_PROTOCOL)
             PickledData.objects.set(settings.INSTANCE, 'graph_positions_tree_%s_%s' % (dot_prog, author or ''), qt)
             print "Saved"
         
@@ -813,34 +813,34 @@ def createquadtree():
 
       
 def corr2latex():
-    tables = [r"""changes & 1.00 & 0.70 & 0.87 & 0.88 & 0.68 & 0.94 & 0.35 & 0.19 & -0.09 & 0.08 & 0.21 & 0.32 & 0.20 & 0.17 \\ 
-  annotations & 0.70 & 1.00 & 0.66 & 0.65 & 0.97 & 0.77 & 0.45 & 0.15 & -0.05 & 0.09 & 0.16 & 0.30 & 0.15 & 0.13 \\ 
-  authors & 0.87 & 0.66 & 1.00 & 0.99 & 0.67 & 0.93 & 0.32 & 0.21 & -0.08 & 0.08 & 0.23 & 0.30 & 0.22 & 0.15 \\ 
-  authors\_changes & 0.88 & 0.65 & 0.99 & 1.00 & 0.67 & 0.93 & 0.32 & 0.21 & -0.07 & 0.08 & 0.23 & 0.30 & 0.22 & 0.15 \\ 
-  authors\_annotations & 0.68 & 0.97 & 0.67 & 0.67 & 1.00 & 0.77 & 0.37 & 0.15 & 0.01 & 0.08 & 0.16 & 0.27 & 0.16 & 0.06 \\ 
-  authors\_gini & 0.94 & 0.77 & 0.93 & 0.93 & 0.77 & 1.00 & 0.52 & 0.38 & -0.23 & 0.14 & 0.40 & 0.50 & 0.39 & 0.31 \\ 
-  parents & 0.35 & 0.45 & 0.32 & 0.32 & 0.37 & 0.52 & 1.00 & 0.15 & -0.22 & 0.18 & 0.15 & 0.49 & 0.15 & 0.29 \\ 
-  children & 0.19 & 0.15 & 0.21 & 0.21 & 0.15 & 0.38 & 0.15 & 1.00 & -0.27 & 0.09 & 1.00 & 0.89 & 1.00 & 0.31 \\ 
-  depth & -0.09 & -0.05 & -0.08 & -0.07 & 0.01 & -0.23 & -0.22 & -0.27 & 1.00 & -0.09 & -0.26 & -0.31 & -0.27 & -0.90 \\ 
-  clustering & 0.08 & 0.09 & 0.08 & 0.08 & 0.08 & 0.14 & 0.18 & 0.09 & -0.09 & 1.00 & 0.09 & 0.08 & 0.09 & 0.10 \\ 
-  betweenness\_centrality & 0.21 & 0.16 & 0.23 & 0.23 & 0.16 & 0.40 & 0.15 & 1.00 & -0.26 & 0.09 & 1.00 & 0.89 & 1.00 & 0.31 \\ 
-  betweenness\_centrality\_undirected & 0.32 & 0.30 & 0.30 & 0.30 & 0.27 & 0.50 & 0.49 & 0.89 & -0.31 & 0.08 & 0.89 & 1.00 & 0.89 & 0.38 \\ 
-  pagerank & 0.20 & 0.15 & 0.22 & 0.22 & 0.16 & 0.39 & 0.15 & 1.00 & -0.27 & 0.09 & 1.00 & 0.89 & 1.00 & 0.31 \\ 
-  closeness\_centrality & 0.17 & 0.13 & 0.15 & 0.15 & 0.06 & 0.31 & 0.29 & 0.31 & -0.90 & 0.10 & 0.31 & 0.38 & 0.31 & 1.00""",
-    r"""changes & 1.00 & 0.50 & 0.49 & 0.49 & 0.39 & 0.70 & 0.27 & 0.06 & -0.15 & 0.06 & 0.07 & 0.10 & 0.09 & 0.22 \\ 
-  annotations & 0.50 & 1.00 & 0.57 & 0.56 & 0.85 & 0.60 & 0.55 & 0.07 & -0.16 & 0.06 & 0.11 & 0.08 & 0.04 & 0.30 \\ 
-  authors & 0.49 & 0.57 & 1.00 & 0.99 & 0.64 & 0.79 & 0.37 & 0.12 & -0.11 & 0.04 & 0.14 & 0.18 & 0.15 & 0.24 \\ 
-  authors\_changes & 0.49 & 0.56 & 0.99 & 1.00 & 0.63 & 0.78 & 0.36 & 0.12 & -0.10 & 0.04 & 0.14 & 0.19 & 0.15 & 0.24 \\ 
-  authors\_annotations & 0.39 & 0.85 & 0.64 & 0.63 & 1.00 & 0.61 & 0.41 & 0.06 & -0.01 & 0.05 & 0.06 & 0.04 & 0.03 & 0.15 \\ 
-  authors\_gini & 0.70 & 0.60 & 0.79 & 0.78 & 0.61 & 1.00 & 0.40 & 0.13 & -0.18 & 0.08 & 0.11 & 0.08 & 0.04 & 0.32 \\ 
-  parents & 0.27 & 0.55 & 0.37 & 0.36 & 0.41 & 0.40 & 1.00 & 0.08 & -0.22 & 0.10 & 0.10 & 0.06 & 0.01 & 0.35 \\ 
-  children & 0.06 & 0.07 & 0.12 & 0.12 & 0.06 & 0.13 & 0.08 & 1.00 & -0.17 & -0.00 & 0.42 & 0.38 & 0.24 & 0.23 \\ 
-  depth & -0.15 & -0.16 & -0.11 & -0.10 & -0.01 & -0.18 & -0.22 & -0.17 & 1.00 & -0.05 & -0.10 & -0.09 & -0.06 & -0.88 \\ 
-  clustering & 0.06 & 0.06 & 0.04 & 0.04 & 0.05 & 0.08 & 0.10 & -0.00 & -0.05 & 1.00 & -0.00 & -0.00 & -0.00 & 0.06 \\ 
-  betweenness\_centrality & 0.07 & 0.11 & 0.14 & 0.14 & 0.06 & 0.11 & 0.10 & 0.42 & -0.10 & -0.00 & 1.00 & 0.78 & 0.50 & 0.16 \\ 
-  betweenness\_centrality\_undirected & 0.10 & 0.08 & 0.18 & 0.19 & 0.04 & 0.08 & 0.06 & 0.38 & -0.09 & -0.00 & 0.78 & 1.00 & 0.78 & 0.15 \\ 
-  pagerank & 0.09 & 0.04 & 0.15 & 0.15 & 0.03 & 0.04 & 0.01 & 0.24 & -0.06 & -0.00 & 0.50 & 0.78 & 1.00 & 0.10 \\ 
-  closeness\_centrality & 0.22 & 0.30 & 0.24 & 0.24 & 0.15 & 0.32 & 0.35 & 0.23 & -0.88 & 0.06 & 0.16 & 0.15 & 0.10 & 1.00"""
+    tables = [r"""changes & 1.00 & 0.70 & 0.87 & 0.88 & 0.68 & 0.94 & 0.35 & 0.19 & -0.09 & 0.08 & 0.21 & 0.32 & 0.20 & 0.17 \\
+annotations & 0.70 & 1.00 & 0.66 & 0.65 & 0.97 & 0.77 & 0.45 & 0.15 & -0.05 & 0.09 & 0.16 & 0.30 & 0.15 & 0.13 \\
+authors & 0.87 & 0.66 & 1.00 & 0.99 & 0.67 & 0.93 & 0.32 & 0.21 & -0.08 & 0.08 & 0.23 & 0.30 & 0.22 & 0.15 \\
+authors\_changes & 0.88 & 0.65 & 0.99 & 1.00 & 0.67 & 0.93 & 0.32 & 0.21 & -0.07 & 0.08 & 0.23 & 0.30 & 0.22 & 0.15 \\
+authors\_annotations & 0.68 & 0.97 & 0.67 & 0.67 & 1.00 & 0.77 & 0.37 & 0.15 & 0.01 & 0.08 & 0.16 & 0.27 & 0.16 & 0.06 \\
+authors\_gini & 0.94 & 0.77 & 0.93 & 0.93 & 0.77 & 1.00 & 0.52 & 0.38 & -0.23 & 0.14 & 0.40 & 0.50 & 0.39 & 0.31 \\
+parents & 0.35 & 0.45 & 0.32 & 0.32 & 0.37 & 0.52 & 1.00 & 0.15 & -0.22 & 0.18 & 0.15 & 0.49 & 0.15 & 0.29 \\
+children & 0.19 & 0.15 & 0.21 & 0.21 & 0.15 & 0.38 & 0.15 & 1.00 & -0.27 & 0.09 & 1.00 & 0.89 & 1.00 & 0.31 \\
+depth & -0.09 & -0.05 & -0.08 & -0.07 & 0.01 & -0.23 & -0.22 & -0.27 & 1.00 & -0.09 & -0.26 & -0.31 & -0.27 & -0.90 \\
+clustering & 0.08 & 0.09 & 0.08 & 0.08 & 0.08 & 0.14 & 0.18 & 0.09 & -0.09 & 1.00 & 0.09 & 0.08 & 0.09 & 0.10 \\
+betweenness\_centrality & 0.21 & 0.16 & 0.23 & 0.23 & 0.16 & 0.40 & 0.15 & 1.00 & -0.26 & 0.09 & 1.00 & 0.89 & 1.00 & 0.31 \\
+betweenness\_centrality\_undirected & 0.32 & 0.30 & 0.30 & 0.30 & 0.27 & 0.50 & 0.49 & 0.89 & -0.31 & 0.08 & 0.89 & 1.00 & 0.89 & 0.38 \\
+pagerank & 0.20 & 0.15 & 0.22 & 0.22 & 0.16 & 0.39 & 0.15 & 1.00 & -0.27 & 0.09 & 1.00 & 0.89 & 1.00 & 0.31 \\
+closeness\_centrality & 0.17 & 0.13 & 0.15 & 0.15 & 0.06 & 0.31 & 0.29 & 0.31 & -0.90 & 0.10 & 0.31 & 0.38 & 0.31 & 1.00""",
+    r"""changes & 1.00 & 0.50 & 0.49 & 0.49 & 0.39 & 0.70 & 0.27 & 0.06 & -0.15 & 0.06 & 0.07 & 0.10 & 0.09 & 0.22 \\
+annotations & 0.50 & 1.00 & 0.57 & 0.56 & 0.85 & 0.60 & 0.55 & 0.07 & -0.16 & 0.06 & 0.11 & 0.08 & 0.04 & 0.30 \\
+authors & 0.49 & 0.57 & 1.00 & 0.99 & 0.64 & 0.79 & 0.37 & 0.12 & -0.11 & 0.04 & 0.14 & 0.18 & 0.15 & 0.24 \\
+authors\_changes & 0.49 & 0.56 & 0.99 & 1.00 & 0.63 & 0.78 & 0.36 & 0.12 & -0.10 & 0.04 & 0.14 & 0.19 & 0.15 & 0.24 \\
+authors\_annotations & 0.39 & 0.85 & 0.64 & 0.63 & 1.00 & 0.61 & 0.41 & 0.06 & -0.01 & 0.05 & 0.06 & 0.04 & 0.03 & 0.15 \\
+authors\_gini & 0.70 & 0.60 & 0.79 & 0.78 & 0.61 & 1.00 & 0.40 & 0.13 & -0.18 & 0.08 & 0.11 & 0.08 & 0.04 & 0.32 \\
+parents & 0.27 & 0.55 & 0.37 & 0.36 & 0.41 & 0.40 & 1.00 & 0.08 & -0.22 & 0.10 & 0.10 & 0.06 & 0.01 & 0.35 \\
+children & 0.06 & 0.07 & 0.12 & 0.12 & 0.06 & 0.13 & 0.08 & 1.00 & -0.17 & -0.00 & 0.42 & 0.38 & 0.24 & 0.23 \\
+depth & -0.15 & -0.16 & -0.11 & -0.10 & -0.01 & -0.18 & -0.22 & -0.17 & 1.00 & -0.05 & -0.10 & -0.09 & -0.06 & -0.88 \\
+clustering & 0.06 & 0.06 & 0.04 & 0.04 & 0.05 & 0.08 & 0.10 & -0.00 & -0.05 & 1.00 & -0.00 & -0.00 & -0.00 & 0.06 \\
+betweenness\_centrality & 0.07 & 0.11 & 0.14 & 0.14 & 0.06 & 0.11 & 0.10 & 0.42 & -0.10 & -0.00 & 1.00 & 0.78 & 0.50 & 0.16 \\
+betweenness\_centrality\_undirected & 0.10 & 0.08 & 0.18 & 0.19 & 0.04 & 0.08 & 0.06 & 0.38 & -0.09 & -0.00 & 0.78 & 1.00 & 0.78 & 0.15 \\
+pagerank & 0.09 & 0.04 & 0.15 & 0.15 & 0.03 & 0.04 & 0.01 & 0.24 & -0.06 & -0.00 & 0.50 & 0.78 & 1.00 & 0.10 \\
+closeness\_centrality & 0.22 & 0.30 & 0.24 & 0.24 & 0.15 & 0.32 & 0.35 & 0.23 & -0.88 & 0.06 & 0.16 & 0.15 & 0.10 & 1.00"""
     ]
     names = ["ch", "ann", "auth", "a\\_ch", "a\\_ann", "a\\_gini", "par", "child", "dep", "cl", "bc", "bcu", "pr", "cc"]
     for table in tables:
@@ -882,8 +882,8 @@ def create_authors():
 from icd_change
 where icd_change._instance=%s
 and ((icd_change.action = "Composite_Change" and kind != "Automatic")
-    or (icd_change.action = ""))
-group by icd_change.author_id 
+or (icd_change.action = ""))
+group by icd_change.author_id
 order by c desc"", [settings.INSTANCE])"""
 
     #for row in cursor.fetchall():
@@ -895,10 +895,10 @@ order by c desc"", [settings.INSTANCE])"""
             name=author_id[len(settings.INSTANCE):])
         author.changes_count += 1
         """name, count = row
-        author, created = Author.objects.get_or_create(instance_name=name,
-            instance=settings.INSTANCE, name=name[len(settings.INSTANCE):])
-        author.changes_count = count
-        author.save()"""
+author, created = Author.objects.get_or_create(instance_name=name,
+instance=settings.INSTANCE, name=name[len(settings.INSTANCE):])
+author.changes_count = count
+author.save()"""
     for author in debug_iter(authors):
         author.save()
 
@@ -906,7 +906,7 @@ order by c desc"", [settings.INSTANCE])"""
     annotations = cursor.execute("""select icd_annotation.author_id, count(*) as c
 from icd_annotation
 where icd_annotation._instance=%s
-group by icd_annotation.author_id 
+group by icd_annotation.author_id
 order by c desc""", [settings.INSTANCE])
     for row in cursor.fetchall():
         name, count = row
@@ -935,30 +935,30 @@ def load_extra_authors_data():
                     author.groups.add(group)
     
     """csv = open('../input/users.csv', 'r')
-    authors = Author.objects.filter(instance=settings.INSTANCE).order_by('name')
-    authors_by_name = {}
-    for author in authors:
-        name = author.name
-        if name in AUTHOR_SUBS:
-            name = AUTHOR_SUBS[name]
-        if name not in authors_by_name:
-            authors_by_name[name] = []
-        authors_by_name[name].append(author)
-    for index, row in enumerate(csv):
-        if index < 1:
-            continue    # skip header line
-        values = row.split(',')
-        print values
-        #name = pop(values)
-        #email = pop(values)
-        name, email, affiliation, tag_member, managing_editor = pop_values(values, 5, default='')
-        corresponding_authors = authors_by_name.get(name, [])
-        for author in corresponding_authors:
-            author.email = email
-            author.affiliation = affiliation
-            author.tag_member = {'yes': True, 'no': False}.get(tag_member.strip().lower(), None)
-            author.managing_editor = managing_editor.strip().lower() == 'yes'
-            author.save()"""
+authors = Author.objects.filter(instance=settings.INSTANCE).order_by('name')
+authors_by_name = {}
+for author in authors:
+name = author.name
+if name in AUTHOR_SUBS:
+name = AUTHOR_SUBS[name]
+if name not in authors_by_name:
+authors_by_name[name] = []
+authors_by_name[name].append(author)
+for index, row in enumerate(csv):
+if index < 1:
+continue # skip header line
+values = row.split(',')
+print values
+#name = pop(values)
+#email = pop(values)
+name, email, affiliation, tag_member, managing_editor = pop_values(values, 5, default='')
+corresponding_authors = authors_by_name.get(name, [])
+for author in corresponding_authors:
+author.email = email
+author.affiliation = affiliation
+author.tag_member = {'yes': True, 'no': False}.get(tag_member.strip().lower(), None)
+author.managing_editor = managing_editor.strip().lower() == 'yes'
+author.save()"""
     
 def calc_cooccurrences():
     print "Calculate co-occurrences"
@@ -1006,17 +1006,17 @@ def create_properties_network():
     follow_ups = PickledData.objects.get(settings.INSTANCE, 'follow_ups')
     G = nx.DiGraph()
     #print follow_ups
-    #for node in 
+    #for node in
     for (u, v), count in follow_ups[None].iteritems():
         if u and v:
             G.add_edge(u, v, count=count)
     """for node in G:
-        author = Author.objects.get(instance_name=node)
-        print "%s: %d" % (author.name, author.changes_count)
-        G.node[node]['name'] = author.name
-        G.node[node]['changes'] = int(author.changes_count)
-        G.node[node]['annotations'] = int(author.annotations_count)
-        G.node[node]['activity'] = int(author.changes_count + author.annotations_count)"""
+author = Author.objects.get(instance_name=node)
+print "%s: %d" % (author.name, author.changes_count)
+G.node[node]['name'] = author.name
+G.node[node]['changes'] = int(author.changes_count)
+G.node[node]['annotations'] = int(author.annotations_count)
+G.node[node]['activity'] = int(author.changes_count + author.annotations_count)"""
     #del G['WHO']
     #print "Save"
     #PickledData.objects.set(settings.INSTANCE, 'author_graph', G)
@@ -1032,7 +1032,7 @@ def create_authors_network():
     print "Create authors network"
     cooccurrences = PickledData.objects.get(settings.INSTANCE, 'author_cooccurrences')
     G = nx.Graph()
-    #for node in 
+    #for node in
     for (u, v), count in cooccurrences.iteritems():
         if u and v:
             G.add_edge(u, v, count=count)
@@ -1064,9 +1064,9 @@ def create_authors_network():
     for (u, v), count in overrides.iteritems():
         G.add_edge(u, v, count=count)
     """for node in G:
-        author = Author.objects.get(instance_name=node)
-        print "%s: %d" % (author.name, author.changes_count)
-        G.node[node]['name'] = author.name"""
+author = Author.objects.get(instance_name=node)
+print "%s: %d" % (author.name, author.changes_count)
+G.node[node]['name'] = author.name"""
     print "Save"
     PickledData.objects.set(settings.INSTANCE, 'author_graph_directed', G)
     
@@ -1085,7 +1085,7 @@ def create_properties():
     changes = cursor.execute("""select property, count(*) as c
 from icd_change
 where _instance=%s
-group by property 
+group by property
 order by c desc""", [settings.INSTANCE])
     for row in cursor.fetchall():
         name, count = row
@@ -1103,12 +1103,12 @@ def print_sql_indexes():
     print "/* generated by precalc.print_sql_indexes() */"
     print "ALTER TABLE icd_categorymetrics"
     """
-    # MySQL cannot handle more than 64 indexes
-    for feature, description in features:
-        print "ADD INDEX index_%(feature)s (instance, %(feature)s, category_id)," % {
-            'feature': feature,
-        }
-    """
+# MySQL cannot handle more than 64 indexes
+for feature, description in features:
+print "ADD INDEX index_%(feature)s (instance, %(feature)s, category_id)," % {
+'feature': feature,
+}
+"""
     indexes = []
     for layout_name, layout, dot_prog in settings.LAYOUTS:
         for feature, description in features:
@@ -1121,9 +1121,9 @@ def print_sql_indexes():
     print "/* generated by precalc.print_sql_indexes() */"
     print "ALTER TABLE icd_authorcategorymetrics"
     #for feature, description in features:
-    #    print "ADD INDEX index_%(feature)s (instance, %(feature)s, category_id)," % {
-    #        'feature': feature,
-    #    }
+    # print "ADD INDEX index_%(feature)s (instance, %(feature)s, category_id)," % {
+    # 'feature': feature,
+    # }
     indexes = []
     for layout_name, layout, dot_prog in settings.LAYOUTS:
         for feature, description in author_features:
@@ -1235,15 +1235,13 @@ def preprocess_incremental():
 def preprocess_nci():
     #find_annotation_components()
     """find_change_categories()
-    compute_extra_change_data()
-    
-    create_authors()
-    #compute_follow_ups()
-    #load_extra_authors_data()
-    #create_properties()
-    
-    createnetwork()
-    calc_metrics(compute_centrality=False)"""
+compute_extra_change_data()
+create_authors()
+#compute_follow_ups()
+#load_extra_authors_data()
+#create_properties()
+createnetwork()
+calc_metrics(compute_centrality=False)"""
     
     #calc_author_metrics_split()
     #calc_weights()
@@ -1269,17 +1267,16 @@ def preprocess_nci():
 
 def preprocess():
     """find_annotation_components()
-    compute_extra_change_data()
-    create_authors()
-    if not settings.IS_WIKI:
-        compute_follow_ups() # too slow for wiki data
-    
-    load_extra_authors_data()
-    create_properties()
-    createnetwork()"""
+compute_extra_change_data()
+create_authors()
+if not settings.IS_WIKI:
+compute_follow_ups() # too slow for wiki data
+load_extra_authors_data()
+create_properties()
+createnetwork()"""
     
     calc_edit_distances()
-    
+    """
     if not settings.IS_WIKI:
         calc_metrics()
         calc_author_metrics_split()
@@ -1297,18 +1294,18 @@ def preprocess():
         create_authors_network()
         create_properties_network()
         calc_hierarchy()
-    
+    """
     #print_sql_indexes()
     
     """
-    #calc_timespan_metrics()
-    #export_r_categories()
-    #export_r_timeseries()
-    #corr2latex()
-    #calc_cooccurrences()
-    #learn_changes()
-    #return
-    """
+#calc_timespan_metrics()
+#export_r_categories()
+#export_r_timeseries()
+#corr2latex()
+#calc_cooccurrences()
+#learn_changes()
+#return
+"""
 def main():
     #preprocess_incremental()
     #preprocess_nci()
@@ -1320,20 +1317,20 @@ def main():
     #c = Category.objects.get(instance_name="mainhttp://who.int/icd#XIII")
     #categories = Category.objects.filter(instance="main")
     #for category in categories:
-    #    category.display_status = choice(foo)
-    #    category.hierarchy_id = c.instance_name
-    #    category.save()
+    # category.display_status = choice(foo)
+    # category.hierarchy_id = c.instance_name
+    # category.save()
     
     """argc = len(sys.argv)
-    if argc not in (2, 3):
-        print "Wrong usage. Please specify a function to call!"
-        return
-    command = sys.argv[1]
-    f = globals()[command]
-    if argc == 3:
-        f(sys.argv[2])
-    else:
-        f()"""
+if argc not in (2, 3):
+print "Wrong usage. Please specify a function to call!"
+return
+command = sys.argv[1]
+f = globals()[command]
+if argc == 3:
+f(sys.argv[2])
+else:
+f()"""
 
 if __name__ == '__main__':
     main()

@@ -3,6 +3,11 @@ ICDexplorer
 
 (c) 2011 Jan Poeschko
 jan@poeschko.com
+
+Change History
+---
+2012-26-01-Daniel extended _name and name fields in classes Annotatablething and
+                  its derivations to 150 characters to allow for longer wiki titles
 """
 
 from django.db import models
@@ -35,7 +40,7 @@ DISPLAY_STATUS = {
 class Category(models.Model):
     instance_name = models.CharField(max_length=130, primary_key=True)
     instance = models.CharField(max_length=30, db_index=True)
-    name = models.CharField(max_length=100, db_index=True)
+    name = models.CharField(max_length=150, db_index=True)
     display = models.CharField(max_length=250, db_index=True)
     sorting_label = models.CharField(max_length=250)
     definition = models.TextField()
@@ -245,7 +250,7 @@ class AuthorCategoryMetrics(Metrics):
 class AnnotatableThing(models.Model):
     instance_name = models.CharField(max_length=130, primary_key=True)
     instance = models.CharField(max_length=30, db_index=True)
-    name = models.CharField(max_length=100, db_index=True)
+    name = models.CharField(max_length=150, db_index=True)
     
     class Meta:
         unique_together = [('instance', 'name')]
@@ -259,7 +264,7 @@ class OntologyComponent(AnnotatableThing):
     #current_name = models.CharField(max_length=250)
     
     _instance = models.CharField(max_length=30, db_index=True)
-    _name = models.CharField(max_length=100, db_index=True)
+    _name = models.CharField(max_length=150, db_index=True)
     
     type = models.CharField(max_length=250, db_index=True)
     #category = models.OneToOneField(Category, related_name='chao')
@@ -296,7 +301,7 @@ class Change(AnnotatableThing):
         relevant_filter = Q(action="Composite_Change") & ~Q(context__startswith="Automatic")
     
     _instance = models.CharField(max_length=30, db_index=True)
-    _name = models.CharField(max_length=100, db_index=True)
+    _name = models.CharField(max_length=150, db_index=True)   # extended to 150 characters to allow for longer wiki titles
     
     #id = models.CharField(max_length=250, primary_key=True)
     type = models.CharField(max_length=250)
@@ -378,7 +383,7 @@ class Annotation(AnnotatableThing):
     relevant_filter = Q()
     
     _instance = models.CharField(max_length=30, db_index=True)
-    _name = models.CharField(max_length=100, db_index=True)
+    _name = models.CharField(max_length=150, db_index=True)
     
     #id = models.CharField(max_length=250, primary_key=True)
     type = models.CharField(max_length=250)

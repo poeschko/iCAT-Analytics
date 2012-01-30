@@ -24,33 +24,37 @@ setup_environ(settings)
 
 from icd.models import *
 
-datetime_format = '%Y-%m-%dT%H:%M:%SZ' # e.g. 2010-11-07T15:03:06Z
+datetime_format = '%Y-%m-%dT%H:%M:%SZ'  # e.g. 2010-11-07T15:03:06Z
+
 
 class WikiPage:
     def __init__(self, title, id):
-        self.title = title
+        self.title = title.encode('utf-8')
         self.id = id
         self.revisions = []
+
 
 class WikiContributor:
     def __init__(self, username = None, id = None, ip = None):
         # contributors are defined by either: (username and id) or (ip)
-        self.username = username
-        self.id = id
-        self.ip = ip
-        
+        self.username = None if username is None else username.encode('utf-8')
+        self.id = None if id is None else id.encode('utf-8')
+        self.ip = None if ip is None else ip.encode('utf-8')
+
     def __unicode__(self):
         if self.ip:
-            return self.ip
-        return u'%s-%s' % (self.username, self.id)
+            return unicode(self.ip, 'utf-8')
+        return unicode('%s-%s' % (self.username, self.id), 'utf-8')
+
 
 class WikiRevision:
     def __init__(self, id, timestamp, contributor, text, comment = None):
         self.id = id
         self.timestamp = datetime.strptime(timestamp, datetime_format)
         self.contributor = contributor
-        self.text = text
-        self.comment = comment
+        self.text = text.encode('utf-8')
+        self.comment = None if comment is None else comment.encode('utf-8')
+
 
 def parse_wiki_dump(file, skip_unless_title=None):
     for event, element in etree.iterparse(file):
@@ -76,21 +80,19 @@ def parse_wiki_dump(file, skip_unless_title=None):
                     r_comment = revision.findtext('comment')
                 else:
                     r_comment = None
-                try:
-                    r_text = revision.findtext('text').decode('utf-8')
-                except UnicodeDecodeError:
-                    r_text = ""
+                r_text = revision.findtext('text')
                 revisions.append(WikiRevision(r_id, r_timestamp,
                                               r_c, r_text, r_comment))
             current_page.revisions = revisions
             yield current_page
             element.clear()
 
+
 def load_wiki():
     instance = settings.INSTANCE
-    
-    authors = {}    # cache for Author instances
-    skip_until = False # set to page title until which to skip loading pages, or False
+
+    authors = {}  # cache for Author instances
+    skip_until = "Substance dependence"  # set to page title until which to skip loading pages, or False
     if skip_until:
         print "Delete data for '%s'" % skip_until
         try:
@@ -103,11 +105,11 @@ def load_wiki():
             pass
         skipping = True
     else:
-        skipping = False    
+        skipping = False
         print "Delete previous data"
         for model in [Category, OntologyComponent, Author, Change]:
             model.objects.filter(instance=instance).delete()
-    
+
     print "Load new data"
     for dirpath, dirnames, filenames in os.walk(settings.WIKI_INPUT_DIR):
         filenames.sort()
@@ -132,7 +134,7 @@ def load_wiki():
                         type="Page", category=category)
                     old_value = ""
                     for revision in page.revisions:
-                        print "  - %s" % revision.id
+                        #print "  - %s" % revision.id
                         author_name = unicode(revision.contributor)
                         author = authors.get(author_name)
                         if author is None:
@@ -153,8 +155,10 @@ def load_wiki():
                             )
                         old_value = revision.text
 
+
 def main():
     load_wiki()
+
 
 if __name__ == '__main__':
     main()

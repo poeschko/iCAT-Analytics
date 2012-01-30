@@ -27,7 +27,7 @@ def get_week(datetime):
     year, week, weekday = datetime.isocalendar()
     return (year, week)
 
-# trasnlated from JavaScript
+# translated from JavaScript
 # from http://www.staff.science.uu.nl/~gent0113/calendar/isocalendar.htm
 def week_to_date(isoyear, isoweeknr, isoweekday=1):
     q = floor(isoyear / 400)
@@ -240,6 +240,7 @@ def add_to_dict(dict, key, value=1):
         dict[key] = value
     
 def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reverse=False):
+
     """ 
     Iterate over a Django Queryset ordered by the primary key
 
@@ -249,9 +250,9 @@ def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reve
     classes.
 
     Note that the implementation of the generator does not support ordered query sets.
-
     """
-    last_pk = get_pk(queryset.order_by(('' if reverse else '-' + 'pk')[0])
+    
+    last_pk = get_pk(queryset.order_by(('' if reverse else '-') + 'pk')[0])
     queryset = queryset.order_by(('-' if reverse else '') + 'pk')
     #pk = get_pk(queryset[0]) - 1
     last_pk = None #get_pk(queryset[0])
