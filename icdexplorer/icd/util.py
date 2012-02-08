@@ -251,7 +251,7 @@ def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reve
     Note that the implementation of the generator does not support ordered query sets.
 
     """
-    last_pk = get_pk(queryset.order_by(('' if reverse else '-' + 'pk')[0])
+    last_pk = get_pk(queryset.order_by(('' if reverse else '-' + 'pk')[0]))
     queryset = queryset.order_by(('-' if reverse else '') + 'pk')
     #pk = get_pk(queryset[0]) - 1
     last_pk = None #get_pk(queryset[0])
