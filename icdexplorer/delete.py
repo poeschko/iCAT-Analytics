@@ -16,7 +16,6 @@ from icd.models import (Category, OntologyComponent, LinearizationSpec, Annotata
     Change, Annotation, CategoryMetrics, User, Timespan, TimespanCategoryMetrics, Author,
     AuthorCategoryMetrics,
     Property, Group)
-    
 
 import gc
 
@@ -59,16 +58,13 @@ for category in tobedeleted:
     
     ca = Category.objects.filter(instance_name = icname).get()
     at = AnnotatableThing.objects.filter(instance_name = icname).get()
-    """
-    changes = Change.objects.filter(apply_to = icname)
-    authors = set()
-    print "collecting authors"
-    for change in queryset_iterator(changes):
-        authors.add(change.author.name)
-    """
     ca.delete()
     at.delete()
     """
+    # Note: It might be better to do this by executing the following SQL-Query after the deletion of the Categories and the AnnotatableThings
+    # DELETE FROM wiki.icd_author WHERE
+    instance_name NOT IN (SELECT author_id FROM wiki.icd_change);
+    
     print "checking authors"
     # check if any authors need to be deleted as well
     for index, a in authors:
