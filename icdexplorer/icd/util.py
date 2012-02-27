@@ -260,7 +260,8 @@ def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reve
         chunk = queryset
         if last_pk is not None:
             filter_func = 'lt' if reverse else 'gt'
-            chunk = chunk.filter({'pk__' + filter_func: last_pk})
+            chunk = chunk.filter(**{'pk__' + filter_func: last_pk})
+
         chunk = chunk[:chunksize]
         row = None
         for row in chunk:
