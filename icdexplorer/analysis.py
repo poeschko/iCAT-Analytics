@@ -306,7 +306,7 @@ FEATURED_PAGES = """
 <Thyrotoxic periodic paralysis>
 """
 FEATURED_PAGES = re.findall(r'\<(.*?)\>', FEATURED_PAGES)
-print FEATURED_PAGES
+#print FEATURED_PAGES
 
 def queryset_singular(query, n=10):
     count = query.count()
@@ -316,6 +316,10 @@ def queryset_singular(query, n=10):
         #yield query[index]
         for item in slice:
             yield item 
+            
+def featured():
+    relevant_categories = list(Category.objects.filter(name__in=FEATURED_PAGES))
+    print ", ".join('"%s"' % c.pk for c in relevant_categories)
     
 def export_changes_accumulated():
     print "Export time-accumulated changes to R format"
