@@ -283,11 +283,13 @@ class CategoryMetrics(ChAOMetrics):
     overrides = models.IntegerField(help_text="Overrides by different authors")
     edit_sessions = models.IntegerField(help_text="Edit sessions")
     authors_by_property = models.IntegerField(help_text="Distinct authors by property")
-    primary_tag_changes = models.IntegerField(null=True, help_text="Number of changes by primary TAG")
+    
+    """primary_tag_changes = models.IntegerField(null=True, help_text="Number of changes by primary TAG")
     secondary_tag_changes = models.IntegerField(null=True, help_text="Number of changes by secondary TAG")
     involved_tag_changes = models.IntegerField(null=True, help_text="Number of changes by involved TAG")
     who_tag_changes = models.IntegerField(null=True, help_text="Number of changes by who TAG")
     outside_tag_changes = models.IntegerField(null=True, help_text="Number of changes outside assigned TAGs")
+    """
     
     def __unicode__(self):
         return self.category.name
@@ -397,7 +399,7 @@ class Change(AnnotatableThing):
     author = models.ForeignKey('Author', related_name='changes')
     timestamp = models.DateTimeField(db_index=True)
     apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
-    session_component = models.ForeignKey('SessionChange', related_name="changes", null=True)
+    #session_component = models.ForeignKey('SessionChange', related_name="changes", null=True)
     composite = models.ForeignKey('self', related_name='parts', null=True)
     #context = models.CharField(max_length=250)
     context = models.TextField()
@@ -438,6 +440,7 @@ class Change(AnnotatableThing):
         'ReplacedProperty': r"Replaced (?P<for_property>.*?) for (?P<property>.*?) of .*?\. Old value: (?P<old_value>.*?)\. New value: (?P<new_value>.*?) -- Apply to: (?P<apply_to_url>.*?)",
         'Hierarchy': r"Change in hierarchy for class: .*?\.(?: Parents added: \( (?P<new_value>.*?)\)\.)?(?: Parents removed: \( (?P<old_value>.*?)\)\.)? -- Apply to: (?P<apply_to_url>.*?)",
         'Added': r"Added a new (?P<property>.*?) to .*? -- Apply to: (?P<apply_to_url>.*?)",
+        'AddedNewValue': r"Added a new (?P<property>.*?) to .*?\. Added value: (?P<new_value>.*?) -- Apply to: (?P<apply_to_url>.*?)",
         'AddedAs': r"Added (?P<new_value>.*?) as (?P<property>.*?) to .*? -- Apply to: (?P<apply_to_url>.*?)",
         'AddedValue': r"Added value(?P<new_value>.*?) for property (?P<property>.*?) for .*? -- Apply to: (?P<apply_to_url>.*?)",
         'AddDirectType': r"Add to .*? direct type : (?P<new_value>.*?) -- Apply to: (?P<apply_to_url>.*?)",

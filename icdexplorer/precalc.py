@@ -38,7 +38,7 @@ import os
 from collections import defaultdict
 from django.db import connection
     
-from bulk_insertion import BulkInsertion
+#from bulk_insertion import BulkInsertion
 import csv
 import gc
 import numpy
@@ -61,7 +61,7 @@ from icd.models import (Category, OntologyComponent, LinearizationSpec, Annotata
 from storage.models import PickledData
 from quadtree import QuadTree
 from icd.util import *
-from bulk_insertion import *
+#from bulk_insertion import *
 
 if settings.IS_NCI:
     ROOT_CATEGORY = 'http://www.w3.org/2002/07/owl#Thing'
