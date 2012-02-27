@@ -485,7 +485,15 @@ class Change(AbstractChange):
     override_by = models.ForeignKey('Author', null=True, related_name='overrides')
 
 class SelectedChange(AbstractChange):
-    " Model for a selection of changes to speedup analysis "
+    """
+    Model for a selection of changes to speedup analysis
+    
+    Populated by running
+        analysis.py featured
+    and inserting the list into an SQL query of the form
+        INSERT INTO icd_selectedchange SELECT * FROM icd_change 
+            WHERE apply_to_id IN (<list of IDs>) ORDER BY timestamp;    
+    """
     
     #pass
     author = models.ForeignKey('Author', related_name='selected_changes')
