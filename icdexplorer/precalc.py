@@ -1151,7 +1151,10 @@ def calc_edit_distances():
     #changes = changes.filter()
     #changes = changes.exclude(old_value="").exclude(new_value="")
     #changes = queryset_generator(changes)
-    changes = queryset_generator(changes, reverse=True)
+    
+    #changes = queryset_generator(changes, reverse=True)
+    changes = queryset_generator(changes)
+    
     #changes = changes[:100]
     for change in debug_iter(changes, n=100):
         old_value = change.old_value
@@ -1266,6 +1269,15 @@ calc_metrics(compute_centrality=False)"""
     #create_properties_network()
 
 def preprocess():
+    print "calc_metrics()"
+    calc_metrics() 
+    print "createnetwork()"
+    createnetwork()
+    print "graphpositions()"
+    graphpositions()
+    print "adjust_positions()"
+    adjust_positions()
+    
     """find_annotation_components()
 compute_extra_change_data()
 create_authors()
@@ -1275,7 +1287,7 @@ load_extra_authors_data()
 create_properties()
 createnetwork()"""
     
-    calc_edit_distances()
+    #calc_edit_distances()
     """
     if not settings.IS_WIKI:
         calc_metrics()

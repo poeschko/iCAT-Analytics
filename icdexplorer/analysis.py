@@ -274,26 +274,86 @@ def export_r_timeseries():
         weekly_changes_group_sizes.append([index] + groups_users)
     write_csv('../output/changes_weekly_grouped.dat', weekly_changes_grouped)
     write_csv('../output/changes_weekly_group_sizes.dat', weekly_changes_group_sizes)
+   
+FEATURED_PAGES = """ 
+<Acute myeloid leukemia>
+<Acute radiation syndrome>
+<Alzheimer's disease>
+<Asperger syndrome>
+<Autism>
+<Chagas disease>
+<Cholangiocarcinoma>
+<Coeliac disease>
+<Dengue fever>
+<Hepatorenal syndrome>
+<Huntington's disease>
+<Influenza>
+<Keratoconus>
+<Lung cancer>
+<Major depressive disorder>
+<Meningitis>
+<Multiple sclerosis>
+<Osteochondritis dissecans>
+<Oxygen toxicity>
+<Parkinson's disease>
+<Poliomyelitis>
+<Pulmonary contusion>
+<Reactive attachment disorder>
+<Rhabdomyolysis>
+<Rotavirus>
+<Schizophrenia>
+<Subarachnoid hemorrhage>
+<Thyrotoxic periodic paralysis>
+"""
+FEATURED_PAGES = re.findall(r'\<(.*?)\>', FEATURED_PAGES)
+# FEATURED_PAGES = ["Acute myeloid leukemia"] # debug
+print FEATURED_PAGES
+
+def queryset_singular(query, n=10):
+    count = query.count()
+    for index in xrange(count // n + 1):
+        slice = query[index*n : (index+1)*n]
+        #slice = list(slice)
+        #yield query[index]
+        for item in slice:
+            yield item 
     
 def export_changes_accumulated():
     print "Export time-accumulated changes to R format"
     
     empty_values = ['', '(empty)']
     
-    vocabulary_analysis = not settings.IS_WIKI
+    """categories = Category.objects.filter(metrics__isnull=False).select_related('metrics')
+    categories = list(categories)
+    for category in categories:
+        category.change_count = category.metrics.changes
+    categories.sort(key=lambda c: c.change_count, reverse=True)
+    #print categories[:10]
+    relevant_categories = categories[:10]"""
+    relevant_categories = list(Category.objects.filter(name__in=FEATURED_PAGES))
+    print "Relevant categories: %s" % [c.name for c in relevant_categories]
     
-    changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
+    vocabulary_analysis = True #not settings.IS_WIKI
+    
+    #changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
+    changes = Change.objects
+    changes = changes.order_by('timestamp')
+    changes = changes.filter(apply_to__in=relevant_categories)
     if not vocabulary_analysis:
         changes = changes.defer('old_value', 'new_value')
     print "Relevant changes total: %d" % changes.count()
-    changes = changes.filter(levenshtein_distance__isnull=False)
+    if not settings.IS_WIKI:
+        changes = changes.filter(levenshtein_distance__isnull=False)
     if not settings.IS_WIKI:
         changes = changes.exclude(property="")
-    print "Property and Levenshtein distance set: %d" % changes.count()
+    #print "Property and Levenshtein distance set: %d" % changes.count()
+    
+    #changes = Change.objects.all()[:10000]
+    #changes_count = changes.count()
     
     if settings.IS_WIKI:
-        modify_changes = changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)
-        text_changes = changes = list(changes)
+        #modify_changes = changes.exclude(old_value__in=empty_values).exclude(new_value__in=empty_values)
+        text_changes = changes #= list(changes)
     else:
         non_textual_properties = ['sorting label', 'use', 'display status', 'type', 'inclusions', 'exclusions',
             'primary tag']
@@ -303,7 +363,10 @@ def export_changes_accumulated():
     #changes = Change.objects.all()[:5000]
     #modify_changes = text_changes = changes = list(changes)
     
-    if not settings.IS_WIKI:
+    if settings.IS_WIKI:
+        #text_changes = text_changes.iterator()
+        text_changes = queryset_singular(text_changes)
+    else:
         text_changes = list(text_changes)
         print "Textual properties filtered: %d" % len(text_changes)
         changes = list(changes)
@@ -327,11 +390,11 @@ def export_changes_accumulated():
     concepts = set()
     word_re = re.compile('([a-zA-Z]{2,})')    
     for index, change in enumerate(text_changes):
-        if index % 1000 == 0:
+        if index % 1 == 0:
             print index
             print sorted(((count, word) for word, count in vocabulary.iteritems()), reverse=True)[:50]
         concepts.add(change.apply_to_id)
-        add_to_dict(authors, change.author_id)
+        #add_to_dict(authors, change.author_id)
         total_levenshtein += change.levenshtein_distance
         total_levenshtein_rel += change.levenshtein_distance_rel
         total_levenshtein_sim += change.levenshtein_similarity
@@ -349,9 +412,14 @@ def export_changes_accumulated():
             change.levenshtein_distance, change.levenshtein_distance_rel,
             total_levenshtein, total_levenshtein_rel, total_levenshtein_sim,
             total_lcs_rel,
-            calculate_gini(authors),
+            0, #calculate_gini(authors),
             len(vocabulary), sum(vocabulary.itervalues())])
     write_csv('../output/changes_accumulated_text.dat', output)
+    
+    if settings.IS_WIKI:
+        return
+    
+    vocabulary_analysis = False # only needed for text_changes
     
     print "Get modifying changes"
     modify_changes = list(modify_changes)
@@ -369,7 +437,7 @@ def export_changes_accumulated():
     concepts = set()
     word_re = re.compile('([a-zA-Z]{2,})')    
     for index, change in enumerate(modify_changes):
-        if index % 1000 == 0:
+        if index % 100 == 0:
             print index
             print sorted(((count, word) for word, count in vocabulary.iteritems()), reverse=True)[:50]
         concepts.add(change.apply_to_id)
@@ -404,7 +472,7 @@ def export_changes_accumulated():
     authors = {}
     concepts = set()
     for index, change in enumerate(changes):
-        if index % 1000 == 0:
+        if index % 100 == 0:
             print index
         concepts.add(change.apply_to_id)
         add_to_dict(authors, change.author_id)

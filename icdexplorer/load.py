@@ -92,7 +92,7 @@ def load_wiki():
     instance = settings.INSTANCE
 
     authors = {}  # cache for Author instances
-    skip_until = "Substance dependence"  # set to page title until which to skip loading pages, or False
+    skip_until = "Stuttering"  # set to page title until which to skip loading pages, or False
     if skip_until:
         print "Delete data for '%s'" % skip_until
         try:

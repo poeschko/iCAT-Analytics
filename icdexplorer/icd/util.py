@@ -238,9 +238,9 @@ def add_to_dict(dict, key, value=1):
         dict[key] += value
     except KeyError:
         dict[key] = value
-    
-def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reverse=False):
 
+        
+def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reverse=False):
     """ 
     Iterate over a Django Queryset ordered by the primary key
 
@@ -250,21 +250,23 @@ def queryset_generator(queryset, chunksize=1000, get_pk=lambda row: row.pk, reve
     classes.
 
     Note that the implementation of the generator does not support ordered query sets.
+
     """
-    
-    last_pk = get_pk(queryset.order_by(('' if reverse else '-') + 'pk')[0])
-    queryset = queryset.order_by(('-' if reverse else '') + 'pk')
-    #pk = get_pk(queryset[0]) - 1
-    last_pk = None #get_pk(queryset[0])
+    ordering = '-' if reverse else ''
+    queryset = queryset.order_by(ordering + 'pk')
+    last_pk = None
     new_items = True
-    #while pk < last_pk:
     while new_items:
         new_items = False
         chunk = queryset
         if last_pk is not None:
-            chunk = chunk.filter(pk__gt=last_pk)
+            filter_func = 'lt' if reverse else 'gt'
+            chunk = chunk.filter(**{'pk__' + filter_func: last_pk})
+
         chunk = chunk[:chunksize]
+        row = None
         for row in chunk:
+            yield row
+        if row is not None:
             last_pk = get_pk(row)
             new_items = True
-            yield row
