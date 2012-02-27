@@ -155,16 +155,18 @@ class Category(models.Model):
 
 class InvolvedTag(models.Model):
     category = models.ForeignKey('Category', related_name='involved_tags')
-    instance = models.CharField(max_length=250, db_index=True)
+    instance = models.CharField(max_length=30, db_index=True)
     name = models.CharField(max_length=250, db_index=True)
+    
     class Meta:
-        unique_together = [('instance', 'name', 'category')]
-
+        unique_together = [] #[('instance', 'name', 'category')]
+        # key too long (> 1000 bytes)
         
 class CategoryTitles(models.Model):
     category = models.ForeignKey('Category', related_name='category_titles')
     title = models.CharField(max_length=250, db_index=True)
     language_code = models.CharField(max_length=250, db_index=True)
+    
     def __unicode__(self):
         if self.title.strip():
             return self.title
@@ -173,6 +175,7 @@ class CategoryDefinitions(models.Model):
     category = models.ForeignKey('Category', related_name='category_definitions')
     definition = models.TextField()
     language_code = models.CharField(max_length=250, db_index=True)
+    
     def __unicode__(self):
         if self.definition.strip():
             return self.definition
@@ -387,7 +390,7 @@ class User(models.Model):
     class Meta:
         unique_together = [('instance', 'name')]
     
-class Change(AnnotatableThing):
+class AbstractChange(AnnotatableThing):
     #relevant_filter = ~Q(action="Export") & ~Q(context__startswith="Automatic")
     if settings.IS_NCI:
         relevant_filter = ~Q(action="Composite_Change")
@@ -401,11 +404,8 @@ class Change(AnnotatableThing):
     
     #id = models.CharField(max_length=250, primary_key=True)
     type = models.CharField(max_length=250)
-    author = models.ForeignKey('Author', related_name='changes')
     timestamp = models.DateTimeField(db_index=True)
-    apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
     #session_component = models.ForeignKey('SessionChange', related_name="changes", null=True)
-    composite = models.ForeignKey('self', related_name='parts', null=True)
     #context = models.CharField(max_length=250)
     context = models.TextField()
     action = models.CharField(max_length=250)
@@ -421,9 +421,6 @@ class Change(AnnotatableThing):
     apply_to_url = models.CharField(max_length=250)
     
     #revert = models.ForeignKey('Change', null=True)
-    override = models.ForeignKey('Change', null=True, related_name='overriding')
-    #session_revert = models.ForeignKey('Change', null=True, related_name='reverting_session')
-    override_by = models.ForeignKey('Author', null=True, related_name='overrides')
     ends_session = models.BooleanField(default=False)
     
     levenshtein_distance = models.IntegerField(null=True)
@@ -476,6 +473,27 @@ class Change(AnnotatableThing):
     
     def __unicode__(self):
         return self._name
+    
+    class Meta:
+        abstract = True
+        
+class Change(AbstractChange):
+    author = models.ForeignKey('Author', related_name='changes')
+    apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
+    composite = models.ForeignKey('self', related_name='parts', null=True)
+    override = models.ForeignKey('Change', null=True, related_name='overriding')
+    override_by = models.ForeignKey('Author', null=True, related_name='overrides')
+
+class SelectedChange(AbstractChange):
+    " Model for a selection of changes to speedup analysis "
+    
+    #pass
+    author = models.ForeignKey('Author', related_name='selected_changes')
+    apply_to = models.ForeignKey(OntologyComponent, related_name='selected_changes', null=True)
+    composite = models.ForeignKey('self', related_name='selected_parts', null=True)
+    override = models.ForeignKey('Change', null=True, related_name='selected_overriding')
+    override_by = models.ForeignKey('Author', null=True, related_name='selected_overrides')
+    #session_revert = models.ForeignKey('Change', null=True, related_name='reverting_session')
     
 class Annotation(AnnotatableThing):
     relevant_filter = Q()
