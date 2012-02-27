@@ -1,0 +1,1 @@
+ALTER TABLE icd_selectedchange ENGINE = MyISAM;
