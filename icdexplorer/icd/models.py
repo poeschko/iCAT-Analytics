@@ -422,6 +422,7 @@ class AbstractChange(AnnotatableThing):
     
     #revert = models.ForeignKey('Change', null=True)
     ends_session = models.BooleanField(default=False)
+    #session_revert = models.ForeignKey('Change', null=True, related_name='reverting_session')
     
     levenshtein_distance = models.IntegerField(null=True)
     levenshtein_distance_rel = models.FloatField(null=True)
@@ -485,15 +486,21 @@ class Change(AbstractChange):
     override_by = models.ForeignKey('Author', null=True, related_name='overrides')
 
 class SelectedChange(AbstractChange):
-    " Model for a selection of changes to speedup analysis "
+    """
+    Model for a selection of changes to speedup analysis
     
-    #pass
+    Populated by running
+        analysis.py featured
+    and inserting the list into an SQL query of the form
+        INSERT INTO icd_selectedchange SELECT * FROM icd_change 
+            WHERE apply_to_id IN (<list of IDs>) ORDER BY timestamp;    
+    """
+    
     author = models.ForeignKey('Author', related_name='selected_changes')
     apply_to = models.ForeignKey(OntologyComponent, related_name='selected_changes', null=True)
     composite = models.ForeignKey('self', related_name='selected_parts', null=True)
     override = models.ForeignKey('Change', null=True, related_name='selected_overriding')
     override_by = models.ForeignKey('Author', null=True, related_name='selected_overrides')
-    #session_revert = models.ForeignKey('Change', null=True, related_name='reverting_session')
     
 class Annotation(AnnotatableThing):
     relevant_filter = Q()

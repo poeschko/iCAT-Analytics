@@ -15,7 +15,7 @@ setup_environ(settings)
 from django.db import connection
 from django.db.models import Avg, Count, Min, Max
 
-from icd.models import Category, Timespan, Change, Author, Group
+from icd.models import Category, Timespan, Change, Author, Group, SelectedChange
 from storage.models import PickledData
 from precalc import write_csv
 from icd.util import *
@@ -334,7 +334,8 @@ def export_changes_accumulated():
     #print categories[:10]
     relevant_categories = categories[:10]"""
     relevant_categories = list(Category.objects.filter(name__in=FEATURED_PAGES))
-    print "Relevant categories: %s" % [c.name for c in relevant_categories]
+    #print "Relevant categories: %s" % [c.name for c in relevant_categories]
+    print "Relevant categories: %s" % ", ".join('"%s"' % c.pk for c in relevant_categories)
     
     vocabulary_analysis = True #not settings.IS_WIKI
     
@@ -366,9 +367,12 @@ def export_changes_accumulated():
     #changes = Change.objects.all()[:5000]
     #modify_changes = text_changes = changes = list(changes)
     
+    first_timestamp = changes[0].timestamp
+    
     if settings.IS_WIKI:
         #text_changes = text_changes.iterator()
-        text_changes = queryset_singular(text_changes)
+        #text_changes = queryset_singular(text_changes)
+        text_changes = queryset_generator(SelectedChange.objects.all())
     else:
         text_changes = list(text_changes)
         print "Textual properties filtered: %d" % len(text_changes)
@@ -378,7 +382,7 @@ def export_changes_accumulated():
         return (word.lower() for word in word_re.findall(text))
     
     def get_week(timestamp):
-        delta = timestamp - changes[0].timestamp
+        delta = timestamp - first_timestamp
         return 1.0 * (delta.days + delta.seconds / (24 * 3600.0)) / 7
     
     output = [['count', 'week', 'concepts', 'levenshtein', 'levenshtein_rel',
@@ -400,7 +404,8 @@ def export_changes_accumulated():
         #add_to_dict(authors, change.author_id)
         total_levenshtein += change.levenshtein_distance
         total_levenshtein_rel += change.levenshtein_distance_rel
-        total_levenshtein_sim += change.levenshtein_similarity
+        if change.levenshtein_similarity is not None:
+            total_levenshtein_sim += change.levenshtein_similarity
         if change.lcs_rel is not None:
             total_lcs_rel += change.lcs_rel # if change.old_value else 1
         if vocabulary_analysis:
