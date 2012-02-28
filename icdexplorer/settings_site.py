@@ -18,7 +18,8 @@ else:
         '2010-06-01_04h02m',
         '2011-09-09_04h02m', 'main', 'dynamic_graph', 'main2', '03-10-11', '10-11-11', '2011-11-20_04h02m',
         'ictm2011-11-24_04h02m', """
-    INSTANCES = ['wiki-icd10-sample']
+    #INSTANCES = ['wiki-icd10-sample']
+    INSTANCES = ['wiki-icd10']
     INSTANCE = INSTANCES[-1]
     
 IS_NCI = INSTANCE.startswith('nci')

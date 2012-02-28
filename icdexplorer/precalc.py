@@ -636,6 +636,35 @@ def get_tag_changes(category, changes):
             outside += 1
     return [primary, secondary, involved, who, outside]
 
+def calc_metrics_counts():
+    # fast metrics calculation for Wikipedia, only calculating change counts
+    
+    categories = Category.objects.filter(instance=settings.INSTANCE).order_by('name') #.select_related('chao')
+    categories = list(categories)
+    for index, category in enumerate(categories):
+        if index % 100 == 0:
+            print "%d: %s" % (index, category)
+        node = node_name(category)
+        try:
+            metrics = category.metrics
+        except CategoryMetrics.DoesNotExist:
+            metrics = CategoryMetrics(category=category)
+        changes = 0
+        for chao in category.chao.all():
+            changes += chao.changes.filter(Change.relevant_filter).count()
+        metrics.annotations = 0
+        metrics.changes = changes
+        metrics.activity = changes
+        metrics.authors = 0
+        metrics.authors_changes = 0
+        metrics.authors_annotations = 0
+        metrics.parents = 0
+        metrics.children = 0
+        metrics.overrides = 0
+        metrics.edit_sessions = 0
+        metrics.authors_by_property = 0
+        metrics.save()
+
 def calc_metrics(accumulate_only=False, compute_centrality=False):
     #DISPLAY_STATUS_RE = re.compile(r'.*set to: (.*?)\(.*')
     print "Construct graph"
@@ -1840,7 +1869,13 @@ def preprocess_incremental():
     #create_authors_network()
     #calc_hierarchy()
     #graphpositions()
-    compute_extra_author_data()
+    #compute_extra_author_data()
+    
+    # for Wikipedia:
+    #createnetwork()
+    calc_metrics_counts()
+    graphpositions()
+    adjust_positions()
     
 def preprocess_nci():
     #find_annotation_components()
@@ -1957,9 +1992,9 @@ def preprocess():
     #return
 
 def main():
-    #preprocess_incremental()
+    preprocess_incremental()
     #preprocess_nci()
-    preprocess()
+    #preprocess()
     
     #foo = ['', 'http://who.int/icd#DS_Yellow', 'http://who.int/icd#DS_Blue', 'http://who.int/icd#DS_Red']
     #from random import choice
