@@ -569,6 +569,7 @@ def export_changes_grouped():
     print "Done"
     
 def analyse_propagation_sessioned(baseline=False):
+    print "analyse_propagation_sessioned()"
     G_orig = PickledData.objects.get(settings.INSTANCE, 'graph')
     if baseline:
         nodes = G_orig.nodes()
@@ -588,12 +589,21 @@ def analyse_propagation_sessioned(baseline=False):
     
     #changes_base = Change.objects.exclude(action__startswith='Subclass Added').exclude(action__startswith='Superclass Added')
     #changes_base = changes_base.exclude(action__startswith='Change in hierarchy for class')
+    
     changes_base = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
-    changes = changes_base.order_by('timestamp').select_related('apply_to')
+    changes_base = changes_base.defer('old_value', 'new_value') 
+    #changes = changes_base.order_by('timestamp')
+    changes = changes_base.select_related('apply_to')
+    changes = queryset_generator(changes)
     changes_by_category = defaultdict(list)
     for change in debug_iter(changes):
         if change.apply_to is not None:
             changes_by_category[change.apply_to.category_id[len(settings.INSTANCE):]].append(change)
+    
+    for key in changes_by_category:
+        print key
+        changes_by_category[key].sort(key = lambda x: x.timestamp)
+
     #changes = list(changes)
     #already_investigated = set()
     total_changes = 0
@@ -696,7 +706,7 @@ def analyse_propagation_sessioned(baseline=False):
         if child: preceded_by_child += 1
         if parent or child: preceded_by_related += 1""
     """
-        
+    print distributions
     print "Save"
     suffix = '_baseline' if baseline else ''
     PickledData.objects.set(settings.INSTANCE, 'propagation_sessioned_distribution%s' % suffix, distributions)
@@ -802,6 +812,7 @@ def analyse_propagation(baseline=False):
     print "Done"
     
 def analyse_propagation_sessioned_export(baseline=False):
+    print "analyse_propagation_sessioned_export()"
     G_orig = PickledData.objects.get(settings.INSTANCE, 'graph')
     links = G_orig.size()
     
@@ -1223,8 +1234,8 @@ def export():
     #export_r_categories()
     #export_tab_categories()
     #export_timespans(format='r')
-    export_r_timeseries_fast()
-    #export_changes_accumulated()
+    #export_r_timeseries_fast()
+    export_changes_accumulated()
     #export_authors_network()
     #export_r_categories()
     #calc_cooccurrences()
@@ -1239,16 +1250,16 @@ def analyse():
     #analyse_propagation_baseline()
     #analyse_propagation_export(baseline=True)
     
-    #analyse_propagation_sessioned(baseline=False)
-    #analyse_propagation_sessioned_export(baseline=False)
-    #analyse_propagation_sessioned(baseline=True)
-    #analyse_propagation_sessioned_export(baseline=True)
+    analyse_propagation_sessioned(baseline=False)
+    analyse_propagation_sessioned_export(baseline=False)
+    analyse_propagation_sessioned(baseline=True)
+    analyse_propagation_sessioned_export(baseline=True)
     
     #analyse_tags_reverts()
     #analyse_authors()
     #analyse_authors_relative()
     
-    tag_borders()
+    #tag_borders()
     
 def main():
     argc = len(sys.argv)
