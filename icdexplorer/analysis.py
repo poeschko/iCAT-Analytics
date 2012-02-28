@@ -171,10 +171,28 @@ def export_r_categories():
     write_csv('../output/categories.dat', result)
     print "Done"
     
+def export_r_timeseries_fast():
+    changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
+    changes = changes.only('pk', 'timestamp', 'apply_to')
+    changes = queryset_generator(changes)
+    changes_by_week = defaultdict(int)
+    concepts_by_week = defaultdict(set)
+    min_date = max_date = None
+    for change in debug_iter(changes):
+        year, week, weekday = change.timestamp.isocalendar()
+        week = (year, week)
+        changes_by_week[week] += 1
+        concepts_by_week[week].add(change.apply_to_id)
+        if min_date is None or change.timestamp < min_date:
+            min_date = change.timestamp
+        if max_date is None or change.timestamp > max_date:
+            max_date = change.timestamp
+    result = [[']]
+    
 def export_r_timeseries():
     print "Export time series to R format"
     
-    changes = Change.objects.filter(instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
+    changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter).order_by('timestamp')
     changes = list(changes)
     
     all_dates = set()
@@ -1190,8 +1208,8 @@ def export():
     #export_r_categories()
     #export_tab_categories()
     #export_timespans(format='r')
-    #export_r_timeseries()
-    export_changes_accumulated()
+    export_r_timeseries()
+    #export_changes_accumulated()
     #export_authors_network()
     #export_r_categories()
     #calc_cooccurrences()

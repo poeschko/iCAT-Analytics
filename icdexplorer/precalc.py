@@ -67,6 +67,8 @@ if settings.IS_NCI:
     ROOT_CATEGORY = 'http://www.w3.org/2002/07/owl#Thing'
 elif settings.IS_ICTM:
     ROOT_CATEGORY = 'http://who.int/ictm#ICTMCategory'
+elif settings.IS_WIKI:
+    ROOT_CATEGORY = 'ICD-10'
 else:
     ROOT_CATEGORY = 'http://who.int/icd#ICDCategory'
     
@@ -653,6 +655,7 @@ def calc_metrics_counts():
         for chao in category.chao.all():
             changes += chao.changes.filter(Change.relevant_filter).count()
         metrics.annotations = 0
+        metrics.instance = settings.INSTANCE
         metrics.changes = changes
         metrics.activity = changes
         metrics.authors = 0
@@ -1873,9 +1876,10 @@ def preprocess_incremental():
     
     # for Wikipedia:
     #createnetwork()
-    calc_metrics_counts()
-    graphpositions()
-    adjust_positions()
+    #calc_metrics_counts()
+    #graphpositions()
+    #adjust_positions()
+    store_positions()
     
 def preprocess_nci():
     #find_annotation_components()

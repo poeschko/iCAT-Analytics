@@ -244,13 +244,13 @@ class TimespanCategoryMetrics(Metrics):
     category = models.OneToOneField(Category, related_name='timespan_metrics')
     instance = models.CharField(max_length=30, db_index=True)
     
-    days_after_last_change = models.FloatField(default=0, null=True, help_text="Days after last change")
+    #days_after_last_change = models.FloatField(default=0, null=True, help_text="Days after last change")
     #days_before_first_change = models.FloatField(default=0, null=True, help_text="Days before first change")
     #days_after_median_change = models.FloatField(default=0, null=True, help_text="Days after median change")
-    days_after_last_annotation = models.FloatField(default=0, null=True, help_text="Days after last note")
+    #days_after_last_annotation = models.FloatField(default=0, null=True, help_text="Days after last note")
     #days_before_first_annotation = models.FloatField(default=0, null=True, help_text="Days before first note")
     #days_after_median_annotation = models.FloatField(default=0, null=True, help_text="Days after median note")
-    days_after_last_activity = models.FloatField(default=0, null=True, help_text="Days after last activity")
+    #days_after_last_activity = models.FloatField(default=0, null=True, help_text="Days after last activity")
     """
     changes_parents = models.IntegerField(db_index=True)
     annotations_parents = models.IntegerField(db_index=True)

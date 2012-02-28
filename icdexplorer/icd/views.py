@@ -20,12 +20,14 @@ from django.utils import simplejson
 from inspect import getmembers
 
 from models import Category, Change, Annotation, BasicOntologyStatistics, CATEGORY_NAME_PREFIX, DISPLAY_STATUS, CategoryMetrics, OntologyComponent, Author, AuthorCategoryMetrics, AccumulatedCategoryMetrics, MultilanguageCategoryMetrics, TimespanCategoryMetrics
-from data import (#GRAPH, CATEGORIES, #GRAPH_POSITIONS, GRAPH_POSITIONS_TREE, WEIGHTS,
+"""from data import (#GRAPH, CATEGORIES, #GRAPH_POSITIONS, GRAPH_POSITIONS_TREE, WEIGHTS,
     MIN_CHANGES_DATE, MAX_CHANGES_DATE, CATEGORIES, FEATURES, AUTHOR_FEATURES,
     AUTHORS, GRAPH_AUTHORS, GRAPH_AUTHORS_DIRECTED, GRAPH_AUTHORS_POSITIONS,
     CHANGES_COUNT, ANNOTATIONS_COUNT, GROUPS,
     PROPERTIES, GRAPH_PROPERTIES_POSITIONS, ACCUMULATED_FEATURES, MULTILANGUAGE_FEATURES,
     FOLLOW_UPS, MULTILANGUAGE_FILTER, ACCUMULATED_FILTER, AUTHOR_FILTER, TIMESPAN_FILTER, CATEGORY_FEATURES, TIMESPAN_FEATURES, CATEGORYMETRICS_FILTER)
+"""
+from data import *
 from util import get_week, week_to_date, get_weekly, counts, group, calculate_gini
 from icdexplorer.storage.models import PickledData
 
@@ -666,6 +668,8 @@ def ajax_graph(request):
     tree = tree[tree_id]"""
     #print WEIGHTS[weight_id][accumulated].items()[:100]
     #print WEIGHTS[weight_id][accumulated]['http://who.int/icd#ICDCategory']
+    
+    #print "HI"
             
     STEP = 10
     categories = []

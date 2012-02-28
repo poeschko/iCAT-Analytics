@@ -30,37 +30,51 @@ WEIGHTS = PickledData.objects.get(settings.INSTANCE, 'weights')
 #WEIGHTS = {}
 """
 
-AUTHORS = dict((author.instance_name, author) for author in Author.objects.filter(instance=settings.INSTANCE))
-for author in AUTHORS.values():
-    author.groups_list = list(author.groups.order_by('name'))
+if settings.IS_WIKI:
+    AUTHORS = {}
+else:
+    AUTHORS = dict((author.instance_name, author) for author in Author.objects.filter(instance=settings.INSTANCE))
+    for author in AUTHORS.values():
+        author.groups_list = list(author.groups.order_by('name'))
 GROUPS = Group.objects.filter(instance=settings.INSTANCE).order_by('name')
 for group in GROUPS:
     group.authors_list = list(group.authors.all())
     group.authors_list.sort(key=lambda author: author.changes_count + author.annotations_count, reverse=True)
 print "Authors loaded"
 
-GRAPH_AUTHORS = PickledData.objects.get(settings.INSTANCE, 'author_graph')
-GRAPH_AUTHORS_DIRECTED = PickledData.objects.get(settings.INSTANCE, 'author_graph_directed')
-GRAPH_AUTHORS_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'author_graph_positions')
+if not settings.IS_WIKI:
+    GRAPH_AUTHORS = PickledData.objects.get(settings.INSTANCE, 'author_graph')
+    GRAPH_AUTHORS_DIRECTED = PickledData.objects.get(settings.INSTANCE, 'author_graph_directed')
+    GRAPH_AUTHORS_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'author_graph_positions')
+    
+    print "Author Graphs loaded"
 
-print "Author Graphs loaded"
-
-TIMESPAN_FEATURES = []#[(name, description) for name, value, description in TimespanCategoryMetrics.objects.all()[0].get_metrics()]
+#TIMESPAN_FEATURES = []#[(name, description) for name, value, description in TimespanCategoryMetrics.objects.all()[0].get_metrics()]
 #TIMESPAN_FEATURES = []
 CATEGORY_FEATURES = [(name, description) for name, value, description in CategoryMetrics.objects.all()[0].get_metrics()]
-ACCUMULATED_FEATURES = [(name, description) for name, value, description in AccumulatedCategoryMetrics.objects.all()[0].get_metrics()]
-MULTILANGUAGE_FEATURES = [(name, description) for name, value, description in MultilanguageCategoryMetrics.objects.all()[0].get_metrics()]
-FEATURES = CATEGORY_FEATURES + ACCUMULATED_FEATURES + MULTILANGUAGE_FEATURES #+ TIMESPAN_FEATURES
-
-# TEMP FIX:
-#FEATURES = []
-AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
-AUTHOR_FILTER = Author.objects.all()[0].get_filter_metrics()
-MULTILANGUAGE_FILTER = MultilanguageCategoryMetrics.objects.all()[0].get_filter_metrics()
-ACCUMULATED_FILTER = AccumulatedCategoryMetrics.objects.all()[0].get_filter_metrics()
-CATEGORYMETRICS_FILTER = CategoryMetrics.objects.all()[0].get_filter_metrics()
-TIMESPAN_FILTER = []#TimespanCategoryMetrics.objects.all()[0].get_filter_metrics()
-print "Features loaded"
+if not settings.IS_WIKI:
+    ACCUMULATED_FEATURES = [(name, description) for name, value, description in AccumulatedCategoryMetrics.objects.all()[0].get_metrics()]
+    MULTILANGUAGE_FEATURES = [(name, description) for name, value, description in MultilanguageCategoryMetrics.objects.all()[0].get_metrics()]
+    FEATURES = CATEGORY_FEATURES + ACCUMULATED_FEATURES + MULTILANGUAGE_FEATURES #+ TIMESPAN_FEATURES
+else:
+    FEATURES = CATEGORY_FEATURES
+    
+    # TEMP FIX:
+    #FEATURES = []
+if not settings.IS_WIKI:
+    AUTHOR_FEATURES = [(name, description) for name, value, description in AuthorCategoryMetrics.objects.all()[0].get_metrics()]
+    AUTHOR_FILTER = Author.objects.all()[0].get_filter_metrics()
+    MULTILANGUAGE_FILTER = MultilanguageCategoryMetrics.objects.all()[0].get_filter_metrics()
+    ACCUMULATED_FILTER = AccumulatedCategoryMetrics.objects.all()[0].get_filter_metrics()
+    CATEGORYMETRICS_FILTER = CategoryMetrics.objects.all()[0].get_filter_metrics()
+    TIMESPAN_FILTER = []#TimespanCategoryMetrics.objects.all()[0].get_filter_metrics()
+    print "Features loaded"
+else:
+    #FEATURES = []
+    AUTHOR_FEATURES = []
+    ACCUMULATED_FILTER = []
+    TIMESPAN_FILTER = []
+    MULTILANGUAGE_FILTER = []
 
 MINMAX_CHANGES_DATE = Change.objects.filter(_instance=settings.INSTANCE).aggregate(min=Min('timestamp'), max=Max('timestamp'))
 print MINMAX_CHANGES_DATE
@@ -78,10 +92,11 @@ ANNOTATIONS_COUNT = sum(author.annotations_count for author in AUTHORS.values())
 
 print "Annotations loaded"
 
-PROPERTIES = dict((property.name, property) for property in Property.objects.filter(instance=settings.INSTANCE))
-GRAPH_PROPERTIES_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'properties_graph_positions')
-FOLLOW_UPS = PickledData.objects.get(settings.INSTANCE, 'follow_ups')
-
-print "Properties loaded"
+if not settings.IS_WIKI:
+    PROPERTIES = dict((property.name, property) for property in Property.objects.filter(instance=settings.INSTANCE))
+    GRAPH_PROPERTIES_POSITIONS = PickledData.objects.get(settings.INSTANCE, 'properties_graph_positions')
+    FOLLOW_UPS = PickledData.objects.get(settings.INSTANCE, 'follow_ups')
+    
+    print "Properties loaded"
     
 print "Data loaded"
