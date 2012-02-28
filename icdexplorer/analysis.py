@@ -187,7 +187,7 @@ def export_r_timeseries_fast():
             min_date = change.timestamp
         if max_date is None or change.timestamp > max_date:
             max_date = change.timestamp
-    result = [[']]
+    result = [[]]
     
 def export_r_timeseries():
     print "Export time series to R format"
