@@ -389,8 +389,14 @@ class User(models.Model):
     
     class Meta:
         unique_together = [('instance', 'name')]
+        
+class AbstractAnnotatableReplacement(models.Model):
+    annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
     
-class AbstractChange(AnnotatableThing):
+    class Meta:
+        abstract = True
+    
+class AbstractChange(AbstractAnnotatableReplacement if settings.IS_WIKI else AnnotatableThing):
     #relevant_filter = ~Q(action="Export") & ~Q(context__startswith="Automatic")
     if settings.IS_NCI:
         relevant_filter = ~Q(action="Composite_Change")

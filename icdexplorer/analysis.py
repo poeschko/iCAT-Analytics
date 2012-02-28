@@ -172,22 +172,37 @@ def export_r_categories():
     print "Done"
     
 def export_r_timeseries_fast():
-    changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
-    changes = changes.only('pk', 'timestamp', 'apply_to')
+    print "Get changes"
+    changes = Change.objects.all() #.filter(_instance=settings.INSTANCE) #.filter(Change.relevant_filter)
+    changes = changes.defer('old_value', 'new_value') #only('timestamp', 'apply_to')
     changes = queryset_generator(changes)
+    print "Initialize"
     changes_by_week = defaultdict(int)
     concepts_by_week = defaultdict(set)
     min_date = max_date = None
     for change in debug_iter(changes):
         year, week, weekday = change.timestamp.isocalendar()
         week = (year, week)
+        #print week
         changes_by_week[week] += 1
         concepts_by_week[week].add(change.apply_to_id)
         if min_date is None or change.timestamp < min_date:
             min_date = change.timestamp
         if max_date is None or change.timestamp > max_date:
             max_date = change.timestamp
-    result = [[]]
+    print "Output"
+    result = [['year', 'week', 'count', 'concepts']]
+    current_date = min_date
+    index = 0
+    while current_date <= max_date:
+        year, year_week, weekday = current_date.isocalendar()
+        week = (year, year_week)
+        changes = changes_by_week[week]
+        concepts = concepts_by_week[week]
+        result.append([index, year, year_week, changes, len(concepts)])
+        current_date += timedelta(days=7)
+        index += 1
+    write_csv('../output/changes_weekly.dat', result)
     
 def export_r_timeseries():
     print "Export time series to R format"
@@ -1208,7 +1223,7 @@ def export():
     #export_r_categories()
     #export_tab_categories()
     #export_timespans(format='r')
-    export_r_timeseries()
+    export_r_timeseries_fast()
     #export_changes_accumulated()
     #export_authors_network()
     #export_r_categories()
