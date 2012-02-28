@@ -167,7 +167,8 @@ def export_r_categories():
             'yellow': 1,
             'blue': 2,
         }.get(ds, '')
-        result.append([category.get_key()] + [value for key, value, description in metrics] + [ds])
+        key = index if settings.IS_WIKI else category.get_key()
+        result.append([key] + [value for key, value, description in metrics] + [ds])
     write_csv('../output/categories.dat', result)
     print "Done"
     
@@ -1223,10 +1224,10 @@ def export():
     #export_r_categories()
     #export_tab_categories()
     #export_timespans(format='r')
-    export_r_timeseries_fast()
+    #export_r_timeseries_fast()
     #export_changes_accumulated()
     #export_authors_network()
-    #export_r_categories()
+    export_r_categories()
     #calc_cooccurrences()
     #create_social_network()
     
