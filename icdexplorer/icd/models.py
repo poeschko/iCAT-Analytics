@@ -391,7 +391,7 @@ class User(models.Model):
         unique_together = [('instance', 'name')]
         
 class AbstractAnnotatableReplacement(models.Model):
-    annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
+    #annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
     
     class Meta:
         abstract = True
@@ -485,6 +485,7 @@ class AbstractChange(AbstractAnnotatableReplacement if settings.IS_WIKI else Ann
         abstract = True
         
 class Change(AbstractChange):
+    annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
     author = models.ForeignKey('Author', related_name='changes')
     apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
     composite = models.ForeignKey('self', related_name='parts', null=True)
@@ -501,7 +502,6 @@ class SelectedChange(AbstractChange):
         INSERT INTO icd_selectedchange SELECT * FROM icd_change 
             WHERE apply_to_id IN (<list of IDs>) ORDER BY timestamp;    
     """
-    
     author = models.ForeignKey('Author', related_name='selected_changes')
     apply_to = models.ForeignKey(OntologyComponent, related_name='selected_changes', null=True)
     composite = models.ForeignKey('self', related_name='selected_parts', null=True)
