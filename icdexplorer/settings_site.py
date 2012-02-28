@@ -18,7 +18,6 @@ else:
         '2010-06-01_04h02m',
         '2011-09-09_04h02m', 'main', 'dynamic_graph', 'main2', '03-10-11', '10-11-11', '2011-11-20_04h02m',
         'ictm2011-11-24_04h02m', """
-    #INSTANCES = ['wiki-icd10-sample']
     INSTANCES = ['wiki-icd10']
     INSTANCE = INSTANCES[-1]
     
@@ -29,7 +28,6 @@ IS_ICD = not IS_NCI and not IS_ICTM and not IS_WIKI
 
 WIKI_INPUT_DIR = BASE_DIR + '../wiki/randomsample_icd10/'
 
-#DB_NAME = 'socialanalysis' if IS_SERVER else 'ictm' if IS_ICTM else 'icd'
-DB_NAME = 'wiki'
-DB_USER = 'root' if IS_SERVER else 'icd'
-DB_PASSWORD = '' if IS_SERVER else 'AiX1Ifie'
+DB_NAME = 'socialanalysis' if IS_SERVER else 'ictm' if IS_ICTM else 'wiki'
+DB_USER = 'root' if IS_SERVER else 'root'
+DB_PASSWORD = 'wiki' if IS_SERVER else 'wiki'

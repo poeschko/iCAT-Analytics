@@ -45,7 +45,7 @@ import numpy
 import operator
 from collections import defaultdict
 
-import scipy.stats
+#import scipy.stats
 
 from django.db.models import Q, Min, Max, Count
 from django.conf import settings
@@ -1875,10 +1875,10 @@ def preprocess_incremental():
     #compute_extra_author_data()
     
     # for Wikipedia:
-    #createnetwork()
-    #calc_metrics_counts()
-    #graphpositions()
-    #adjust_positions()
+    createnetwork()
+    calc_metrics_counts()
+    graphpositions()
+    adjust_positions()
     store_positions()
     
 def preprocess_nci():
@@ -1941,7 +1941,7 @@ def preprocess():
     
     #print_sql_indexes()
     
-    """
+    
     print settings.INSTANCE
     #find_annotation_components()
     #compute_extra_change_data()
@@ -1994,7 +1994,7 @@ def preprocess():
     #calc_cooccurrences()
     #learn_changes()
     #return
-
+    """
 def main():
     preprocess_incremental()
     #preprocess_nci()
