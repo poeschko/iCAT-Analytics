@@ -28,6 +28,7 @@ IS_ICD = not IS_NCI and not IS_ICTM and not IS_WIKI
 
 WIKI_INPUT_DIR = BASE_DIR + '../wiki/randomsample_icd10/'
 
-DB_NAME = 'socialanalysis' if IS_SERVER else 'ictm' if IS_ICTM else 'icd'
+#DB_NAME = 'socialanalysis' if IS_SERVER else 'ictm' if IS_ICTM else 'icd'
+DB_NAME = 'wiki'
 DB_USER = 'root' if IS_SERVER else 'icd'
 DB_PASSWORD = '' if IS_SERVER else 'AiX1Ifie'

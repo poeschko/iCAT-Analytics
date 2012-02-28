@@ -422,6 +422,7 @@ class AbstractChange(AnnotatableThing):
     
     #revert = models.ForeignKey('Change', null=True)
     ends_session = models.BooleanField(default=False)
+    #session_revert = models.ForeignKey('Change', null=True, related_name='reverting_session')
     
     levenshtein_distance = models.IntegerField(null=True)
     levenshtein_distance_rel = models.FloatField(null=True)
@@ -495,13 +496,11 @@ class SelectedChange(AbstractChange):
             WHERE apply_to_id IN (<list of IDs>) ORDER BY timestamp;    
     """
     
-    #pass
     author = models.ForeignKey('Author', related_name='selected_changes')
     apply_to = models.ForeignKey(OntologyComponent, related_name='selected_changes', null=True)
     composite = models.ForeignKey('self', related_name='selected_parts', null=True)
     override = models.ForeignKey('Change', null=True, related_name='selected_overriding')
     override_by = models.ForeignKey('Author', null=True, related_name='selected_overrides')
-    #session_revert = models.ForeignKey('Change', null=True, related_name='reverting_session')
     
 class Annotation(AnnotatableThing):
     relevant_filter = Q()
