@@ -1218,8 +1218,9 @@ def plot_authors_network():
     
     print "Process graph"
     G = convert_graph_names(G)
-    small_edges = [(u, v) for (u, v, data) in G.edges_iter(data=True) if data['count'] < 100]
-    G.remove_edges_from(small_edges)
+    if settings.IS_WIKI:
+        small_edges = [(u, v) for (u, v, data) in G.edges_iter(data=True) if data['count'] < 100]
+        G.remove_edges_from(small_edges)
     node_size = [data['changes'] for node, data in G.nodes_iter(data=True)]
     max_node_size = max(node_size)
     node_size = [size * 400 / max_node_size for size in node_size]
