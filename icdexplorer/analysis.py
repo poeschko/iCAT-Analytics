@@ -28,7 +28,7 @@ import math
 from collections import defaultdict
 import networkx as nx
 
-import networkx as nx
+import matplotlib.pyplot as plt
 
 from statlib import stats
 
@@ -1185,17 +1185,86 @@ def tag_borders():
     #    cross_changes = author.changes.filter(Change.relevant_filter).
     
     print "Done"
+    
+def convert_graph_names(G):
+    H = nx.Graph()
+    node2idx = dict((node, index) for index, node in enumerate(G))
+    for node, data in G.nodes_iter(data=True):
+        H.add_node(node2idx[node], changes=data['changes'])
+    for u, v, data in G.edges_iter(data=True):
+        H.add_edge(node2idx[u], node2idx[v], count=data['count'])
+    return H
         
 def patterns():
     " Analysis analog to K-CAP paper by S. Falconer et al. "
     
     pattern_analysis_features()
     
+def plot_authors_network():
+    print "Load graph"
+    G = PickledData.objects.get(settings.INSTANCE, 'author_graph')
+    
+    print "Process graph"
+    G = convert_graph_names(G)
+    small_edges = [(u, v) for (u, v, data) in G.edges_iter(data=True) if data['count'] < 100]
+    G.remove_edges_from(small_edges)
+    node_size = [data['changes'] for node, data in G.nodes_iter(data=True)]
+    max_node_size = max(node_size)
+    node_size = [size * 400 / max_node_size for size in node_size]
+    edge_size = [data['count'] for u, v, data in G.edges_iter(data=True)]
+    max_edge_size = max(edge_size)
+    edge_size = [size * 2.0 / max_edge_size for size in edge_size]
+    
+    print "Layout"
+    participating = [node for node in G if G.degree(node) > 0]
+    #participating = G.nodes()
+    #pos = nx.spring_layout(G.subgraph(participating), weight='count', iterations=500)
+    pos = nx.graphviz_layout(G.subgraph(participating), weight='count', iterations=50)
+    #pos = dict((node, (p[0] / 1000, p[1] / 1000)) for node, p in pos.iteritems())
+    participating = set(participating)
+    lonely_count = len(G) - len(participating)
+    index = 0
+    minx = min(x for x, y in pos.values())
+    miny = min(y for x, y in pos.values())
+    maxx = max(x for x, y in pos.values())
+    maxy = max(y for x, y in pos.values())
+    for node in G:
+        if node not in participating:
+            alpha = index * 2 * math.pi / lonely_count
+            pos[node] = (math.cos(alpha)*(maxx-minx)/2+(maxx+minx)/2,
+                math.sin(alpha)*(maxy-miny)/2+(maxy+miny)/2)
+            index += 1
+    print "Loners: %d; of total: %d" % (lonely_count, len(G))
+    #print pos
+    
+    print "Draw graph"
+    fig = plt.figure(figsize=(10,10))
+    ax = plt.Axes(fig, [0., 0., 1., 1.])
+    fig.add_axes(ax, frameon=False)
+    ax.set_axis_off()
+    nx.draw_networkx_edges(G, pos=pos, edge_color='0.4', width=edge_size, alpha=0.5)
+    nx.draw_networkx_nodes(G, pos=pos, node_color='0.2', node_size=node_size)
+    extra_x = (maxx-minx) * 0.02
+    extra_y = (maxy-miny) * 0.02
+    plt.xlim(minx - extra_x, maxx + extra_x)
+    plt.ylim(miny - extra_y, maxy + extra_y)
+    
+    print "Save"
+    plt.savefig("../output/collaboration_graph.png", pad_inches=0, dpi=300)
+    #plt.savefig("../output/social.pdf")
+    
 def export_authors_network():    
     G = PickledData.objects.get(settings.INSTANCE, 'author_graph')
     for node in G:
         G.node[node]['display'] = username(G.node[node]['name'])
-    nx.write_gml(G, '../output/social.gml')
+        #G.node[node]['name'] = ''
+    # convert to graph with indices as nodes because of encoding issues for Wiki dataset
+    
+    H = convert_graph_names(G)
+    nx.write_gml(H if settings.IS_WIKI else G, '../output/social.gml')
+    
+    if settings.IS_WIKI:
+        return
     
     print "Overrides"
     G = PickledData.objects.get(settings.INSTANCE, 'author_graph_directed')
@@ -1203,7 +1272,8 @@ def export_authors_network():
     authors = dict((author.pk, author) for author in authors)
     for node in G:
         G.node[node]['display'] = username(authors[node].name)
-        G.node[node]['name'] = authors[node].name
+        if not settings.IS_WIKI:
+            G.node[node]['name'] = authors[node].name
         G.node[node]['changes_count'] = authors[node].changes_count
         G.node[node]['overridden_count'] = authors[node].overridden_count
         G.node[node]['overrides_count'] = authors[node].overrides_count
@@ -1227,11 +1297,13 @@ def export():
     #export_r_timeseries_fast()
     #export_changes_accumulated()
     #export_authors_network()
-    export_r_categories()
+    #export_r_categories()
     #calc_cooccurrences()
     #create_social_network()
     
     #export_follow_ups()
+    
+    plot_authors_network()
     
 def analyse():
     #for baseline in (False, True):
