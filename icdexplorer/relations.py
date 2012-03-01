@@ -25,7 +25,8 @@ class CurrentCategory(object):
     
     def __init__(self, cat):
         self.cat = cat
-        #print cat
+        print cat
+        self.line = ""
         self.value = self.get_current_value()
         self.codes = self.get_codes()
         self.parents = []
@@ -38,23 +39,20 @@ class CurrentCategory(object):
     def get_codes(self):
         # get the codes corresponding to this category's most recent revision
         # this has handling for a lot of possible errors/specials cases
-        # all errors are treated as special cases in main()
+        # any remaining errors are treated as special cases in assign_special_cases()
         all_codes = []
         original_line = ""
         for line in self.value.split('\n'):
             if ("ICD10" in line and "=" in line) or ("ICD10" in line and "DiseasesDB" in line):
-                #print "\n-------------------------"
-                #print line
+                self.line = ''.join(line)
                 line = line[line.find("ICD10"):]
                 line = line[line.find("=")+1:].replace('.','|').replace('}}{{', '}},{{')
                 for wp_code in line.split(','): # split by comma to get several codes, if present
                     codes = []
                     wp_code = wp_code.strip()
-                    #print "wp_code 0 ", wp_code
                     if "ICD10" in wp_code and "{" in wp_code:
                         if ('–' in wp_code or '-' in wp_code) and not "<!--" in wp_code and not "(" in wp_code: # we have a range (e.g. "E10 - E14")
                             wp_code.replace('–', '-') # different sorts of dashes
-                            #print "range - ", wp_code
                             range = wp_code.split('-')
                             start = range[0].strip("{}ICD10,").rstrip('|').split('|')[1:]
                             end = range[1].strip("{}ICD10,").rstrip('|').split('|')[1:]
@@ -75,7 +73,6 @@ class CurrentCategory(object):
                                 if start[positions-2] != end[positions-2]:
                                     #print "Range error: Invalid range ", start, " ", end
                                     continue
-                                    #sys.exit(0)
                             except IndexError, ie:
                                 #print "IndexError ", str(ie)
                                 continue
@@ -92,21 +89,16 @@ class CurrentCategory(object):
                                 code[-1] = str(c)
                                 codes.append(code)
                         else:
-                            #print "wp_code 1 ", wp_code
                             wp_code = wp_code.strip("{}ICD10,").rstrip('|').split('|')[1:]
                             if wp_code[-1] == '':
                                 wp_code = wp_code[:-1]
                             if len(wp_code) == 1:
                                 wp_code.append('')
-                            #print "wp_code 2 ", wp_code
                             if '' in wp_code or len(wp_code) == 2: # we have a code with two levels (e.g. "E.20")
                                 positions = 2
                             else: # we have a code with three levels (e.g. "E.20.2")
                                 positions = 3
                             icd_code = [c for c in wp_code[:positions]]
-                            #print "icd_code ", icd_code
-                            #print line
-                            #print icd_code
                             if icd_code[1] != '' and icd_code[1][0] == '0' and len(icd_code[1]) > 1:
                                 icd_code[1] = icd_code[1][1]
                             if positions == 3 and icd_code[2][0] == '0' and len(icd_code[2]) > 1:
@@ -116,12 +108,10 @@ class CurrentCategory(object):
                                 print self.cat, " - ", icd_code
                             codes.append(icd_code)
                         all_codes.append(codes)
-                #print line
-                #print all_codes
-                #print "-----------------\n"
                 return all_codes
     
 def connect(a, b, categories):
+    # connects two CurrentCategory objects given their category names
     node = None
     for c in categories:
         if c.cat.name == a:
@@ -146,10 +136,10 @@ def code_range(start, end):
     else:
         print "code_range: Error! invalid range ", start, end
 
-def save_to_disk(obj):
+def save_to_disk(categories):
     print "saving to disk..."
     file = open('categories.obj', 'w+')
-    pickle.dump(obj, file)
+    pickle.dump(categories, file)
     file.close()
     print "done saving"
 
@@ -161,16 +151,10 @@ def load_from_disk():
     print "loaded"
     return c
 
-       
-def main():
-    """
-    # get all categories with their current values
-    categories = [CurrentCategory(c) for c in Category.objects.all()]
-    """
-    categories = load_from_disk()
-    # manually define some codes for special cases
+def assign_special_cases(categories):
+    # assigns icd codes to special cases that could not be parsed automatically
     d = {}
-    
+
     # define codes for chapters
     l = code_range(['A', '0'], ['A', '99'])
     m = code_range(['B', '0'], ['B', '99'])
@@ -205,7 +189,7 @@ def main():
     d['ICD-10 Chapter XXI: Factors influencing health status and contact with health services'] = [code_range(['Z', '0'], ['Z', '99'])]
     d['ICD-10 Chapter XXII: Codes for special purposes'] = [code_range(['U', '0'], ['U', '99'])]
     
-    #
+    # these will be assigned later
     d['ICD-10 Chapter I: Certain infectious and parasitic diseases'] = []
     d['ICD-10 Chapter II: Neoplasms'] = []
     d['ICD-10 Chapter V: Mental and behavioural disorders'] = []
@@ -214,7 +198,7 @@ def main():
     d['ICD-10 Chapter VI: Diseases of the nervous system'] = []
    
    
-    # manually assign codes to special cases where errors occurred 
+    # manually assign codes to 22 special cases where errors occurred 
     d['AIDS'] = [[['B', '24']]]
     d['Ego-dystonic sexual orientation'] = [[['F', '66', '1']]]
     d['Hepatorenal syndrome'] = [[['K', '76', '7']]]
@@ -238,18 +222,181 @@ def main():
     d['Upper respiratory tract infection'] = [[['J', '0'], ['J', '1'], ['J', '2'], ['J', '3'], ['J', '4'], ['J', '5'], ['J', '6']], [['J', '30'], ['J', '31'], ['J', '32'], ['J', '33'], ['J', '34'], ['J', '35'], ['J', '36'], ['J', '37'], ['J', '38'], ['J', '39']]]
     d['Shock (circulatory)'] = [[['R', '57']]]
     
+    # 130 additional corrections as of 2012-03-01
+    d['Acrochordon'] = [[['L', '91', '8']], [['Q', '82', '8']]]
+    d['Aicardi syndrome'] = [[['G', '93', '8']]]
+    d['Alcohol dependence'] = [[['F', '10', '2']]]
+    d['Alcoholism']  = [[['F', '10', '2']]]
+    d['Amnesia'] = [[['R', '41', '3']], [['F', '4']]]
+    d['Amphetamine dependence'] = [[['F', '15', '2']]]
+    d['Arcuate uterus'] = [[['Q', '51', '9']]]
+    d['Arteritis'] = [[['I', '77', '6']], [['M', '31']]]
+    d['Argyria'] = [[['T', '56', '8']], [['L', '81', '8']]]
+    d['Ballistic trauma'] = [[['T', '14', '1']], [['X', '95']], [['W', '34']]]
+    d['Barbiturate dependence'] = [[['F', '13', '2']]]
+    d['Barbiturate overdose'] = [[['F', '13', '0']], [['T', '42', '3']]]
+    d['Benzodiazepine dependence'] = [[['F', '13', '2']]]
+    d['Benzodiazepine overdose'] = [[['F', '13', '0']], [['T', '42', '4']]]
+    d['Benzodiazepine withdrawal syndrome'] = [[['F', '13', '3']]]
+    d['Birth trauma (physical)'] = [code_range(['P', '10'], ['P', '15'])]
+    d['Breech birth'] = [[['O', '32', '1']], [['O', '64', '1']], [['O', '80', '1']], [['O', '83', '0']], [['P', '3', '0']]]
+    d['Calcific tendinitis'] = [[['M', '65', '2']], [['M', '75', '3']]]
+    d['Cannabis dependence'] = [[['F', '12', '2']]]
+    d['Cannabis withdrawal'] = [[['F', '12', '3']]]
+    d['Capillary hemangioma'] = [[['Q', '82', '5']], [['D', '18', '0']]]
+    d["Caplan's syndrome"] = [[['J', '99', '0']], [['M', '5', '1']]]
+    d["Carrion's disease"] = [[['A', '44', '0']]]
+    d['Cephalic presentation'] = [[['O', '80', '0']]]
+    d['Chickenpox'] = [[['B', '1']]]
+    d['Childhood obesity'] = [[['E', '66']]]
+    d['Cocaine dependence'] = [[['F', '14', '2']]]
+    d['Colorectal cancer'] = [[['C', '18'], ['C', '19'], ['C', '20']], [['C', '21']]]
+    d['Contracture'] = [[['M', '24', '5']], [['M', '62', '4']], [['T', '79', '6']], [['M', '67', '1']], [['M', '72', '0']]]
+    d['Dermatochalasis'] = [[['H', '2', '3']], [['Q', '10', '0']]]
+    d['Dermatomyositis'] = [[['M', '33', '0'], ['M', '33', '1']]]
+    d['Diabetes insipidus'] = [[['E', '23', '2']], [['N', '25', '1']]]
+    d['Diabetes mellitus'] = [code_range(['E', '10'], ['E', '14'])]
+    d['Diabetic retinopathy'] = [[['H', '36']], [['E', '10', '3']], [['E', '11', '3']], [['E', '12', '3']], [['E', '13', '3']], [['E', '14', '3']]]
+    d['Digestive system neoplasm'] = [code_range(['C', '15'], ['C', '26']), code_range(['D', '12'], ['D', '13'])]
+    d['Disease theory of alcoholism'] = [[['F', '10', '2']]]
+    d['Drug-induced lupus erythematosus'] = [[['M', '32', '0']]]
+    d['Dysbarism'] = [[['T', '70']]]
+    d['Dysuria'] = [[['R', '30', '0']]]
+    d['Ectopia cordis'] = [[['Q', '24', '8']]]
+    d['Effects of cannabis'] = [[['F', '12', '0']]]
+    d['Elephantiasis'] = [[['B', '74', '0']], [['I', '89']]]
+    d['Emotional and behavioral disorders'] = [code_range(['F', '90'], ['F', '98'])]
+    d['Encopresis'] = [[['R', '15']], [['F', '98', '1']]]
+    d['Endocrine gland neoplasm'] = [[['C', '73'], ['C', '74'], ['C', '75']], [['D', '34'], ['D', '35']]]
+    d['Erythroderma'] = [[['L', '26']], [['L', '53', '9']]]
+    d['Facial trauma'] = [[['S', '0']], code_range(['S', '2', '2'], ['S', '2', '9'])]
+    d['Focal segmental glomerulosclerosis'] = [[['N','0', '1']], [['N','0', '2']], [['N','0', '3']], [['N','0', '4']], [['N','0', '5']], [['N','0', '6']], [['N','0', '7']], [['N','0', '8']]]
+    d['Folate deficiency'] = [[['D', '52']], [['E', '53', '8']]]
+    d['Gender identity disorder'] = [[['F', '64', '8']], [['F', '64', '9']]]
+    d['Gender identity disorder in children'] = [[['F', '64', '2']]]
+    d['Gitelman syndrome'] = [[['N', '25', '8']], [['E', '87', '6']], [['E', '83', '4']]]
+    d['Gumma (pathology)'] = [[['A', '52', '3']], [['A', '52', '7']]]
+    d['Hallucinogen persisting perception disorder'] = [[['F', '16', '7']]]
+    d['Halo nevus'] = [[['I', '78', '1']], [['D', '22']]]
+    d['Head and neck cancer'] = [code_range(['C', '7'], ['C', '14']), code_range(['C', '32'], ['C', '33'])]
+    d['Hepatomegaly'] = [[['R', '16', '0']]]
+    d['Hyperemesis gravidarum'] = [[['O', '21', '1']]]
+    d['Hypertrichosis'] = [[['L', '68']], [['Q', '84', '2']]]
+    d['Hypertrophic cardiomyopathy'] = [[['I', '42', '1']], [['I', '42', '2']]]
+    d['Hypogonadism'] = [[['E', '28', '3']], [['E', '29', '1']], [['E', '23', '0']]]
+    d['Inhalant abuse'] = [[['F', '18', '1']], [['T', '52']], [['T', '53']]]
+    d['Insect bites and stings'] = [[['T', '14', '1']], code_range(['X', '23'],['X', '25']), [['W', '57']]]
+    d['Interstitial pregnancy'] = [[['O', '0', '8']]]
+    d['Iodine deficiency'] = [code_range(['E', '0'], ['E', '2'])]
+    d['Kidney stone'] = [[['N', '20', '0']], [['N', '20', '9']]]
+    d['Leiomyosarcoma'] = [[['C', '49']], [['M', '48']]]
+    d['Leptospirosis'] = [[['A', '27']]]
+    d['Long-term effects of benzodiazepines'] = [[['F', '13', '1']]]
+    d['Membranoproliferative glomerulonephritis'] = [[['N', '0', '5']], [['N', '1', '5']], [['N', '2', '5']], [['N', '3', '5']], [['N', '4', '5']], [['N', '5', '5']], [['N', '6', '5']], [['N', '7', '5']], [['N', '8', '5']], [['N', '0', '6']], [['N', '1', '6']], [['N', '2', '6']], [['N', '3', '6']], [['N', '4', '6']], [['N', '5', '6']], [['N', '6', '6']], [['N', '7', '6']], [['N', '8', '6']]]
+    d['Membranous glomerulonephritis'] = [[['N', '3', '2']]]
+    d['Meningitis'] = [code_range(['G', '0'], ['G', '3'])]
+    d['Minimal change disease'] = [[['N', '0', '0'], ['N', '1', '0'], ['N', '2', '0'], ['N', '3', '0'], ['N', '4', '0'], ['N', '5', '0'], ['N', '6', '0'], ['N', '7', '0'], ['N', '8', '0']]]
+    d['Morning sickness'] = [[['O', '21', '0']]]
+    d['Movement disorder'] = [[['R', '25']], [['F', '44', '4']], [['F', '98', '4']], [['G', '25', '8'], ['G', '25', '9']]]
+    d['Myocardial rupture'] = [[['I', '23', '3'], ['I', '23', '4'], ['I', '23', '5']], [['S', '26', '8']]]
+    d['Myxoma'] = [[['D', '21', '9']]]
+    d['Nervous system neoplasm'] = [[['C', '69'], ['C', '70'], ['C', '71'], ['C', '72']], code_range(['D', '31'], ['D', '33'])]
+    d['Nicotine poisoning'] = [[['F', '17', '0']], [['T', '65', '2']]]
+    d['Nicotine withdrawal'] = [[['F', '17', '2']]]
+    d['Nystagmus'] = [[['H', '55']], [['H', '81', '4']]]
+    d['Obesity'] = [[['E', '66']]]
+    d['Ocular albinism type 1'] = [[['E', '70', '3']]]
+    d['Opioid dependence'] = [[['F', '11', '2']]]
+    d['Opioid overdose'] = [[['F', '11', '0']], [['T', '40', '0'], ['T', '40', '1'], ['T', '40', '2']]]
+    d['Oropharyngeal squamous cell carcinomas'] = [[['C', '9'], ['C', '10']], [['C', '1']], [['C', '2', '4']], [['C', '5', '1']]]
+    d['Otalgia'] = [[['H', '60']], [['H', '65']], [['H', '66']], [['H', '92']]]
+    d['Palmoplantar keratoderma'] = [[['L', '85', '1'], ['L', '85', '2']], [['Q', '82', '8']]]
+    d['Pancreatitis'] = [[['K', '85']], [['K', '86', '0'], ['K', '86', '1']]]
+    d['Pelvic pain'] = [[['R', '10', '2']]]
+    d['Peptic ulcer'] = [code_range(['K', '25'], ['K', '27'])]
+    d['Periorbital cellulitis'] = [[['L', '1', '1']], [['H', '5', '0']]]
+    d['Pigeon toe'] = [[['Q', '66', '2']], [['M', '20', '5']]]
+    d['Pinealoma'] = [[['D', '44', '5']], [['C', '75', '3']]]
+    d['Pneumatosis intestinalis'] = [[['R', '93', '3']], [['K', '63', '8']]]
+    d['Postherpetic neuralgia'] = [[['G', '53', '0']], [['B', '0', '2']]]
+    d['Postpartum psychosis'] = [[['F', '53', '0']]]
+    d['Proliferating angioendotheliomatosis'] = [[['D', '21']], [['C', '83', '3']]]
+    d['Prostatitis'] = [[['N', '41']]]
+    d['Pyometra'] = [[['N', '71']], [['O', '85']]]
+    d['Ramsay Hunt syndrome type II'] = [[['B', '2', '2']], [['G', '53']]]
+    d['Rapidly progressive glomerulonephritis'] = [[['N', '0', '7']], [['N', '1', '7']],[['N', '2', '7']],[['N', '3', '7']],[['N', '4', '7']],[['N', '5', '7']],[['N', '6', '7']],[['N', '7', '7']],[['N', '8', '7']]]
+    d['Recurrent corneal erosion'] = [[['H', '16', '0']], [['H', '18', '4']]]
+    d['Respiratory tract neoplasm'] = [[['C', '32'], ['C', '33'], ['C', '34']], [['D', '14']]]
+    d['Rickets'] = [[['E', '55']]]
+    d['Sepsis'] = [code_range(['A', '40'], ['A', '41'])]
+    d['Shoulder presentation'] = [[['O', '64', '4']]]
+    d['Small fiber peripheral neuropathy'] = [[['G', '63', '3']], [['G', '60', '8']], [['G', '62', '8']]]
+    d['Smallpox'] = [[['B', '3']]]
+    d['Snakebite'] = [[['T', '63', '0']], [['T', '14', '1']], [['W', '59']], [['X', '20']]]
+    d['Spider bite'] = [[['T', '14', '1']], [['T', '63', '3']], [['W', '57']], [['X', '21']]]
+    d['Stimulant psychosis'] = [[['F', '15', '5']]]
+    d['Substance abuse'] = [[['F', '10', '1']], [['F', '11', '1']], [['F', '12', '1']], [['F', '13', '1']], [['F', '14', '1']], [['F', '15', '1']], [['F', '16', '1']], [['F', '17', '1']], [['F', '18', '1']], [['F', '19', '1']]]
+    d['Substance dependence'] = [[['F', '10', '2']], [['F', '11', '2']], [['F', '12', '2']], [['F', '13', '2']], [['F', '14', '2']], [['F', '15', '2']], [['F', '16', '2']], [['F', '17', '2']], [['F', '18', '2']], [['F', '19', '2']]]
+    d['Substance intoxication'] = [[['F', '10', '0']], [['F', '11', '0']], [['F', '12', '0']], [['F', '13', '0']], [['F', '14', '0']], [['F', '15', '0']], [['F', '16', '0']], [['F', '17', '0']], [['F', '18', '0']], [['F', '19', '0']]]
+    d['Substance use disorder'] = [[['F', '10', '1']], [['F', '11', '1']], [['F', '12', '1']], [['F', '13', '1']], [['F', '14', '1']], [['F', '15', '1']], [['F', '16', '1']], [['F', '17', '1']], [['F', '18', '1']], [['F', '19', '1']], [['F', '10', '2']], [['F', '11', '2']], [['F', '12', '2']], [['F', '13', '2']], [['F', '14', '2']], [['F', '15', '2']], [['F', '16', '2']], [['F', '17', '2']], [['F', '18', '2']], [['F', '19', '2']]]
+    d['Substance-induced psychosis'] = [[['F', '10', '5']], [['F', '11', '5']], [['F', '12', '5']], [['F', '13', '5']], [['F', '14', '5']], [['F', '15', '5']], [['F', '16', '5']], [['F', '17', '5']], [['F', '18', '5']], [['F', '19', '5']]] 
+    d['Suicide'] = [code_range(['X', '60'], ['X', '84'])]
+    d['Temporal lobe epilepsy'] = [[['G', '40', '1'], ['G', '40', '2']]]
+    d['Trisomy'] = [[['Q', '90'], ['Q', '91'], ['Q', '92']], [['Q', '97'], ['Q', '98']]]
+    d['Tuberculosis'] = [code_range(['A', '15'], ['A', '19'])]
+    d['Unicornuate uterus'] = [[['Q', '51', '4']]]
+    d['Urogenital neoplasm'] = [code_range(['C', '50'], ['C', '68']), code_range(['D', '24'], ['D', '30'])]
+    d['Uterus didelphys'] = [[['Q', '51', '1']]]
+    d['Uveitis'] = [[['H', '20']]]
+    d['VIPoma'] = [[['C', '25', '4']], [['E', '16', '8']]]
+    d['Vulvar cancer'] = [[['C', '51', '9']]]
+    d['Wart'] = [[['B', '7']]]
+    d['Withdrawal'] = [[['F', '10', '3']], [['F', '11', '3']], [['F', '12', '3']], [['F', '13', '3']], [['F', '14', '3']], [['F', '15', '3']], [['F', '16', '3']], [['F', '17', '3']], [['F', '18', '3']], [['F', '19', '3']]]
+    
     for c in categories:
         if c.cat.name in d:
             c.codes = d[c.cat.name]
     
-    for c in categories:
-        if c.codes == []:
-            print "empty codes - ", c.cat
+    return categories
+
+def connect_special_cases(categories):
+    categories = connect('ICD-10 Chapter I: Certain infectious and parasitic diseases', 'Infectious disease', categories)
+    categories = connect('ICD-10 Chapter II: Neoplasms', 'Neoplasm', categories)
+    categories = connect('ICD-10 Chapter V: Mental and behavioural disorders', 'Mental disorder', categories)
+    categories = connect('ICD-10 Chapter X: Diseases of the respiratory system', 'Respiratory disease', categories)
+    categories = connect('ICD-10 Chapter VIII: Diseases of the ear and mastoid process', 'Ear disease', categories)
+    categories = connect('ICD-10 Chapter VI: Diseases of the nervous system', 'Nervous system disease', categories)
+    return categories
     
+def save_to_db():
+    categories = load_from_disk()
+    
+    # let's empty all parent-child relations first...
+    for c in categories:
+        for p in c.parents:
+            c.parents.remove(p)
+    
+    # now let's add the relations we found
+    for c in categories:
+        print c.cat
+        for prange in c.parents:
+            for p in prange:
+                c.cat.parents.add(p.cat)
+      
+def main():
+    """
+    # retrieve the required objects from the database
+    categories = [CurrentCategory(c) for c in Category.objects.all()]
+    save_to_disk(categories)
+    """
+    
+    categories = load_from_disk()
+    
+    # manually define some codes for special cases
+    categories = assign_special_cases(categories)
+        
     # convert codes to tuples to be able to work with sets
     for c in categories:
-        #print c.cat
-        #print c.codes
         tcodes = []
         for coderange in c.codes:
             tcoderanges = []
@@ -257,40 +404,30 @@ def main():
                 tcoderanges.append(tuple(codes))
             tcodes.append(set(tcoderanges))
         c.codes = tcodes
-        #print c.codes
-
-        
-    
     
     # add empty children and parent lists
     for c in categories:
         num_ranges = len(c.codes)
         c.parents = [set() for dummy in range(num_ranges)]
-        c.parentcodes = set()
-        c.pcl = ['' for dummy in range(num_ranges)] # code lenghts of the relevant code ranges of the parents
+        c.pcl = ['' for dummy in range(num_ranges)] # code lengths of the relevant code ranges of the parents
         c.children = [set() for dummy in range(num_ranges)]
 
-    
-    
-    
     # link root and chapter nodes
     root = None
     for c in categories:
         if c.cat.instance_name == "wiki-icd10ICD-10":
             root = c
-            #print c.cat
             break
             
     for c in categories:
         if "Chapter" in c.cat.instance_name:
             c.parents.append([root])
-            #print c.cat
     
     
     categories = categories
     categories2 = categories
     
-    # look for supersets of categories on the same level (i.e. "X.X" and "Y.Y", but not "X.X" and "Y.Y.Y")
+    # loop 1: look for supersets of categories on the same level (i.e. "X.X" and "Y.Y", but not "X.X" and "Y.Y.Y")
     for cix, c in enumerate(categories):
         for dix, d in enumerate(categories):
             if dix > cix:
@@ -311,14 +448,14 @@ def main():
        
     
     
-    # look for supersets of categories as in "X.X.X" and "Y.Y"
+    # loop 2: look for supersets of categories as in "X.X.X" and "Y.Y"
     for cix, c in enumerate(categories2):
         for dix, d in enumerate(categories2):
             if dix > cix:
                 for cindex, ccode in enumerate(c.codes):
                     ccode_shortened = set(tuple([random.sample(ccode, 1)[0][:-1]]))
                     for dindex, dcode in enumerate(d.codes):
-                        if ccode_shortened <= dcode:
+                        if ccode_shortened <= dcode: # here we allow for set equality, since the code "E10.2" is shortened to "E10" and may thus be legally contained in "E10"
                             if len(c.parents[cindex]) == 0 or len(dcode) < c.pcl[cindex]:
                                 c.parents[cindex] = [d]
                                 c.pcl[cindex] = len(dcode)
@@ -332,7 +469,7 @@ def main():
                             elif len(ccode) == d.pcl[dindex]:
                                 d.parents[dindex].append(c)                     
     
-
+    # assign parents from loop 2, if loop 1 found none
     for cix, c in enumerate(categories):
         for dix, d in enumerate(categories2):
             for cindex, ccode in enumerate(c.codes):
@@ -357,21 +494,20 @@ def main():
                         
                     
     
-    # treat special cases
-    categories = connect('ICD-10 Chapter I: Certain infectious and parasitic diseases', 'Infectious disease', categories)
-    categories = connect('ICD-10 Chapter II: Neoplasms', 'Neoplasm', categories)
-    categories = connect('ICD-10 Chapter V: Mental and behavioural disorders', 'Mental disorder', categories)
-    categories = connect('ICD-10 Chapter X: Diseases of the respiratory system', 'Respiratory disease', categories)
-    categories = connect('ICD-10 Chapter VIII: Diseases of the ear and mastoid process', 'Ear disease', categories)
-    categories = connect('ICD-10 Chapter VI: Diseases of the nervous system', 'Nervous system disease', categories)
+    # connect special cases
+    categories = connect_special_cases(categories)
     
     save_to_disk(categories)
-    sys.exit()
-    """
+
+    
     # print for debugging
+    print "Debugging"
     for c in categories:
         print c.cat.name.encode('utf-8')
+        print c.line
         print c.codes
+        print "--------"
+        
         print "Parents: "
         #print c.parents
         for d in c.parents:
@@ -380,19 +516,11 @@ def main():
                     print e.cat.name.encode('utf-8'), e.codes
                 print
         print
-    """
-    # write to database
-    save_to_db()
-            
-def save_to_db():
-    categories = load_from_disk()
-    for c in categories:
-        print c.cat
-        for prange in c.parents:
-            for p in prange:
-                c.cat.parents.add(p.cat)
-
     
+    
+    # write to database
+    # save_to_db() # let's think about how we deal with things as "A10, A11, A12" and "A10-A12" first...
+    
+
 if __name__ == '__main__':
-    #main()
-    save_to_db()
+    main()

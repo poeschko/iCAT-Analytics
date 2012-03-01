@@ -602,8 +602,8 @@ def analyse_propagation_sessioned(baseline=False):
             changes_by_category[change.apply_to.category_id[len(settings.INSTANCE):]].append(change)
     
     print "Sorting"
-    for key in changes_by_category:
-        print key
+    for index, key in enumerate(changes_by_category):
+        print index+1,"/",len(changes_by_category)
         changes_by_category[key].sort(key = lambda x: x.timestamp)
 
     #changes = list(changes)
@@ -708,7 +708,6 @@ def analyse_propagation_sessioned(baseline=False):
         if child: preceded_by_child += 1
         if parent or child: preceded_by_related += 1""
     """
-    print distributions
     print "Save"
     suffix = '_baseline' if baseline else ''
     PickledData.objects.set(settings.INSTANCE, 'propagation_sessioned_distribution%s' % suffix, distributions)
@@ -1254,7 +1253,7 @@ def analyse():
     
     #analyse_propagation_sessioned(baseline=False)
     #analyse_propagation_sessioned_export(baseline=False)
-    analyse_propagation_sessioned(baseline=True)
+    #analyse_propagation_sessioned(baseline=True)
     analyse_propagation_sessioned_export(baseline=True)
     
     #analyse_tags_reverts()
