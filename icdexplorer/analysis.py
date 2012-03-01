@@ -570,23 +570,27 @@ def export_changes_grouped():
     print "Done"
     
 def analyse_propagation_sessioned(baseline=False):
-    print "analyse_propagation_sessioned()"
+    print "analyse_propagation_sessioned"
     G_orig = PickledData.objects.get(settings.INSTANCE, 'graph')
+    Gs = []
     if baseline:
         nodes = G_orig.nodes()
         in_degrees = G_orig.in_degree()
         out_degrees = G_orig.out_degree()
-        G_random = nx.directed_configuration_model([in_degrees[node] for node in nodes],
-            [out_degrees[node] for node in nodes], seed=1)
-        G = nx.DiGraph()
-        for node in nodes:
-            G.add_node(node)
-        for u, v in G_random.edges_iter():
-            G.add_edge(nodes[u], nodes[v])
-        print "Original: %d nodes, %d edges -> random: %d nodes, %d edges" % (len(G_orig), G_orig.size(),
-            len(G), G.size())
+        for n in range(100):
+            G_random = nx.directed_configuration_model([in_degrees[node] for node in nodes],
+                [out_degrees[node] for node in nodes], seed=1)
+            G = nx.DiGraph()
+            for node in nodes:
+                G.add_node(node)
+            for u, v in G_random.edges_iter():
+                G.add_edge(nodes[u], nodes[v])
+            Gs.append(G)
+        #print "Original: %d nodes, %d edges -> random: %d nodes, %d edges" % (len(G_orig), G_orig.size(),
+        #    len(G), G.size())
     else:
         G = G_orig
+        Gs.append(G)
     
     #changes_base = Change.objects.exclude(action__startswith='Subclass Added').exclude(action__startswith='Superclass Added')
     #changes_base = changes_base.exclude(action__startswith='Change in hierarchy for class')
@@ -594,17 +598,24 @@ def analyse_propagation_sessioned(baseline=False):
     changes_base = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
     changes_base = changes_base.defer('old_value', 'new_value') 
     #changes = changes_base.order_by('timestamp')
-    changes = changes_base.select_related('apply_to')
+    changes = changes_base.select_related('apply_to_id')
+    #changes = changes.only('pk', '_name', 'timestamp', 'apply_to', 'author')
+    
+    #changes = changes_base
+    print "Changes: %d" % changes.count()
     changes = queryset_generator(changes)
+    #changes = changes.iterator()
     changes_by_category = defaultdict(list)
     for change in debug_iter(changes):
         if change.apply_to is not None:
-            changes_by_category[change.apply_to.category_id[len(settings.INSTANCE):]].append(change)
+            category = change.apply_to.category_id[len(settings.INSTANCE):]
+            change_data = (change.timestamp, change.author_id)
+            changes_by_category[category].append(change_data)
     
-    print "Sorting"
-    for key in changes_by_category:
-        print key
-        changes_by_category[key].sort(key = lambda x: x.timestamp)
+    #print "Sorting"
+    #for key in changes_by_category:
+    #    print key
+    #    changes_by_category[key].sort(key = lambda x: x.timestamp)
 
     #changes = list(changes)
     #already_investigated = set()
@@ -614,42 +625,49 @@ def analyse_propagation_sessioned(baseline=False):
     
     #relations = [('parent', )]
     
-    distributions = defaultdict(list)
+    distributions = defaultdict(lambda: [[] for G in Gs])
     
-    for u, v in G.edges_iter():
-        changes_child = changes_by_category[u]
-        changes_parent = changes_by_category[v]
-        changes = [(change.timestamp, 'c', change.author_id) for change in changes_child] + [(change.timestamp, 'p', change.author_id) for change in changes_parent]
-        changes.sort()
-        for by_author in (False, True):
-            times_down = []
-            times_up = []
-            if by_author:
-                authors = [a for t, k, a in changes]
-            else:
-                authors = [None]
-            for author in authors:
-                if author is None:
-                    changes_author = changes
+    for graph_index, G in enumerate(Gs):
+        print "Graph %d" % graph_index
+        for u, v in G.edges_iter():
+            changes_child = changes_by_category[u]
+            changes_parent = changes_by_category[v]
+            #changes = [(change.timestamp, 'c', change.author_id) for change in changes_child] + [(change.timestamp, 'p', change.author_id) for change in changes_parent]
+            changes = [(t, 'c', a) for t, a in changes_child] + [(t, 'p', a) for t, a in changes_parent]
+            changes.sort()
+            for by_author in (False, True):
+                times_down = []
+                times_up = []
+                if by_author:
+                    authors = [a for t, k, a in changes]
                 else:
-                    changes_author = [(t, k, a) for t, k, a in changes if a == author]
-                links = zip(changes_author[:-1], changes_author[1:])
-                for c1, c2 in links:
-                    if c1[1] != c2[1]:
-                        is_parent_to_child = c1[1] == 'p'
-                        time = c2[0] - c1[0]
-                        if is_parent_to_child:
-                            times_down.append(time)
-                        else:
-                            times_up.append(time)
-            if times_down:
-                distributions[('author' if by_author else 'any', 'down')].append(min(times_down))
-                    #sum(times_down, timedelta(0)) // len(times_down))
-            if times_up:
-                distributions[('author' if by_author else 'any', 'up')].append(min(times_up))
-                    #sum(times_up, timedelta(0)) // len(times_up))
+                    authors = [None]
+                for author in authors:
+                    if author is None:
+                        changes_author = changes
+                    else:
+                        changes_author = [(t, k, a) for t, k, a in changes if a == author]
+                    links = zip(changes_author[:-1], changes_author[1:])
+                    for c1, c2 in links:
+                        if c1[1] != c2[1]:
+                            is_parent_to_child = c1[1] == 'p'
+                            time = c2[0] - c1[0]
+                            if is_parent_to_child:
+                                times_down.append(time)
+                            else:
+                                times_up.append(time)
+                if times_down:
+                    distributions[('author' if by_author else 'any', 'down')][graph_index].append(min(times_down))
+                        #sum(times_down, timedelta(0)) // len(times_down))
+                if times_up:
+                    distributions[('author' if by_author else 'any', 'up')][graph_index].append(min(times_up))
+                        #sum(times_up, timedelta(0)) // len(times_up))
                 
     #print distributions
+    
+    #distr_acc = {}
+    #for id, distr in distributions.iteritems():
+    #    distr_acc[id] = 
     
     
     #preceded_by_parent = preceded_by_child = preceded_by_related = 0
@@ -708,9 +726,10 @@ def analyse_propagation_sessioned(baseline=False):
         if child: preceded_by_child += 1
         if parent or child: preceded_by_related += 1""
     """
-    print distributions
+    #print distributions
     print "Save"
     suffix = '_baseline' if baseline else ''
+    distributions = dict(distributions)
     PickledData.objects.set(settings.INSTANCE, 'propagation_sessioned_distribution%s' % suffix, distributions)
     #print counterss
     #print total_changes
@@ -719,21 +738,25 @@ def analyse_propagation_sessioned(baseline=False):
     
 def analyse_propagation(baseline=False):
     G_orig = PickledData.objects.get(settings.INSTANCE, 'graph')
+    Gs = []
     if baseline:
         nodes = G_orig.nodes()
         in_degrees = G_orig.in_degree()
         out_degrees = G_orig.out_degree()
-        G_random = nx.directed_configuration_model([in_degrees[node] for node in nodes],
-            [out_degrees[node] for node in nodes], seed=1)
-        G = nx.DiGraph()
-        for node in nodes:
-            G.add_node(node)
-        for u, v in G_random.edges_iter():
-            G.add_edge(nodes[u], nodes[v])
-        print "Original: %d nodes, %d edges -> random: %d nodes, %d edges" % (len(G_orig), G_orig.size(),
-            len(G), G.size())
+        for n in range(100):
+            G_random = nx.directed_configuration_model([in_degrees[node] for node in nodes],
+                [out_degrees[node] for node in nodes], seed=1)
+            G = nx.DiGraph()
+            for node in nodes:
+                G.add_node(node)
+            for u, v in G_random.edges_iter():
+                G.add_edge(nodes[u], nodes[v])
+            Gs.append(G)
+        #print "Original: %d nodes, %d edges -> random: %d nodes, %d edges" % (len(G_orig), G_orig.size(),
+        #    len(G), G.size())
     else:
         G = G_orig
+        Gs.append(G)
     
     #changes_base = Change.objects.exclude(action__startswith='Subclass Added').exclude(action__startswith='Superclass Added')
     #changes_base = changes_base.exclude(action__startswith='Change in hierarchy for class')
@@ -747,63 +770,69 @@ def analyse_propagation(baseline=False):
     
     #relations = [('parent', )]
     
-    distributions = defaultdict(list)
+    #distributions = [defaultdict(list) for G in Gs]
+    distributions = defaultdict(lambda: [[] for G in Gs])
     
     #preceded_by_parent = preceded_by_child = preceded_by_related = 0
     #author_preceded_by_parent = author_preceded_by_child = author_preceded_by_related = 0
-    for index, change in enumerate(changes):
-        #day = change.timestamp.date()
-        if change.apply_to is None:
-            continue
-        category = change.apply_to.category_id[len(settings.INSTANCE):]
-        if index % 1000 == 0:
-            print "%d: %s" % (index, category)
-        #if (day, change.author_id, category) in already_investigated:
-        #    continue
-        #already_investigated.add((day, change.author_id, category))
-        if category not in G:
-            continue
-        total_changes += 1
-        parents = G.successors(category)
-        children = G.predecessors(category)
-        
-        """for time, others in [('followed', changes[index+1:]), ('preceded', changes[index-1::-1])]:
-            for relation, relation_categories in [('parents', parents), ('children', children), ('relation', parents+children)]:
-                relation_categories = [settings.INSTANCE + other for other in relation_categories]
-                for author, author_filter in [('author', lambda c: c.author_id == change.author_id), ('any', lambda c: True)]:
-                    id = (time, relation, author)
-                    related_time = None
-                    for other in others:
-                        if other.apply_to is not None and other.apply_to.category_id in relation_categories and author_filter(other):
-                            related_time = other.timestamp
-                            break
-                    if related_time is not None:
-                        related_time = abs(related_time - change.timestamp)
-                    distributions[id].append(related_time)"""
-        
-        for time, time_filter, acc in [('followed', 'gte', Min), ('preceded', 'lte', Max)]:
-            for relation, relation_categories in [('parents', parents), ('children', children), ('relation', parents+children)]:
-                relation_categories = [settings.INSTANCE + other for other in relation_categories]
-                for author, author_filter in [('author', {'author': change.author_id}), ('any', {})]:
-                    #id = (relation, author, timespan)
-                    id = (time, relation, author)
-                    related_changes = changes_base.filter(**{'timestamp__' + time_filter: change.timestamp})
-                    related_changes = related_changes.filter(apply_to__category__in=relation_categories)
-                    if author_filter: related_changes = related_changes.filter(**author_filter)
-                    #if timespan_filter: preceding = preceding.filter(**timespan_filter)
-                    related_time = related_changes.aggregate(time=acc('timestamp'))['time']
-                    if related_time is not None:
-                        related_time = abs(related_time - change.timestamp)
-                    distributions[id].append(related_time)
-        
-        """parent = Change.objects.filter(apply_to__category__in=parents, timestamp__lte=change.timestamp).count()
-        child = Change.objects.filter(apply_to__category__in=children, timestamp__lte=change.timestamp).count()
-        author_parent = Change.objects.filter(author=change.author_id, apply_to__category__in=parents, timestamp__lte=change.timestamp).count()
-        author_child = Change.objects.filter(author=change.author_id, apply_to__category__in=children, timestamp__lte=change.timestamp).count()
-        
-        if parent: preceded_by_parent += 1
-        if child: preceded_by_child += 1
-        if parent or child: preceded_by_related += 1"""
+    for graph_index, G in enumerate(Gs):
+        for index, change in enumerate(changes):
+            #day = change.timestamp.date()
+            if change.apply_to is None:
+                continue
+            category = change.apply_to.category_id[len(settings.INSTANCE):]
+            if index % 1000 == 0:
+                print "%d: %s" % (index, category)
+            #if (day, change.author_id, category) in already_investigated:
+            #    continue
+            #already_investigated.add((day, change.author_id, category))
+            if category not in G:
+                continue
+            total_changes += 1
+            parents = G.successors(category)
+            children = G.predecessors(category)
+            
+            """for time, others in [('followed', changes[index+1:]), ('preceded', changes[index-1::-1])]:
+                for relation, relation_categories in [('parents', parents), ('children', children), ('relation', parents+children)]:
+                    relation_categories = [settings.INSTANCE + other for other in relation_categories]
+                    for author, author_filter in [('author', lambda c: c.author_id == change.author_id), ('any', lambda c: True)]:
+                        id = (time, relation, author)
+                        related_time = None
+                        for other in others:
+                            if other.apply_to is not None and other.apply_to.category_id in relation_categories and author_filter(other):
+                                related_time = other.timestamp
+                                break
+                        if related_time is not None:
+                            related_time = abs(related_time - change.timestamp)
+                        distributions[id].append(related_time)"""
+            
+            for time, time_filter, acc in [('followed', 'gte', Min), ('preceded', 'lte', Max)]:
+                for relation, relation_categories in [('parents', parents), ('children', children), ('relation', parents+children)]:
+                    relation_categories = [settings.INSTANCE + other for other in relation_categories]
+                    for author, author_filter in [('author', {'author': change.author_id}), ('any', {})]:
+                        #id = (relation, author, timespan)
+                        id = (time, relation, author)
+                        related_changes = changes_base.filter(**{'timestamp__' + time_filter: change.timestamp})
+                        related_changes = related_changes.filter(apply_to__category__in=relation_categories)
+                        if author_filter: related_changes = related_changes.filter(**author_filter)
+                        #if timespan_filter: preceding = preceding.filter(**timespan_filter)
+                        related_time = related_changes.aggregate(time=acc('timestamp'))['time']
+                        if related_time is not None:
+                            related_time = abs(related_time - change.timestamp)
+                        distributions[id][graph_index].append(related_time)
+            
+            """parent = Change.objects.filter(apply_to__category__in=parents, timestamp__lte=change.timestamp).count()
+            child = Change.objects.filter(apply_to__category__in=children, timestamp__lte=change.timestamp).count()
+            author_parent = Change.objects.filter(author=change.author_id, apply_to__category__in=parents, timestamp__lte=change.timestamp).count()
+            author_child = Change.objects.filter(author=change.author_id, apply_to__category__in=children, timestamp__lte=change.timestamp).count()
+            
+            if parent: preceded_by_parent += 1
+            if child: preceded_by_child += 1
+            if parent or child: preceded_by_related += 1"""
+            
+    #distributions_acc = defaultdict(int)
+    #for id, distr in distributions.iteritems():
+    #    distributions_acc[id] = 
         
     print "Save"
     suffix = '_baseline' if baseline else ''
@@ -821,15 +850,16 @@ def analyse_propagation_sessioned_export(baseline=False):
     suffix = '_baseline' if baseline else ''
     distributions = PickledData.objects.get(settings.INSTANCE, 'propagation_sessioned_distribution%s' % suffix)
     per_hour = {}
-    for id, changes in distributions.iteritems():
-        changes = [time.days * 24 + time.seconds // 3600 + 1 for time in changes if time is not None]   # round down to hours
-        #changes.sort(key=lambda t: t if t is not None else timedelta.max)
-        changes.sort()
-        per_hour[id] = defaultdict(int)
-        for hour in changes:
-            per_hour[id][hour] += 1
-        per_week = []
-        print "%s: %d" % (id, len(changes))
+    for id, distr in distributions.iteritems():
+        for changes in distr:
+            changes = [time.days * 24 + time.seconds // 3600 + 1 for time in changes if time is not None]   # round down to hours
+            #changes.sort(key=lambda t: t if t is not None else timedelta.max)
+            changes.sort()
+            per_hour[id] = defaultdict(int)
+            for hour in changes:
+                per_hour[id][hour] += 1
+            per_week = []
+            print "%s: %d" % (id, len(changes))
         #for change in changes:
     #for id in per_hour:
     #    per
@@ -840,7 +870,7 @@ def analyse_propagation_sessioned_export(baseline=False):
     accumulated = defaultdict(int)
     for hour in range(1, max_hours + 1):
         for id in ids:
-            accumulated[id] += per_hour[id][hour] 
+            accumulated[id] += per_hour[id][hour] / len(distributions[id])
         data.append([hour] + [accumulated[id] / links for id in ids]) #[per_hour[id][hour] for id in ids])
         
     write_csv('../output/propagation_sessioned%s.dat' % suffix, data)
@@ -1263,7 +1293,7 @@ def plot_authors_network():
     plt.ylim(miny - extra_y, maxy + extra_y)
     
     print "Save"
-    plt.savefig("../output/collaboration_graph.png", pad_inches=0, dpi=300)
+    plt.savefig("../output/collaboration_graph.png", pad_inches=0, dpi=72)
     #plt.savefig("../output/social.pdf")
     
 def export_authors_network():    
@@ -1308,7 +1338,7 @@ def export():
     #export_tab_categories()
     #export_timespans(format='r')
     #export_r_timeseries_fast()
-    export_changes_accumulated()
+    #export_changes_accumulated()
     #export_authors_network()
     #export_r_categories()
     #calc_cooccurrences()

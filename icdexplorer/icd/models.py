@@ -405,6 +405,9 @@ class AbstractChange(AbstractAnnotatableReplacement if settings.IS_WIKI else Ann
     else:
         relevant_filter = Q(action="Composite_Change") & ~Q(context__startswith="Automatic")
     
+    if settings.IS_WIKI:
+        annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
+    
     _instance = models.CharField(max_length=30, db_index=True)
     _name = models.CharField(max_length=150, db_index=True)   # extended to 150 characters to allow for longer wiki titles
     
@@ -485,7 +488,6 @@ class AbstractChange(AbstractAnnotatableReplacement if settings.IS_WIKI else Ann
         abstract = True
         
 class Change(AbstractChange):
-    annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
     author = models.ForeignKey('Author', related_name='changes')
     apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
     composite = models.ForeignKey('self', related_name='parts', null=True)
