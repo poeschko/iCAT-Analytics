@@ -638,11 +638,16 @@ def get_tag_changes(category, changes):
             outside += 1
     return [primary, secondary, involved, who, outside]
 
-def calc_metrics_counts():
-    # fast metrics calculation for Wikipedia, only calculating change counts
+def calc_metrics_counts_depth():
+    # fast metrics calculation for Wikipedia, only calculating change counts and depth
     
+    print "Load graph"
+    G = PickledData.objects.get(settings.INSTANCE, 'graph')
+    
+    print "Load categories"
     categories = Category.objects.filter(instance=settings.INSTANCE).order_by('name') #.select_related('chao')
     categories = list(categories)
+    
     for index, category in enumerate(categories):
         if index % 100 == 0:
             print "%d: %s" % (index, category)
@@ -651,12 +656,19 @@ def calc_metrics_counts():
             metrics = category.metrics
         except CategoryMetrics.DoesNotExist:
             metrics = CategoryMetrics(category=category)
+        metrics.instance = settings.INSTANCE
         changes = 0
         for chao in category.chao.all():
             changes += chao.changes.filter(Change.relevant_filter).count()
-        metrics.annotations = 0
-        metrics.instance = settings.INSTANCE
         metrics.changes = changes
+        metrics.annotations = 0
+        try:
+            if ROOT_CATEGORY in G:
+                metrics.depth = nx.shortest_path_length(G, source=node, target=node_name(ROOT_CATEGORY))
+            else:
+                metrics.depth = 0
+        except nx.exception.NetworkXError:
+            metrics.depth = 0
         metrics.activity = changes
         metrics.authors = 0
         metrics.authors_changes = 0
@@ -1129,17 +1141,40 @@ def load_extra_authors_data():
             author.save()"""
     
 def calc_cooccurrences():
+    print "Get relevant authors"
+    relevant_authors = Author.objects.filter(instance=settings.INSTANCE)
+    if settings.IS_WIKI:
+        relevant_authors = relevant_authors.filter(changes_count__gt=300)
+    relevant_authors = relevant_authors.values_list('instance_name', flat=True)
+    relevant_authors = set(relevant_authors)
+    print relevant_authors
+    
     print "Calculate co-occurrences"
     result = {}
     categories = Category.objects.filter(instance=settings.INSTANCE).order_by('name').select_related('chao')
-    print "Changes"
-    changes = Change.objects.filter(instance=settings.INSTANCE).filter(Change.relevant_filter).select_related('apply_to')
-    changes_by_category = defaultdict(set)
-    for change in debug_iter(changes):
-        #changes = dict((change.apply_to.category_id, change) for change in changes)
-        if change.apply_to is not None:
-            changes_by_category[change.apply_to.category_id].add(change.author_id)
-    del changes
+    
+    IP_RE = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+    
+    if True:
+        changes_by_category = PickledData.objects.get(settings.INSTANCE, 'author_changes_by_category')
+    else:
+        print "Changes"
+        changes = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter).select_related('apply_to')
+        changes = changes.defer('old_value', 'new_value')
+        changes = queryset_generator(changes)
+        changes_by_category = defaultdict(set)
+        for change in debug_iter(changes):
+            #changes = dict((change.apply_to.category_id, change) for change in changes)
+            author_name = change.author_id[len(settings.INSTANCE):]
+            #print author_name
+            if change.apply_to is not None and IP_RE.match(change.author_id) is None:
+                #print "Add"
+                changes_by_category[change.apply_to.category_id].add(change.author_id)
+        del changes
+            
+        print "Save authors"
+        PickledData.objects.set(settings.INSTANCE, 'author_changes_by_category', changes_by_category)
+    
     print "Annotations"
     annotations = Annotation.objects.filter(instance=settings.INSTANCE).select_related('component')
     annotations_by_category = defaultdict(set)
@@ -1150,19 +1185,23 @@ def calc_cooccurrences():
     
     print "Categories"
     for index, category in enumerate(categories):
-        if index % 1000 == 0:
+        if index % 100 == 0:
             print (index, category)
-        authors = set()
+        """authors = set()
         for change in changes_by_category.get(category.pk, []):
             authors.add(change)
         for annotation in annotations_by_category.get(category.pk, []):
-            authors.add(annotation)
+            authors.add(annotation)"""
+        authors = changes_by_category.get(category.pk, [])
+        #print authors
+        authors = [author for author in authors if author in relevant_authors]
+        #print authors
         for author in authors:
             for other in authors:
                 if author != other:
                     result[(author, other)] = result.get((author, other), 0) + 1
-    print "Result:"
-    print result
+    #print "Result:"
+    #print result
             
     print "Save"
     PickledData.objects.set(settings.INSTANCE, 'author_cooccurrences', result)
@@ -1216,6 +1255,8 @@ def create_authors_network():
             G.node[node]['changes'] = G.node[node]['annotations'] = G.node[node]['activity'] = 0
         print G.node[node]
     #del G['WHO']
+    print "Nodes: %d" % len(G)
+    print "Edges: %d" % G.size()
     print "Save"
     PickledData.objects.set(settings.INSTANCE, 'author_graph', G)
     print "Positions"
@@ -1223,7 +1264,7 @@ def create_authors_network():
     pos = dict((node, (p[0] - 1, p[1] - 1)) for node, p in pos.iteritems())
     PickledData.objects.set(settings.INSTANCE, 'author_graph_positions', pos)
     
-    if settings.IS_NCI:
+    if settings.IS_NCI or settings.IS_WIKI:
         return
     
     print "Create directed graph"
@@ -1875,11 +1916,13 @@ def preprocess_incremental():
     #compute_extra_author_data()
     
     # for Wikipedia:
-    createnetwork()
-    calc_metrics_counts()
-    graphpositions()
-    adjust_positions()
-    store_positions()
+    #createnetwork()
+    #calc_metrics_counts_depth()
+    #graphpositions()
+    #adjust_positions()
+    #store_positions()
+    calc_cooccurrences()
+    create_authors_network()
     
 def preprocess_nci():
     #find_annotation_components()
