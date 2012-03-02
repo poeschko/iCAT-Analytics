@@ -579,7 +579,7 @@ def analyse_propagation_sessioned(baseline=False):
         out_degrees = G_orig.out_degree()
         for n in range(100):
             G_random = nx.directed_configuration_model([in_degrees[node] for node in nodes],
-                [out_degrees[node] for node in nodes], seed=1)
+                [out_degrees[node] for node in nodes], seed=n)
             G = nx.DiGraph()
             for node in nodes:
                 G.add_node(node)
@@ -729,7 +729,7 @@ def analyse_propagation_sessioned(baseline=False):
     #print distributions
     print "Save"
     suffix = '_baseline' if baseline else ''
-    distributions = dict(distributions)
+    distributions = dict(distributions) # convert defaultdict (function cannot be pickled) to dict
     PickledData.objects.set(settings.INSTANCE, 'propagation_sessioned_distribution%s' % suffix, distributions)
     #print counterss
     #print total_changes
@@ -843,7 +843,7 @@ def analyse_propagation(baseline=False):
     print "Done"
     
 def analyse_propagation_sessioned_export(baseline=False):
-    print "analyse_propagation_sessioned_export()"
+    print "analyse_propagation_sessioned_export"
     G_orig = PickledData.objects.get(settings.INSTANCE, 'graph')
     links = G_orig.size()
     
@@ -1346,7 +1346,9 @@ def export():
     
     #export_follow_ups()
     
-    plot_authors_network()
+    #plot_authors_network()
+    
+    analyse_propagation_sessioned_export(baseline=True)
     
 def analyse():
     #for baseline in (False, True):
@@ -1358,7 +1360,6 @@ def analyse():
     #analyse_propagation_sessioned(baseline=False)
     #analyse_propagation_sessioned_export(baseline=False)
     analyse_propagation_sessioned(baseline=True)
-    analyse_propagation_sessioned_export(baseline=True)
     
     #analyse_tags_reverts()
     #analyse_authors()
