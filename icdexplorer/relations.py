@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+﻿# -*- coding: UTF-8 -*-
 
 """
 finds relations among the Wikipedia-Articles regarding their ICD-10 short codes
@@ -136,16 +136,78 @@ def code_range(start, end):
     else:
         print "code_range: Error! invalid range ", start, end
 
+def find_code_ranges(codelist):
+    # a code range would be written as e.g., "A12-A15" and hence be identified as such by this program
+    # code ranges might also occur as e.g., "A12, A13, A14, A15", which would evaluate to four separate code ranges
+    # we're fixing this here
+    
+    # first, let's consider only code ranges of length one
+    relevant_ranges = []
+    irrelevant_ranges = []
+    for coderange in codelist:
+        if len(coderange) == 1:
+            relevant_ranges.append(coderange)
+        else:
+            irrelevant_ranges.append(coderange)
+    
+    # now let's unify ranges, if possible
+    unified_ranges = []
+    for index1, coderange1 in enumerate(relevant_ranges):
+        for index2, coderange2 in enumerate(relevant_ranges):
+            if index1 < index2:
+                code1 = next(iter(coderange1)) # these sets have only one element
+                code2 = next(iter(coderange2))
+                if adjacent_ranges(code1, code2):
+                    added = False
+                    for range in unified_ranges:
+                        if (adjacent_ranges(max(range), code1) or adjacent_ranges(min(range), code1)) and not code1 in range:
+                            range.add(code1)
+                            added = True
+                        elif adjacent_ranges(max(range), code2) or adjacent_ranges(min(range), code2) and not code2 in range:
+                            range.add(code2)
+                            added = True
+                    if not added:
+                        unified_ranges.append(set([tuple(code1), tuple(code2)]))
+
+    non_unified_ranges = []
+    if unified_ranges == []:
+        non_unified_ranges = relevant_ranges
+    else:
+        for coderange1 in relevant_ranges:
+            present = False
+            for coderange2 in unified_ranges:
+                if next(iter(coderange1)) in coderange2:
+                    present = True
+                if next(iter(coderange1)) in non_unified_ranges:
+                    present = True
+            if not present:
+                non_unified_ranges.append(coderange1)
+                
+                
+    
+    return_list = irrelevant_ranges + unified_ranges + non_unified_ranges
+    return return_list
+
+def adjacent_ranges(range1, range2):
+    # finds out if two given code ranges are adjacent
+    le1 = len(range1)
+    if le1 == len(range2):
+        if range1[0] == range2[0]:
+            if (le1 == 3 and range1[1] == range2[1]) or (le1 == 2):
+                if int(range1[le1-1]) == int(range2[le1-1]) + 1 or int(range1[le1-1]) == int(range2[le1-1]) - 1:
+                    return True
+    return False                    
+        
 def save_to_disk(categories):
     print "saving to disk..."
-    file = open('categories.obj', 'w+')
-    pickle.dump(categories, file)
+    file = open('categories.obj', 'wb+')
+    pickle.dump(categories, file, 2)
     file.close()
     print "done saving"
 
 def load_from_disk():
     print "loading from disk"
-    file = open('categories.obj', 'r')
+    file = open('categories.obj', 'rb')
     c = pickle.load(file)
     file.close()
     print "loaded"
@@ -389,7 +451,7 @@ def main():
     categories = [CurrentCategory(c) for c in Category.objects.all()]
     save_to_disk(categories)
     """
-    
+ 
     categories = load_from_disk()
     
     # manually define some codes for special cases
@@ -423,6 +485,8 @@ def main():
         if "Chapter" in c.cat.instance_name:
             c.parents.append([root])
     
+    for c in categories:
+        c.codes = find_code_ranges(c.codes)
     
     categories = categories
     categories2 = categories
@@ -488,7 +552,7 @@ def main():
                 if pcindex > pdindex and pc == pd:
                     found = True
                     break
-            if not found:
+            if not found and pc not in new_c_parents:
                 new_c_parents.append(pc)
         c.parents = new_c_parents
                         
@@ -497,9 +561,29 @@ def main():
     # connect special cases
     categories = connect_special_cases(categories)
     
-    save_to_disk(categories)
+    #save_to_disk(categories)
 
+    # print for debugging
+    print "Debugging"
+    for c in categories:
+        if len(c.parents) > 1 and len(c.parents[0]) > 0 and len(c.parents[1]) > 0:
+            print c.cat.name.encode('utf-8')
+            #print c.line
+            print c.codes
+            print "--------"
+            
+            print "Parents: "
+            #print c.parents
+            for d in c.parents:
+                if d:
+                    for e in d:
+                        print e.cat.name.encode('utf-8'), e.codes
+                    print
+            print
+        
     
+    """
+    categories = load_from_disk()
     # print for debugging
     print "Debugging"
     for c in categories:
@@ -516,11 +600,24 @@ def main():
                     print e.cat.name.encode('utf-8'), e.codes
                 print
         print
-    
-    
+    """
+    """
     # write to database
     # save_to_db() # let's think about how we deal with things as "A10, A11, A12" and "A10-A12" first...
-    
+    """
 
 if __name__ == '__main__':
     main()
+
+    """
+    some test cases...
+    assert  find_code_ranges([set([('A', '1')]), set([('A', '2')])]) == [set([('A', '1'), ('A', '2')])]
+    assert  find_code_ranges([set([('A', '1')]), set([('A', '3')])]) == [set([('A', '1')]), set([('A', '3')])]
+    assert  find_code_ranges([set([('A', '1', '0')]), set([('A', '1', '1')])]) == [set([('A', '1', '0'), ('A', '1', '1')])]
+    assert  find_code_ranges([set([('A', '1', '0')]), set([('A', '2', '3')])]) == [set([('A', '1', '0')]), set([('A', '2', '3')])]
+    assert  find_code_ranges([set([('A', '1')]), set([('A', '2')]), set([('A', '4')]), set([('A', '3')])]) == [set([('A', '2'), ('A', '1'), ('A', '4'), ('A', '3')])]
+    assert  find_code_ranges([set([('A', '1'), ('A', '2')]),  set([('A', '4')]), set([('A', '3')])]) == [set([('A', '2'), ('A', '1')]), set([('A', '4'), ('A', '3')])]
+    assert  find_code_ranges([set([('A', '1'), ('A', '2')]),  set([('A', '4')])]) == [set([('A', '2'), ('A', '1')]), set([('A', '4')])]
+    
+    print "all tests passed"
+    """
