@@ -616,7 +616,6 @@ def analyse_propagation_sessioned(baseline=False):
     #for key in changes_by_category:
     #    print key
     #    changes_by_category[key].sort(key = lambda x: x.timestamp)
-
     #changes = list(changes)
     #already_investigated = set()
     total_changes = 0
@@ -727,6 +726,7 @@ def analyse_propagation_sessioned(baseline=False):
         if parent or child: preceded_by_related += 1""
     """
     #print distributions
+
     print "Save"
     suffix = '_baseline' if baseline else ''
     distributions = dict(distributions) # convert defaultdict (function cannot be pickled) to dict
@@ -1359,6 +1359,7 @@ def analyse():
     
     #analyse_propagation_sessioned(baseline=False)
     #analyse_propagation_sessioned_export(baseline=False)
+    
     analyse_propagation_sessioned(baseline=True)
     
     #analyse_tags_reverts()
