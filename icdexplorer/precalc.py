@@ -1916,13 +1916,13 @@ def preprocess_incremental():
     #compute_extra_author_data()
     
     # for Wikipedia:
-    #createnetwork()
-    #calc_metrics_counts_depth()
-    #graphpositions()
-    #adjust_positions()
-    #store_positions()
-    calc_cooccurrences()
-    create_authors_network()
+    createnetwork()
+    calc_metrics_counts_depth()
+    graphpositions()
+    adjust_positions()
+    store_positions()
+    #calc_cooccurrences()
+    #create_authors_network()
     
 def preprocess_nci():
     #find_annotation_components()

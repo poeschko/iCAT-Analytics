@@ -569,7 +569,7 @@ def export_changes_grouped():
     
     print "Done"
     
-def analyse_propagation_sessioned(baseline=False):
+def analyse_propagation_sessioned(baseline=False, changes_by_category=None):
     print "analyse_propagation_sessioned"
     G_orig = PickledData.objects.get(settings.INSTANCE, 'graph')
     Gs = []
@@ -577,7 +577,7 @@ def analyse_propagation_sessioned(baseline=False):
         nodes = G_orig.nodes()
         in_degrees = G_orig.in_degree()
         out_degrees = G_orig.out_degree()
-        for n in range(100):
+        for n in range(1):
             G_random = nx.directed_configuration_model([in_degrees[node] for node in nodes],
                 [out_degrees[node] for node in nodes], seed=n)
             G = nx.DiGraph()
@@ -595,22 +595,23 @@ def analyse_propagation_sessioned(baseline=False):
     #changes_base = Change.objects.exclude(action__startswith='Subclass Added').exclude(action__startswith='Superclass Added')
     #changes_base = changes_base.exclude(action__startswith='Change in hierarchy for class')
     
-    changes_base = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
-    changes_base = changes_base.defer('old_value', 'new_value') 
-    #changes = changes_base.order_by('timestamp')
-    changes = changes_base.select_related('apply_to_id')
-    #changes = changes.only('pk', '_name', 'timestamp', 'apply_to', 'author')
-    
-    #changes = changes_base
-    print "Changes: %d" % changes.count()
-    changes = queryset_generator(changes)
-    #changes = changes.iterator()
-    changes_by_category = defaultdict(list)
-    for change in debug_iter(changes):
-        if change.apply_to is not None:
-            category = change.apply_to.category_id[len(settings.INSTANCE):]
-            change_data = (change.timestamp, change.author_id)
-            changes_by_category[category].append(change_data)
+    if changes_by_category is None:
+        changes_base = Change.objects.filter(_instance=settings.INSTANCE).filter(Change.relevant_filter)
+        changes_base = changes_base.defer('old_value', 'new_value') 
+        #changes = changes_base.order_by('timestamp')
+        changes = changes_base.select_related('apply_to_id')
+        #changes = changes.only('pk', '_name', 'timestamp', 'apply_to', 'author')
+        
+        #changes = changes_base
+        print "Changes: %d" % changes.count()
+        changes = queryset_generator(changes)
+        #changes = changes.iterator()
+        changes_by_category = defaultdict(list)
+        for change in debug_iter(changes):
+            if change.apply_to is not None:
+                category = change.apply_to.category_id[len(settings.INSTANCE):]
+                change_data = (change.timestamp, change.author_id)
+                changes_by_category[category].append(change_data)
     
     #print "Sorting"
     #for key in changes_by_category:
@@ -735,6 +736,8 @@ def analyse_propagation_sessioned(baseline=False):
     #print total_changes
     
     print "Done"
+    
+    return changes_by_category
     
 def analyse_propagation(baseline=False):
     G_orig = PickledData.objects.get(settings.INSTANCE, 'graph')
@@ -1334,7 +1337,7 @@ def learn():
     learn_orange()
     
 def export():
-    #export_r_categories()
+    export_r_categories()
     #export_tab_categories()
     #export_timespans(format='r')
     #export_r_timeseries_fast()
@@ -1348,6 +1351,7 @@ def export():
     
     #plot_authors_network()
     
+    analyse_propagation_sessioned_export(baseline=False)
     analyse_propagation_sessioned_export(baseline=True)
     
 def analyse():
@@ -1357,10 +1361,10 @@ def analyse():
     #analyse_propagation_baseline()
     #analyse_propagation_export(baseline=True)
     
-    #analyse_propagation_sessioned(baseline=False)
+    changes_by_category = analyse_propagation_sessioned(baseline=False)
     #analyse_propagation_sessioned_export(baseline=False)
     
-    analyse_propagation_sessioned(baseline=True)
+    analyse_propagation_sessioned(baseline=True, changes_by_category=changes_by_category)
     
     #analyse_tags_reverts()
     #analyse_authors()
