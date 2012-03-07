@@ -3,11 +3,6 @@ ICDexplorer
 
 (c) 2011 Jan Poeschko
 jan@poeschko.com
-
-Change History
----
-2012-26-01-Daniel extended _name and name fields in classes Annotatablething and
-                  its derivations to 150 characters to allow for longer wiki titles
 """
 
 from django.db import models
@@ -347,7 +342,7 @@ class AuthorCategoryMetrics(ChAOMetrics):
         unique_together = [('category', 'author')]
 
 class AnnotatableThing(models.Model):
-    instance_name = models.CharField(max_length=130, primary_key=True)
+    instance_name = models.CharField(max_length=180, primary_key=True)
     instance = models.CharField(max_length=30, db_index=True)
     name = models.CharField(max_length=150, db_index=True)
     
@@ -390,13 +385,7 @@ class User(models.Model):
     class Meta:
         unique_together = [('instance', 'name')]
         
-class AbstractAnnotatableReplacement(models.Model):
-    #annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
-    
-    class Meta:
-        abstract = True
-    
-class AbstractChange(AbstractAnnotatableReplacement if settings.IS_WIKI else AnnotatableThing):
+class AbstractChange(models.Model if settings.IS_WIKI else AnnotatableThing):
     #relevant_filter = ~Q(action="Export") & ~Q(context__startswith="Automatic")
     if settings.IS_NCI:
         relevant_filter = ~Q(action="Composite_Change")
@@ -404,10 +393,7 @@ class AbstractChange(AbstractAnnotatableReplacement if settings.IS_WIKI else Ann
         relevant_filter = Q()
     else:
         relevant_filter = Q(action="Composite_Change") & ~Q(context__startswith="Automatic")
-    
-    if settings.IS_WIKI:
-        annotatablething_ptr_id = models.CharField(max_length=130, primary_key=True)
-    
+       
     _instance = models.CharField(max_length=30, db_index=True)
     _name = models.CharField(max_length=150, db_index=True)   # extended to 150 characters to allow for longer wiki titles
     
@@ -488,6 +474,8 @@ class AbstractChange(AbstractAnnotatableReplacement if settings.IS_WIKI else Ann
         abstract = True
         
 class Change(AbstractChange):
+    if settings.IS_WIKI:
+        annotatablething_ptr_id = models.CharField(max_length=180, primary_key=True)
     author = models.ForeignKey('Author', related_name='changes')
     apply_to = models.ForeignKey(OntologyComponent, related_name='changes', null=True)
     composite = models.ForeignKey('self', related_name='parts', null=True)
