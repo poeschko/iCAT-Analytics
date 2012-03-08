@@ -152,10 +152,13 @@ def call_dot(prog, filename, args, temp_output='output.dot', verbose=True):
     return result
 
 def get_dot_pos(content):
-    node_re = re.compile(r'"(.*?)" \[pos="([0-9.e+-]+),([0-9.e+-]+)"')
+    node_re = re.compile(r'(\S+?|"[^"]+?") \[pos="([0-9.e+-]+),([0-9.e+-]+)"')
     pos = {}
     for match in node_re.finditer(content):
         node, x, y = match.group(1), match.group(2), match.group(3)
+        if node.startswith('"') and node.endswith('"'):
+            node = node[1:-1]
+        #print node
         x, y = float(x), float(y)
         pos[node] = (x, y)
     # normalize coordinates to [0,1]
@@ -170,33 +173,34 @@ def get_dot_pos(content):
 def graphpositions():
     print "Load graph"
     graph_file = '../graph/graph.dot'
-    if not os.path.exists(graph_file):
-        G = PickledData.objects.get(settings.INSTANCE, 'graph')
-        print "Create GraphViz graph"
-        edges = G.edges()
-        P = pydot.graph_from_edges(edges, directed=True)
-        print "Export graph"
-        # It seems that nx.write_dot doesn't finish execution => we bypass it
-        with open(graph_file, 'w') as file:
-            content = P.to_string()
-            file.write(content)
+    #if not os.path.exists(graph_file):
+    G = PickledData.objects.get(settings.INSTANCE, 'graph')
+    print "Nodes: %d" % len(G)
+    print "Create GraphViz graph"
+    edges = G.edges()
+    P = pydot.graph_from_edges(edges, directed=True)
+    print "Export graph"
+    # It seems that nx.write_dot doesn't finish execution => we bypass it
+    with open(graph_file, 'w') as file:
+        content = P.to_string()
+        file.write(content)
     
     print "Layout"
     for layout, key, dot_prog in settings.LAYOUTS:
         print layout
         out_filename = '../graph/positions_%s.dot' % key
         
-        if not os.path.exists(out_filename):
-            result = call_dot(dot_prog, graph_file, ['-Groot=' + ROOT_CATEGORY],
-                temp_output=out_filename)
-        
-            if not result:
-                print "Graphviz layout with %s failed" % dot_prog
-                return
+        #if not os.path.exists(out_filename):
+        result = call_dot(dot_prog, graph_file, ['-Groot=' + ROOT_CATEGORY],
+            temp_output=out_filename)
+    
+        if not result:
+            print "Graphviz layout with %s failed" % dot_prog
+            return
             
-        else:
-            with open(out_filename, 'r') as output:
-                result = output.read()
+        #else:
+        #    with open(out_filename, 'r') as output:
+        #        result = output.read()
         
         print "  Get positions"
         pos = get_dot_pos(result)
@@ -1918,11 +1922,11 @@ def preprocess_incremental():
     # for Wikipedia:
     #createnetwork()
     #calc_metrics_counts_depth()
-    #graphpositions()
-    #adjust_positions()
-    #store_positions()
-    calc_cooccurrences()
-    create_authors_network()
+    graphpositions()
+    adjust_positions()
+    store_positions()
+    #calc_cooccurrences()
+    #create_authors_network()
     
 def preprocess_nci():
     #find_annotation_components()

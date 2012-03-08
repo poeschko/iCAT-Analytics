@@ -51,8 +51,8 @@ class CurrentCategory(object):
                     codes = []
                     wp_code = wp_code.strip()
                     if "ICD10" in wp_code and "{" in wp_code:
-                        if ('–' in wp_code or '-' in wp_code) and not "<!--" in wp_code and not "(" in wp_code: # we have a range (e.g. "E10 - E14")
-                            wp_code.replace('–', '-') # different sorts of dashes
+                        if ('ï¿½' in wp_code or '-' in wp_code) and not "<!--" in wp_code and not "(" in wp_code: # we have a range (e.g. "E10 - E14")
+                            wp_code.replace('ï¿½', '-') # different sorts of dashes
                             range = wp_code.split('-')
                             start = range[0].strip("{}ICD10,").rstrip('|').split('|')[1:]
                             end = range[1].strip("{}ICD10,").rstrip('|').split('|')[1:]
@@ -444,6 +444,29 @@ def save_to_db():
         for prange in c.parents:
             for p in prange:
                 c.cat.parents.add(p.cat)
+                
+def print_categories(categories):
+    def codes(items):
+        #print items
+        ranges = ['[%s]' % ', '.join('.'.join(code) for code in sorted(range)) for range in items]
+        return '; '.join(ranges)
+    
+    print "Hierarchy:"
+    for c in categories:
+        print c.cat.name.encode('utf-8')
+        print '  "%s"' % c.line
+        print "  %s" % codes(c.codes)
+        #print "--------"
+        
+        print "  Parents: "
+        #print c.parents
+        for d in c.parents:
+            if d:
+                for e in d:
+                    #print e.cat.name.encode('utf-8'), e.codes
+                    print "    %s: %s " % (e.cat.name, codes(e.codes))
+                #print
+        print
       
 def main():
     """
@@ -453,6 +476,9 @@ def main():
     """
  
     categories = load_from_disk()
+    
+    #print_categories(categories)
+    #return
     
     # manually define some codes for special cases
     categories = assign_special_cases(categories)
@@ -564,43 +590,8 @@ def main():
     #save_to_disk(categories)
 
     # print for debugging
-    print "Debugging"
-    for c in categories:
-        if len(c.parents) > 1 and len(c.parents[0]) > 0 and len(c.parents[1]) > 0:
-            print c.cat.name.encode('utf-8')
-            #print c.line
-            print c.codes
-            print "--------"
-            
-            print "Parents: "
-            #print c.parents
-            for d in c.parents:
-                if d:
-                    for e in d:
-                        print e.cat.name.encode('utf-8'), e.codes
-                    print
-            print
-        
+    print_categories(categories)
     
-    """
-    categories = load_from_disk()
-    # print for debugging
-    print "Debugging"
-    for c in categories:
-        print c.cat.name.encode('utf-8')
-        print c.line
-        print c.codes
-        print "--------"
-        
-        print "Parents: "
-        #print c.parents
-        for d in c.parents:
-            if d:
-                for e in d:
-                    print e.cat.name.encode('utf-8'), e.codes
-                print
-        print
-    """
     """
     # write to database
     # save_to_db() # let's think about how we deal with things as "A10, A11, A12" and "A10-A12" first...
