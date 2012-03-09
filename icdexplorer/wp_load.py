@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 """
 Load Wikipedia XML dumps into iCAT Analytics
 
