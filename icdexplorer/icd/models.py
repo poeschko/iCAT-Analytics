@@ -71,7 +71,7 @@ class Category(models.Model):
         return u'<%s>' % self.name
     
     def get_key(self):
-        id = self.name
+        id = self.name.encode('utf-8')
         if id.startswith(CATEGORY_NAME_PREFIX):
             id = id[len(CATEGORY_NAME_PREFIX):]
         return id

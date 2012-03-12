@@ -785,11 +785,12 @@ def ajax_graph(request):
     #names = set(category.name for category, pos, weight in categories)
     names = set(categories)
     #print names
+
     add_names = names.copy()
     while add_names:
         new_add_names = set()
         for name in add_names:
-            new_add_names.update(succ for succ in GRAPH.successors(name) if succ not in names)
+            new_add_names.update(succ for succ in GRAPH.successors(name.encode('utf-8')) if succ not in names)
         names.update(new_add_names)
         add_names = new_add_names
     #print "NEW"
@@ -825,7 +826,7 @@ def ajax_graph(request):
         #weight = GRAPH.node[category.name]['weight']
         #weight = WEIGHTS[author_id][weight_id][accumulated].get(category.name, 0)
         #category_edges = [[child.name, 1] for child in category.children.all()]
-        neighbors = GRAPH.successors(category.name) #+ GRAPH.predecessors(category.name)
+        neighbors = GRAPH.successors(category.name.encode('utf-8')) #+ GRAPH.predecessors(category.name)
         category_edges = [name for name in neighbors if name in names]
         
         #print "Heatmap: %s" % heatmap
@@ -839,8 +840,7 @@ def ajax_graph(request):
                 category.get_short_display(), category.get_absolute_url(), category.get_multilingual_status(feature)])
         # Otherwise get status colors
         else:
-            categories_list.append([x, y, category.name, weight, unicode(category),
-                category.get_short_display(), category.get_absolute_url(), category.get_display_status()])
+            categories_list.append([x, y, category.name.encode('utf-8'), weight, unicode(category), category.get_short_display(), category.get_absolute_url(), category.get_display_status()])
 
         edges.append([category.name, category_edges])
     """tags = [tag for tag in tags[-100:] if tag[1] in instance.HASHTAGS]
