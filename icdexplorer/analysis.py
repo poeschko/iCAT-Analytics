@@ -1351,8 +1351,8 @@ def export():
     
     #plot_authors_network()
     
-    analyse_propagation_sessioned_export(baseline=False)
-    analyse_propagation_sessioned_export(baseline=True)
+    #analyse_propagation_sessioned_export(baseline=False)
+    #analyse_propagation_sessioned_export(baseline=True)
     
 def analyse():
     #for baseline in (False, True):

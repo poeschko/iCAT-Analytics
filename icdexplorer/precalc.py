@@ -97,6 +97,9 @@ def createnetwork():
         for parent_name in parents:
             G.add_edge(node_name(category), node_name(parent_name))
             
+    print "Nodes: %d" % len(G)
+    print "Edges: %d" % G.size()
+            
     print "Save graph"
     PickledData.objects.set(settings.INSTANCE, 'graph', G)
     print "Network saved"
@@ -1920,8 +1923,8 @@ def preprocess_incremental():
     #compute_extra_author_data()
     
     # for Wikipedia:
-    #createnetwork()
-    #calc_metrics_counts_depth()
+    createnetwork()
+    calc_metrics_counts_depth()
     graphpositions()
     adjust_positions()
     store_positions()
